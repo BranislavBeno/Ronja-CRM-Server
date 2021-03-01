@@ -10,7 +10,7 @@ public interface CustomerService {
 
   public Customer findById(int theId);
 
-  public void save(Customer customer);
+  public Customer save(Customer customer);
 
   public void deleteById(int theId);
 
