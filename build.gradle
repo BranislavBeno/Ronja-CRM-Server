@@ -6,7 +6,10 @@ plugins {
 
 group = 'com.ronja.crm'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+
+ext {
+	testcontainersVersion = '1.15.2'
+}
 
 repositories {
 	mavenCentral()
@@ -18,6 +21,8 @@ dependencies {
 	implementation 'mysql:mysql-connector-java'
 	implementation 'org.flywaydb:flyway-core:7.5.4'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+	testImplementation "org.testcontainers:mysql:${testcontainersVersion}"
 }
 
 test {
