@@ -1,16 +1,20 @@
 package com.ronja.crm.ronjaserver.dao;
 
+import com.ronja.crm.ronjaserver.entity.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @Testcontainers(disabledWithoutDocker = true)
@@ -39,6 +43,16 @@ class CustomerRepositoryTest {
   CustomerRepository cut;
 
   @Test
-  void databaseShouldBeEmpty() {
-    assertEquals(0, cut.count());
-  }}
+  @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
+  void testFindAll() {
+    List<Customer> result = cut.findAll();
+    assertThat(result).hasSize(2);
+  }
+
+  @Test
+  @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
+  void testSearchBy() {
+    List<Customer> result = cut.findByFirstNameContainsOrLastNameContainsAllIgnoreCase("Thomas", "Smith");
+    assertThat(result).hasSize(1);
+  }
+}
