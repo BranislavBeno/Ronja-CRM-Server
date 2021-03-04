@@ -55,4 +55,23 @@ class CustomerRepositoryTest {
     List<Customer> result = cut.findByFirstNameContainsOrLastNameContainsAllIgnoreCase("Thomas", "Smith");
     assertThat(result).hasSize(1);
   }
+
+  @Test
+  @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
+  void testDeleteById() {
+    cut.deleteById(1);
+    assertThat(cut.findAll()).hasSize(1);
+  }
+
+  @Test
+  @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
+  void testSave() {
+    Customer customer = new Customer();
+    customer.setFirstName("Mike");
+    customer.setLastName("Newman");
+    customer.setCompanyName("NewmanCorp");
+    Customer newCustomer = cut.save(customer);
+
+    assertThat(cut.findAll()).hasSize(3);
+  }
 }
