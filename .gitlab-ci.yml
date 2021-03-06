@@ -1,5 +1,5 @@
 ## Specific image for DinD
-image: docker:19.03.12
+image: docker:19.03.15
 
 # DinD (Docker in Docker) service is required for Testcontainers
 services:
