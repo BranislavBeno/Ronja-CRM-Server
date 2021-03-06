@@ -54,6 +54,10 @@ class CustomerRepositoryTest {
   void testSearchBy() {
     List<Customer> result = cut.findByFirstNameContainsOrLastNameContainsAllIgnoreCase("Thomas", "Smith");
     assertThat(result).hasSize(1);
+    assertThat(result.get(0).getId()).isEqualTo(1);
+    assertThat(result.get(0).getFirstName()).isEqualTo("John");
+    assertThat(result.get(0).getLastName()).isEqualTo("Smith");
+    assertThat(result.get(0).getCompanyName()).isEqualTo("JohnSmithCorp");
   }
 
   @Test
@@ -70,7 +74,7 @@ class CustomerRepositoryTest {
     customer.setFirstName("Mike");
     customer.setLastName("Newman");
     customer.setCompanyName("NewmanCorp");
-    Customer newCustomer = cut.save(customer);
+    cut.save(customer);
 
     assertThat(cut.findAll()).hasSize(3);
   }
