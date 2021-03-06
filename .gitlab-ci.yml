@@ -1,0 +1,32 @@
+## Specific image for DinD
+image: docker:19.03.12
+
+# DinD (Docker in Docker) service is required for Testcontainers
+services:
+  - docker:dind
+
+## Environment variables
+variables:
+  # Instruct Testcontainers to use the daemon of DinD
+  DOCKER_HOST: "tcp://docker:2375"
+
+  # Specify to Docker where to create the certificates, Docker will
+  # create them automatically on boot, and will create
+  # `/certs/client` that will be shared between the service and job
+  # container, thanks to volume mount from config.toml
+  DOCKER_TLS_CERTDIR: ""
+
+  # Improve performance with overlayfs.
+  DOCKER_DRIVER: overlay2
+
+## Job test_code
+## - run unit tests
+## - evaluate test coverage 
+test_code:
+  image: openjdk:11
+  stage: test
+  script:
+    - sh ./gradlew -S test jacocoTestReport
+    - cat build/reports/jacoco/test/html/index.html
+  tags:
+    - DOCKER
