@@ -1,30 +1,61 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.3'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'java'
+    id 'org.springframework.boot' version '2.4.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'jacoco'
 }
 
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
 group = 'com.ronja.crm'
-version = '0.0.1-SNAPSHOT'
+
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+version = "R${versionMajor}.${versionMinor}.${versionPatch}"
 
 ext {
-	testcontainersVersion = '1.15.2'
+    testcontainersVersion = '1.15.2'
+    jacocoDestinationFile = file("$buildDir/jacoco/test.exec")
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'mysql:mysql-connector-java'
-	implementation 'org.flywaydb:flyway-core:7.5.4'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'mysql:mysql-connector-java'
+    implementation 'org.flywaydb:flyway-core:7.5.4'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
-	testImplementation "org.testcontainers:mysql:${testcontainersVersion}"
+    testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
+    testImplementation "org.testcontainers:mysql:${testcontainersVersion}"
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
+    jacoco {
+        destinationFile = file(jacocoDestinationFile)
+    }
+    afterSuite { desc, result ->
+        if (!desc.parent) {
+            println "\nTest result: ${result.resultType}"
+            println "Test summary: ${result.testCount} tests, " +
+                    "${result.successfulTestCount} succeeded, " +
+                    "${result.failedTestCount} failed, " +
+                    "${result.skippedTestCount} skipped"
+        }
+    }
+}
+
+jacoco {
+    toolVersion = '0.8.2'
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
 }
