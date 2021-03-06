@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RonjaserverApplication {
+public class RonjaServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RonjaserverApplication.class, args);
+		SpringApplication.run(RonjaServerApplication.class, args);
 	}
 
 }

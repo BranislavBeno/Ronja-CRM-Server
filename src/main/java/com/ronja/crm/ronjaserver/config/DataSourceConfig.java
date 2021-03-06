@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableJpaRepositories(basePackages={"${spring.data.jpa.repository.packages}"})
-public class DemoDataSourceConfig {
+public class DataSourceConfig {
 
   @Primary
   @Bean
