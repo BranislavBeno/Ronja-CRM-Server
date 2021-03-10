@@ -1,7 +1,9 @@
 package com.ronja.crm.ronjaserver.service;
 
 import com.ronja.crm.ronjaserver.dao.CustomerRepository;
+import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
+import com.ronja.crm.ronjaserver.util.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,13 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
   private final CustomerRepository customerRepository;
+  private final CustomerMapper mapper;
 
   @Autowired
-  public CustomerServiceImpl(CustomerRepository customerRepository) {
+  public CustomerServiceImpl(@Autowired CustomerRepository customerRepository,
+                             @Autowired CustomerMapper mapper) {
     this.customerRepository = customerRepository;
+    this.mapper = mapper;
   }
 
   @Override
@@ -26,12 +31,22 @@ public class CustomerServiceImpl implements CustomerService {
   public Customer findById(int id) {
     return customerRepository
         .findById(id)
-        .orElseThrow(()->new RuntimeException("Did not find customer id - " + id));
+        .orElseThrow(() -> new RuntimeException("Did not find customer id - " + id));
   }
 
   @Override
-  public Customer save(Customer customer) {
-    return customerRepository.save(customer);
+  public Customer add(CustomerDto dto) {
+    Customer myCustomer = new Customer();
+    mapper.updateCustomerFromDto(dto, myCustomer);
+    customerRepository.save(myCustomer);
+    return myCustomer;
+  }
+
+  public Customer update(CustomerDto dto) {
+    Customer myCustomer = findById(dto.getId());
+    mapper.updateCustomerFromDto(dto, myCustomer);
+    customerRepository.save(myCustomer);
+    return myCustomer;
   }
 
   @Override

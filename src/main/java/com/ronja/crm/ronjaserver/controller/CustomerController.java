@@ -1,5 +1,6 @@
 package com.ronja.crm.ronjaserver.controller;
 
+import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/customers")
@@ -21,18 +23,20 @@ public class CustomerController {
   }
 
   @GetMapping("/list")
-  public List<Customer> customerList() {
-    return customerService.findAll();
+  public List<CustomerDto> customerList() {
+    List<Customer> entities = customerService.findAll();
+    return entities.stream().map(this::convertToDto).collect(Collectors.toList());
   }
 
   @GetMapping("/search")
-  public List<Customer> search(@RequestParam("customerName") String theName) {
-    return customerService.searchBy(theName);
+  public List<CustomerDto> search(@RequestParam("customerName") String theName) {
+    List<Customer> entities = customerService.searchBy(theName);
+    return entities.stream().map(this::convertToDto).collect(Collectors.toList());
   }
 
-  @PostMapping("/save")
-  public ResponseEntity<Customer> save(@RequestBody Customer theCustomer) {
-    Customer customer = customerService.save(theCustomer);
+  @PostMapping("/add")
+  public ResponseEntity<Customer> add(@RequestBody CustomerDto newCustomer) {
+    Customer customer = customerService.add(newCustomer);
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(customer.getId())
@@ -45,5 +49,9 @@ public class CustomerController {
   public ResponseEntity<Object> delete(@PathVariable int id) {
     customerService.deleteById(id);
     return ResponseEntity.noContent().build();
+  }
+
+  private CustomerDto convertToDto(Customer entity) {
+    return new CustomerDto(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getCompanyName());
   }
 }
