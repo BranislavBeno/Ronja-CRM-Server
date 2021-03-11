@@ -1,5 +1,6 @@
 package com.ronja.crm.ronjaserver.controller;
 
+import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,19 @@ public class CustomerController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<Customer> save(@RequestBody Customer theCustomer) {
-    Customer customer = customerService.save(theCustomer);
+  public ResponseEntity<Customer> save(@RequestBody CustomerDto dto) {
+    Customer customer = customerService.save(dto);
+    URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(customer.getId())
+        .toUri();
+
+    return ResponseEntity.created(uri).body(customer);
+  }
+
+  @PostMapping("/update")
+  public ResponseEntity<Customer> update(@RequestBody CustomerDto dto) {
+    Customer customer = customerService.update(dto);
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(customer.getId())

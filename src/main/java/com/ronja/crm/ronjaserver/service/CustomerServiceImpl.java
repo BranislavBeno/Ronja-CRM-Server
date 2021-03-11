@@ -1,6 +1,7 @@
 package com.ronja.crm.ronjaserver.service;
 
 import com.ronja.crm.ronjaserver.dao.CustomerRepository;
+import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,17 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   @Override
-  public Customer save(Customer customer) {
-    return customerRepository.save(customer);
+  public Customer save(CustomerDto dto) {
+    return customerRepository.save(convertToEntity(dto));
+  }
+
+  @Override
+  public Customer update(CustomerDto dto) {
+    Customer entity = findById(dto.getId());
+    entity.setFirstName(dto.getFirstName());
+    entity.setLastName(dto.getLastName());
+    entity.setCompanyName(dto.getCompanyName());
+    return customerRepository.save(entity);
   }
 
   @Override
@@ -50,5 +60,15 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     return results;
+  }
+
+  private Customer convertToEntity(CustomerDto dto) {
+    Customer customer = new Customer();
+    customer.setId(dto.getId());
+    customer.setFirstName(dto.getFirstName());
+    customer.setLastName(dto.getLastName());
+    customer.setCompanyName(dto.getCompanyName());
+
+    return customer;
   }
 }

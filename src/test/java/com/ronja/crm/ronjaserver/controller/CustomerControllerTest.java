@@ -1,10 +1,10 @@
 package com.ronja.crm.ronjaserver.controller;
 
+import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.service.CustomerService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -64,7 +64,7 @@ class CustomerControllerTest {
 
   @Test
   void testSave() throws Exception {
-    Mockito.when(service.save(any(Customer.class))).thenReturn(new Customer());
+    when(service.save(any(CustomerDto.class))).thenReturn(new Customer());
     this.mockMvc
         .perform(post("/customers/save")
             .contentType(MediaType.APPLICATION_JSON)
@@ -72,7 +72,20 @@ class CustomerControllerTest {
         .andExpect(status().isCreated())
         .andExpect(header().exists("Content-Type"))
         .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
-    verify(service).save(any(Customer.class));
+    verify(service).save(any(CustomerDto.class));
+  }
+
+  @Test
+  void testUpdate() throws Exception {
+    when(service.update(any(CustomerDto.class))).thenReturn(new Customer());
+    this.mockMvc
+        .perform(post("/customers/update")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"firstName\": \"Emma\",\"lastName\": \"Button\",\"companyName\": \"SpiceCorp\"}"))
+        .andExpect(status().isCreated())
+        .andExpect(header().exists("Content-Type"))
+        .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
+    verify(service).update(any(CustomerDto.class));
   }
 
   @Test
