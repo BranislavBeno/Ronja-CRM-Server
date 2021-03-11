@@ -1,6 +1,5 @@
 package com.ronja.crm.ronjaserver.controller;
 
-import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.service.CustomerService;
 import org.hamcrest.Matchers;
@@ -25,14 +24,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CustomerControllerTest {
 
   @MockBean
-  private CustomerService service;
+  CustomerService service;
 
   @Autowired
-  private MockMvc mockMvc;
+  MockMvc mockMvc;
 
   @Test
   void testShouldNotReturnXML() throws Exception {
-    mockMvc
+    this.mockMvc
         .perform(get("/customers/list")
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML))
         .andExpect(status().isNotAcceptable());
@@ -41,7 +40,7 @@ class CustomerControllerTest {
   @Test
   void testFindAll() throws Exception {
     when(service.findAll()).thenReturn(List.of(new Customer(), new Customer()));
-    mockMvc
+    this.mockMvc
         .perform(get("/customers/list")
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
         .andExpect(status().is(200))
@@ -55,7 +54,7 @@ class CustomerControllerTest {
   @Test
   void testSearch() throws Exception {
     when(service.searchBy(anyString())).thenReturn(List.of(new Customer()));
-    mockMvc
+    this.mockMvc
         .perform(get("/customers/search?customerName=Emma")
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
@@ -64,22 +63,22 @@ class CustomerControllerTest {
   }
 
   @Test
-  void testAdd() throws Exception {
-    Mockito.when(service.add(any(CustomerDto.class))).thenReturn(new Customer());
-    mockMvc
-        .perform(post("/customers/add")
+  void testSave() throws Exception {
+    Mockito.when(service.save(any(Customer.class))).thenReturn(new Customer());
+    this.mockMvc
+        .perform(post("/customers/save")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"firstName\": \"Emma\",\"lastName\": \"Button\",\"companyName\": \"SpiceCorp\"}"))
         .andExpect(status().isCreated())
         .andExpect(header().exists("Content-Type"))
         .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
-    verify(service).add(any(CustomerDto.class));
+    verify(service).save(any(Customer.class));
   }
 
   @Test
   void testDelete() throws Exception {
     service.deleteById(anyInt());
-    mockMvc
+    this.mockMvc
         .perform(delete("/customers/delete/1"))
         .andExpect(status().is(204));
     verify(service, times(2)).deleteById(anyInt());

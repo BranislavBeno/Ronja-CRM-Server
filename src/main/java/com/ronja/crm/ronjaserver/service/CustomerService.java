@@ -1,21 +1,18 @@
 package com.ronja.crm.ronjaserver.service;
 
-import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
 
 import java.util.List;
 
 public interface CustomerService {
 
-  List<Customer> findAll();
+  public List<Customer> findAll();
 
-  Customer findById(int theId);
+  public Customer findById(int theId);
 
-  Customer add(CustomerDto dto);
+  public Customer save(Customer customer);
 
-  Customer update(CustomerDto dto);
+  public void deleteById(int theId);
 
-  void deleteById(int theId);
-
-  List<Customer> searchBy(String name);
+  public List<Customer> searchBy(String name);
 }

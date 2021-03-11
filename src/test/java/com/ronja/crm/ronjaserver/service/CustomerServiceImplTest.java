@@ -1,7 +1,6 @@
 package com.ronja.crm.ronjaserver.service;
 
 import com.ronja.crm.ronjaserver.dao.CustomerRepository;
-import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +13,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -21,6 +21,7 @@ class CustomerServiceImplTest {
 
   @Mock
   private CustomerRepository repository;
+
   @InjectMocks
   private CustomerServiceImpl cut;
 
@@ -55,8 +56,17 @@ class CustomerServiceImplTest {
   }
 
   @Test
-  void testAddRegular() {
-    CustomerDto customer = new CustomerDto(1, "John", "Doe", "JohnDoeCorp");
+  void testSaveThrowException() {
+    when(repository.save(any(Customer.class))).thenThrow(new IllegalArgumentException());
+    Customer customer = new Customer();
+    assertThrows(IllegalArgumentException.class, () -> cut.save(customer));
+  }
+
+  @Test
+  void testSaveRegular() {
+    when(repository.save(any(Customer.class))).thenReturn(new Customer());
+    Customer customer = cut.save(new Customer());
+    verify(repository).save(any(Customer.class));
     assertThat(customer).isNotNull();
   }
 
