@@ -1,4 +1,4 @@
-package com.ronja.crm.ronjaserver.dao;
+package com.ronja.crm.ronjaserver.repository;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class CustomerRepositoryTest {
   @Test
   @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
   void testFindAll() {
-    List<Customer> result = cut.findAll();
+    List<Customer> result = (List<Customer>) cut.findAll();
     assertThat(result).hasSize(2);
   }
 

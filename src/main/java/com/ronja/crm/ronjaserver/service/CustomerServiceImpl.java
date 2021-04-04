@@ -1,8 +1,8 @@
 package com.ronja.crm.ronjaserver.service;
 
-import com.ronja.crm.ronjaserver.dao.CustomerRepository;
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
+import com.ronja.crm.ronjaserver.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

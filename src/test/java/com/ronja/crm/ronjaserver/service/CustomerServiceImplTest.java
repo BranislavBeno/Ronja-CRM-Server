@@ -1,8 +1,8 @@
 package com.ronja.crm.ronjaserver.service;
 
-import com.ronja.crm.ronjaserver.dao.CustomerRepository;
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
+import com.ronja.crm.ronjaserver.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
