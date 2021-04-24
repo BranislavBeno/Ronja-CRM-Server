@@ -7,18 +7,35 @@ import javax.persistence.*;
 public class Customer {
 
   @Id
-  @GeneratedValue(strategy= GenerationType.IDENTITY)
-  @Column(name="id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private int id;
 
-  @Column(name="first_name")
-  private String firstName;
-
-  @Column(name="last_name")
-  private String lastName;
-
-  @Column(name="company_name")
+  @Column(name = "company_name")
   private String companyName;
+
+  @Column(name = "category")
+  @Enumerated(EnumType.STRING)
+  private Category category;
+
+  @Column(name = "focus")
+  @Enumerated(EnumType.STRING)
+  private Focus focus;
+
+  @Column(name = "status")
+  @Enumerated(EnumType.STRING)
+  private Status status;
+
+  @Override
+  public String toString() {
+    return "Customer{" +
+        "id=" + id +
+        ", companyName='" + companyName + '\'' +
+        ", category=" + category +
+        ", focus=" + focus +
+        ", status=" + status +
+        '}';
+  }
 
   public int getId() {
     return id;
@@ -26,22 +43,6 @@ public class Customer {
 
   public void setId(int id) {
     this.id = id;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
   }
 
   public String getCompanyName() {
@@ -52,12 +53,27 @@ public class Customer {
     this.companyName = companyName;
   }
 
-  @Override
-  public String toString() {
-    return "Customer[" +
-        "firstName='" + firstName + '\'' +
-        ", lastName='" + lastName + '\'' +
-        ", companyName='" + companyName + '\'' +
-        ']';
+  public Category getCategory() {
+    return category;
+  }
+
+  public void setCategory(Category category) {
+    this.category = category;
+  }
+
+  public Focus getFocus() {
+    return focus;
+  }
+
+  public void setFocus(Focus focus) {
+    this.focus = focus;
+  }
+
+  public Status getStatus() {
+    return status;
+  }
+
+  public void setStatus(Status status) {
+    this.status = status;
   }
 }

@@ -20,7 +20,7 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   public List<Customer> findAll() {
-    return customerRepository.findAllByOrderByLastNameAsc();
+    return customerRepository.findAllByOrderByCompanyNameAsc();
   }
 
   @Override
@@ -38,8 +38,9 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   public Customer update(CustomerDto dto) {
     Customer entity = findById(dto.getId());
-    entity.setFirstName(dto.getFirstName());
-    entity.setLastName(dto.getLastName());
+    entity.setCategory(dto.getCategory());
+    entity.setFocus(dto.getFocus());
+    entity.setStatus(dto.getStatus());
     entity.setCompanyName(dto.getCompanyName());
     return customerRepository.save(entity);
   }
@@ -54,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
     List<Customer> results;
 
     if (name != null && (name.trim().length() > 0)) {
-      results = customerRepository.findByFirstNameContainsOrLastNameContainsAllIgnoreCase(name, name);
+      results = customerRepository.findByCompanyNameContainsAllIgnoreCase(name);
     } else {
       results = findAll();
     }
@@ -63,10 +64,11 @@ public class CustomerServiceImpl implements CustomerService {
   }
 
   private Customer convertToEntity(CustomerDto dto) {
-    Customer customer = new Customer();
+    var customer = new Customer();
     customer.setId(dto.getId());
-    customer.setFirstName(dto.getFirstName());
-    customer.setLastName(dto.getLastName());
+    customer.setCategory(dto.getCategory());
+    customer.setFocus(dto.getFocus());
+    customer.setStatus(dto.getStatus());
     customer.setCompanyName(dto.getCompanyName());
 
     return customer;

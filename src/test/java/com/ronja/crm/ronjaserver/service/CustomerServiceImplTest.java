@@ -32,17 +32,17 @@ class CustomerServiceImplTest {
 
   @Test
   void testFindAllReturnNull() {
-    when(repository.findAllByOrderByLastNameAsc()).thenReturn(null);
+    when(repository.findAllByOrderByCompanyNameAsc()).thenReturn(null);
     List<Customer> customers = cut.findAll();
-    verify(repository).findAllByOrderByLastNameAsc();
+    verify(repository).findAllByOrderByCompanyNameAsc();
     assertThat(customers).isNull();
   }
 
   @Test
   void testFindAllReturnList() {
-    when(repository.findAllByOrderByLastNameAsc()).thenReturn(List.of(new Customer()));
+    when(repository.findAllByOrderByCompanyNameAsc()).thenReturn(List.of(new Customer()));
     List<Customer> customers = cut.findAll();
-    verify(repository).findAllByOrderByLastNameAsc();
+    verify(repository).findAllByOrderByCompanyNameAsc();
     assertThat(customers).hasSize(1);
   }
 
@@ -92,37 +92,37 @@ class CustomerServiceImplTest {
 
   @Test
   void testSearchByReturnNull() {
-    when(repository.findByFirstNameContainsOrLastNameContainsAllIgnoreCase(anyString(), anyString()))
+    when(repository.findByCompanyNameContainsAllIgnoreCase(anyString()))
         .thenReturn(null);
     List<Customer> customers = cut.searchBy("Mike");
-    verify(repository).findByFirstNameContainsOrLastNameContainsAllIgnoreCase(anyString(), anyString());
+    verify(repository).findByCompanyNameContainsAllIgnoreCase(anyString());
     assertThat(customers).isNull();
   }
 
   @Test
   void testSearchByReturnList() {
-    when(repository.findByFirstNameContainsOrLastNameContainsAllIgnoreCase(anyString(), anyString()))
+    when(repository.findByCompanyNameContainsAllIgnoreCase(anyString()))
         .thenReturn(List.of(new Customer()));
     List<Customer> customers = cut.searchBy("Mike");
-    verify(repository).findByFirstNameContainsOrLastNameContainsAllIgnoreCase(anyString(), anyString());
+    verify(repository).findByCompanyNameContainsAllIgnoreCase(anyString());
     assertThat(customers).hasSize(1);
   }
 
   @Test
   void testSearchEmptyByReturnList() {
-    when(repository.findAllByOrderByLastNameAsc())
+    when(repository.findAllByOrderByCompanyNameAsc())
         .thenReturn(List.of(new Customer()));
     List<Customer> customers = cut.searchBy("");
-    verify(repository).findAllByOrderByLastNameAsc();
+    verify(repository).findAllByOrderByCompanyNameAsc();
     assertThat(customers).hasSize(1);
   }
 
   @Test
   void testSearchNullByReturnList() {
-    when(repository.findAllByOrderByLastNameAsc())
+    when(repository.findAllByOrderByCompanyNameAsc())
         .thenReturn(List.of(new Customer()));
     List<Customer> customers = cut.searchBy(null);
-    verify(repository).findAllByOrderByLastNameAsc();
+    verify(repository).findAllByOrderByCompanyNameAsc();
     assertThat(customers).hasSize(1);
   }
 }

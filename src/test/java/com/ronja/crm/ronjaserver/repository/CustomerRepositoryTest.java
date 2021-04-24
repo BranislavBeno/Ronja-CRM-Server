@@ -1,6 +1,9 @@
 package com.ronja.crm.ronjaserver.repository;
 
+import com.ronja.crm.ronjaserver.entity.Category;
 import com.ronja.crm.ronjaserver.entity.Customer;
+import com.ronja.crm.ronjaserver.entity.Focus;
+import com.ronja.crm.ronjaserver.entity.Status;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -52,11 +55,12 @@ class CustomerRepositoryTest {
   @Test
   @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
   void testSearchBy() {
-    List<Customer> result = cut.findByFirstNameContainsOrLastNameContainsAllIgnoreCase("Thomas", "Smith");
+    List<Customer> result = cut.findByCompanyNameContainsAllIgnoreCase("Thomas");
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getId()).isEqualTo(1);
-    assertThat(result.get(0).getFirstName()).isEqualTo("John");
-    assertThat(result.get(0).getLastName()).isEqualTo("Smith");
+    assertThat(result.get(0).getCategory()).isEqualTo(Category.LEVEL_1);
+    assertThat(result.get(0).getFocus()).isEqualTo(Focus.BUILDER);
+    assertThat(result.get(0).getStatus()).isEqualTo(Status.ACTIVE);
     assertThat(result.get(0).getCompanyName()).isEqualTo("JohnSmithCorp");
   }
 
@@ -71,8 +75,9 @@ class CustomerRepositoryTest {
   @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
   void testSave() {
     Customer customer = new Customer();
-    customer.setFirstName("Mike");
-    customer.setLastName("Newman");
+    customer.setCategory(Category.LEVEL_1);
+    customer.setFocus(Focus.BUILDER);
+    customer.setStatus(Status.ACTIVE);
     customer.setCompanyName("NewmanCorp");
     cut.save(customer);
 
