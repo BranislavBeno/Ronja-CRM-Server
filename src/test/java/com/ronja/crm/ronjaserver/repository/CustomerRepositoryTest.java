@@ -55,13 +55,13 @@ class CustomerRepositoryTest {
   @Test
   @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
   void testSearchBy() {
-    List<Customer> result = cut.findByCompanyNameContainsAllIgnoreCase("Thomas");
+    List<Customer> result = cut.findByCompanyNameContainsAllIgnoreCase("John");
     assertThat(result).hasSize(1);
     assertThat(result.get(0).getId()).isEqualTo(1);
     assertThat(result.get(0).getCategory()).isEqualTo(Category.LEVEL_1);
-    assertThat(result.get(0).getFocus()).isEqualTo(Focus.BUILDER);
+    assertThat(result.get(0).getFocus()).isEqualTo(Focus.TRADE);
     assertThat(result.get(0).getStatus()).isEqualTo(Status.ACTIVE);
-    assertThat(result.get(0).getCompanyName()).isEqualTo("JohnSmithCorp");
+    assertThat(result.get(0).getCompanyName()).isEqualTo("JohnCorp");
   }
 
   @Test

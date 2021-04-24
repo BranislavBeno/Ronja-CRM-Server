@@ -28,13 +28,12 @@ public class Customer {
 
   @Override
   public String toString() {
-    return "Customer{" +
-        "id=" + id +
-        ", companyName='" + companyName + '\'' +
+    return "Customer[" +
+        "companyName=" + companyName +
         ", category=" + category +
         ", focus=" + focus +
         ", status=" + status +
-        '}';
+        ']';
   }
 
   public int getId() {

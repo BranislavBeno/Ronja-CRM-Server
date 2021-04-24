@@ -57,7 +57,7 @@ class CustomerServiceImplTest {
     when(repository.findById(anyInt())).thenReturn(Optional.of(new Customer()));
     Customer customer = cut.findById(1);
     verify(repository).findById(anyInt());
-    assertThat(customer.toString()).hasToString("Customer[firstName='null', lastName='null', companyName='null']");
+    assertThat(customer.toString()).hasToString("Customer[companyName=null, category=null, focus=null, status=null]");
   }
 
   @Test
