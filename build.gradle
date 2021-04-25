@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.4.3'
+    id 'org.springframework.boot' version '2.4.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'jacoco'
 }
@@ -16,7 +16,7 @@ def versionPatch = 0
 version = "R${versionMajor}.${versionMinor}.${versionPatch}"
 
 ext {
-    testcontainersVersion = '1.15.2'
+    testcontainersVersion = '1.15.3'
     jacocoDestinationFile = file("$buildDir/jacoco/test.exec")
 }
 
@@ -28,7 +28,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'mysql:mysql-connector-java'
-    implementation 'org.flywaydb:flyway-core:7.5.4'
+    implementation 'org.flywaydb:flyway-core:7.8.1'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation "org.testcontainers:junit-jupiter:${testcontainersVersion}"
     testImplementation "org.testcontainers:mysql:${testcontainersVersion}"
@@ -51,7 +51,7 @@ test {
 }
 
 jacoco {
-    toolVersion = '0.8.2'
+    toolVersion = '0.8.6'
 }
 
 jacocoTestReport {
