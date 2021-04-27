@@ -1,0 +1,2 @@
+INSERT INTO representative (id, first_name, last_name, company_name, position, region, notice, status, last_visit,scheduled_visit) VALUES (1,'John','Doe',NULL,'CEO','V4','nothing special','ACTIVE','2020-10-07','2021-04-25');
+INSERT INTO representative (id, first_name, last_name, company_name, position, region, notice, status, last_visit,scheduled_visit) VALUES (2,'Jane','Smith',NULL,'CFO','EMEA','anything special','INACTIVE','2020-10-07','2021-04-25');
