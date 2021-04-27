@@ -2,22 +2,21 @@ package com.ronja.crm.ronjaserver.controller;
 
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
-import com.ronja.crm.ronjaserver.service.CustomerService;
+import com.ronja.crm.ronjaserver.service.EntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
 
-  private final CustomerService customerService;
+  private final EntityService<Customer, CustomerDto> customerService;
 
-  public CustomerController(@Autowired CustomerService customerService) {
+  public CustomerController(@Autowired EntityService<Customer, CustomerDto> customerService) {
     this.customerService = customerService;
   }
 
@@ -33,8 +32,8 @@ public class CustomerController {
 
   @PostMapping("/save")
   public ResponseEntity<Customer> save(@RequestBody CustomerDto dto) {
-    Customer customer = customerService.save(dto);
-    URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+    var customer = customerService.save(dto);
+    var uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(customer.getId())
         .toUri();
@@ -44,8 +43,8 @@ public class CustomerController {
 
   @PostMapping("/update")
   public ResponseEntity<Customer> update(@RequestBody CustomerDto dto) {
-    Customer customer = customerService.update(dto);
-    URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+    var customer = customerService.update(dto);
+    var uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(customer.getId())
         .toUri();

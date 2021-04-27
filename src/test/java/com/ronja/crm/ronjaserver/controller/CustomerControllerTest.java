@@ -2,7 +2,7 @@ package com.ronja.crm.ronjaserver.controller;
 
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
-import com.ronja.crm.ronjaserver.service.CustomerService;
+import com.ronja.crm.ronjaserver.service.EntityService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CustomerControllerTest {
 
   @MockBean
-  CustomerService service;
+  EntityService<Customer, CustomerDto> service;
 
   @Autowired
   MockMvc mockMvc;
