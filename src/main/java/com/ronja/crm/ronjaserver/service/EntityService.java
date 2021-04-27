@@ -14,5 +14,5 @@ public interface EntityService<T, U> {
 
   void deleteById(int theId);
 
-  List<T> searchBy(String name);
+  List<T> searchBy(String name, String lName);
 }

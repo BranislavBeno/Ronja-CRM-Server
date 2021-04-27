@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public record CustomerServiceImpl(@Autowired CustomerRepository customerRepository)
+public record CustomerService(@Autowired CustomerRepository customerRepository)
     implements EntityService<Customer, CustomerDto> {
 
   @Override
@@ -45,7 +45,7 @@ public record CustomerServiceImpl(@Autowired CustomerRepository customerReposito
   }
 
   @Override
-  public List<Customer> searchBy(String name) {
+  public List<Customer> searchBy(String name, String lName) {
     List<Customer> results;
 
     if (name != null && (name.trim().length() > 0)) {

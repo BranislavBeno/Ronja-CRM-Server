@@ -27,7 +27,7 @@ public class CustomerController {
 
   @GetMapping("/search")
   public List<Customer> search(@RequestParam("customerName") String theName) {
-    return customerService.searchBy(theName);
+    return customerService.searchBy(theName, theName);
   }
 
   @PostMapping("/save")

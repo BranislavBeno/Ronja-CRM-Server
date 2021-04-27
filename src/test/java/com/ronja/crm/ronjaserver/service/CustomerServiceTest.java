@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class CustomerServiceImplTest {
+class CustomerServiceTest {
 
   @Mock
   private CustomerRepository repository;
@@ -28,7 +28,7 @@ class CustomerServiceImplTest {
   private Customer entity;
 
   @InjectMocks
-  private CustomerServiceImpl cut;
+  private CustomerService cut;
 
   @Test
   void testFindAllReturnNull() {
@@ -94,7 +94,7 @@ class CustomerServiceImplTest {
   void testSearchByReturnNull() {
     when(repository.findByCompanyNameContainsAllIgnoreCase(anyString()))
         .thenReturn(null);
-    List<Customer> customers = cut.searchBy("Mike");
+    List<Customer> customers = cut.searchBy("Mike", "Stephens");
     verify(repository).findByCompanyNameContainsAllIgnoreCase(anyString());
     assertThat(customers).isNull();
   }
@@ -103,7 +103,7 @@ class CustomerServiceImplTest {
   void testSearchByReturnList() {
     when(repository.findByCompanyNameContainsAllIgnoreCase(anyString()))
         .thenReturn(List.of(new Customer()));
-    List<Customer> customers = cut.searchBy("Mike");
+    List<Customer> customers = cut.searchBy("Mike", "Collins");
     verify(repository).findByCompanyNameContainsAllIgnoreCase(anyString());
     assertThat(customers).hasSize(1);
   }
@@ -112,7 +112,7 @@ class CustomerServiceImplTest {
   void testSearchEmptyByReturnList() {
     when(repository.findAllByOrderByCompanyNameAsc())
         .thenReturn(List.of(new Customer()));
-    List<Customer> customers = cut.searchBy("");
+    List<Customer> customers = cut.searchBy("", "");
     verify(repository).findAllByOrderByCompanyNameAsc();
     assertThat(customers).hasSize(1);
   }
@@ -121,7 +121,7 @@ class CustomerServiceImplTest {
   void testSearchNullByReturnList() {
     when(repository.findAllByOrderByCompanyNameAsc())
         .thenReturn(List.of(new Customer()));
-    List<Customer> customers = cut.searchBy(null);
+    List<Customer> customers = cut.searchBy(null, null);
     verify(repository).findAllByOrderByCompanyNameAsc();
     assertThat(customers).hasSize(1);
   }

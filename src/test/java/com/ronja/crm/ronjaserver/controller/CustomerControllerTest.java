@@ -53,13 +53,13 @@ class CustomerControllerTest {
 
   @Test
   void testSearch() throws Exception {
-    when(service.searchBy(anyString())).thenReturn(List.of(new Customer()));
+    when(service.searchBy(anyString(), anyString())).thenReturn(List.of(new Customer()));
     this.mockMvc
         .perform(get("/customers/search?customerName=Emma")
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.size()", is(1)));
-    verify(service).searchBy(anyString());
+    verify(service).searchBy(anyString(), anyString());
   }
 
   @Test
