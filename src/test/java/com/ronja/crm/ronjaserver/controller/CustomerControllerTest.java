@@ -53,20 +53,20 @@ class CustomerControllerTest {
 
   @Test
   void testSearch() throws Exception {
-    when(service.searchBy(anyString(), anyString())).thenReturn(List.of(new Customer()));
+    when(service.searchBy(anyString())).thenReturn(List.of(new Customer()));
     this.mockMvc
-        .perform(get("/customers/search?customerName=Emma")
+        .perform(get("/customers/search?companyName=Emma")
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.size()", is(1)));
-    verify(service).searchBy(anyString(), anyString());
+    verify(service).searchBy(anyString());
   }
 
   @Test
   void testSave() throws Exception {
     when(service.save(any(CustomerDto.class))).thenReturn(new Customer());
     this.mockMvc
-        .perform(post("/customers/save")
+        .perform(post("/customers/add")
             .contentType(MediaType.APPLICATION_JSON)
             .content("{\"firstName\": \"Emma\",\"lastName\": \"Button\",\"companyName\": \"SpiceCorp\"}"))
         .andExpect(status().isCreated())

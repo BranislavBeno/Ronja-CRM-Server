@@ -54,7 +54,7 @@ class RepresentativeRepositoryTest {
   @Test
   @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
   void testSearchBy() {
-    List<Representative> result = cut.findByFirstNameContainsOrLastNameContainsAllIgnoreCase("John", "Doe");
+    List<Representative> result = cut.findByLastNameContainsAllIgnoreCase("Doe");
     assertThat(result).hasSize(1);
     Representative representative = result.get(0);
     assertThat(representative.getId()).isEqualTo(1);

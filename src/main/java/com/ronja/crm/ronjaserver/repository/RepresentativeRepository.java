@@ -9,5 +9,5 @@ public interface RepresentativeRepository extends CrudRepository<Representative,
 
   List<Representative> findAllByOrderByLastNameAsc();
 
-  List<Representative> findByFirstNameContainsOrLastNameContainsAllIgnoreCase(String name, String lName);
+  List<Representative> findByLastNameContainsAllIgnoreCase(String name);
 }

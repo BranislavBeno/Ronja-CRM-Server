@@ -9,8 +9,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public record RepresentativeService(@Autowired RepresentativeRepository representativeRepository)
-    implements EntityService<Representative, RepresentativeDto> {
+public class RepresentativeService implements EntityService<Representative, RepresentativeDto> {
+
+  private final RepresentativeRepository representativeRepository;
+
+  @Autowired
+  public RepresentativeService(RepresentativeRepository representativeRepository) {
+    this.representativeRepository = representativeRepository;
+  }
 
   @Override
   public List<Representative> findAll() {
@@ -49,11 +55,11 @@ public record RepresentativeService(@Autowired RepresentativeRepository represen
   }
 
   @Override
-  public List<Representative> searchBy(String name, String lName) {
+  public List<Representative> searchBy(String name) {
     List<Representative> results;
 
     if (name != null && (name.trim().length() > 0)) {
-      results = representativeRepository.findByFirstNameContainsOrLastNameContainsAllIgnoreCase(name, lName);
+      results = representativeRepository.findByLastNameContainsAllIgnoreCase(name);
     } else {
       results = findAll();
     }

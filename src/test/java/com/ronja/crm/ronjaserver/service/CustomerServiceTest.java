@@ -94,7 +94,7 @@ class CustomerServiceTest {
   void testSearchByReturnNull() {
     when(repository.findByCompanyNameContainsAllIgnoreCase(anyString()))
         .thenReturn(null);
-    List<Customer> customers = cut.searchBy("Mike", "Stephens");
+    List<Customer> customers = cut.searchBy("MikeCorp");
     verify(repository).findByCompanyNameContainsAllIgnoreCase(anyString());
     assertThat(customers).isNull();
   }
@@ -103,7 +103,7 @@ class CustomerServiceTest {
   void testSearchByReturnList() {
     when(repository.findByCompanyNameContainsAllIgnoreCase(anyString()))
         .thenReturn(List.of(new Customer()));
-    List<Customer> customers = cut.searchBy("Mike", "Collins");
+    List<Customer> customers = cut.searchBy("MikeCorp");
     verify(repository).findByCompanyNameContainsAllIgnoreCase(anyString());
     assertThat(customers).hasSize(1);
   }
@@ -112,7 +112,7 @@ class CustomerServiceTest {
   void testSearchEmptyByReturnList() {
     when(repository.findAllByOrderByCompanyNameAsc())
         .thenReturn(List.of(new Customer()));
-    List<Customer> customers = cut.searchBy("", "");
+    List<Customer> customers = cut.searchBy("");
     verify(repository).findAllByOrderByCompanyNameAsc();
     assertThat(customers).hasSize(1);
   }
@@ -121,7 +121,7 @@ class CustomerServiceTest {
   void testSearchNullByReturnList() {
     when(repository.findAllByOrderByCompanyNameAsc())
         .thenReturn(List.of(new Customer()));
-    List<Customer> customers = cut.searchBy(null, null);
+    List<Customer> customers = cut.searchBy(null);
     verify(repository).findAllByOrderByCompanyNameAsc();
     assertThat(customers).hasSize(1);
   }

@@ -21,17 +21,17 @@ public class CustomerController {
   }
 
   @GetMapping("/list")
-  public List<Customer> customerList() {
+  public List<Customer> list() {
     return customerService.findAll();
   }
 
   @GetMapping("/search")
-  public List<Customer> search(@RequestParam("customerName") String theName) {
-    return customerService.searchBy(theName, theName);
+  public List<Customer> search(@RequestParam("companyName") String theName) {
+    return customerService.searchBy(theName);
   }
 
-  @PostMapping("/save")
-  public ResponseEntity<Customer> save(@RequestBody CustomerDto dto) {
+  @PostMapping("/add")
+  public ResponseEntity<Customer> add(@RequestBody CustomerDto dto) {
     var customer = customerService.save(dto);
     var uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")

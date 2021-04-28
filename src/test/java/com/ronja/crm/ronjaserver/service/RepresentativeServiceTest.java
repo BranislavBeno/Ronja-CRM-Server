@@ -93,19 +93,19 @@ class RepresentativeServiceTest {
 
   @Test
   void testSearchByReturnNull() {
-    when(repository.findByFirstNameContainsOrLastNameContainsAllIgnoreCase(anyString(), anyString()))
+    when(repository.findByLastNameContainsAllIgnoreCase(anyString()))
         .thenReturn(null);
-    List<Representative> customers = cut.searchBy("Mike", "Stephens");
-    verify(repository).findByFirstNameContainsOrLastNameContainsAllIgnoreCase(anyString(), anyString());
+    List<Representative> customers = cut.searchBy("Mike");
+    verify(repository).findByLastNameContainsAllIgnoreCase(anyString());
     assertThat(customers).isNull();
   }
 
   @Test
   void testSearchByReturnList() {
-    when(repository.findByFirstNameContainsOrLastNameContainsAllIgnoreCase(anyString(), anyString()))
+    when(repository.findByLastNameContainsAllIgnoreCase(anyString()))
         .thenReturn(List.of(new Representative()));
-    List<Representative> representatives = cut.searchBy("Mike", "Collins");
-    verify(repository).findByFirstNameContainsOrLastNameContainsAllIgnoreCase(anyString(), anyString());
+    List<Representative> representatives = cut.searchBy("Mike");
+    verify(repository).findByLastNameContainsAllIgnoreCase(anyString());
     assertThat(representatives).hasSize(1);
   }
 
@@ -113,7 +113,7 @@ class RepresentativeServiceTest {
   void testSearchEmptyByReturnList() {
     when(repository.findAllByOrderByLastNameAsc())
         .thenReturn(List.of(new Representative()));
-    List<Representative> customers = cut.searchBy("", "");
+    List<Representative> customers = cut.searchBy("");
     verify(repository).findAllByOrderByLastNameAsc();
     assertThat(customers).hasSize(1);
   }
@@ -122,7 +122,7 @@ class RepresentativeServiceTest {
   void testSearchNullByReturnList() {
     when(repository.findAllByOrderByLastNameAsc())
         .thenReturn(List.of(new Representative()));
-    List<Representative> customers = cut.searchBy(null, null);
+    List<Representative> customers = cut.searchBy(null);
     verify(repository).findAllByOrderByLastNameAsc();
     assertThat(customers).hasSize(1);
   }
