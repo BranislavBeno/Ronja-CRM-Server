@@ -2,10 +2,7 @@ package com.ronja.crm.ronjaserver;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
-import com.ronja.crm.ronjaserver.entity.Status;
 import org.hibernate.cfg.Configuration;
-
-import java.time.LocalDate;
 
 public class ReadRepresentativeDemo {
 
@@ -21,21 +18,10 @@ public class ReadRepresentativeDemo {
       var session = factory.getCurrentSession();
       session.beginTransaction();
 
-      var representative = new Representative();
-      representative.setFirstName("Jane");
-      representative.setLastName("Smith");
-      representative.setPosition("CFO");
-      representative.setRegion("EMEA");
-      representative.setNotice("anything special");
-      representative.setStatus(Status.INACTIVE);
-      representative.setLastVisit(LocalDate.of(2020, 10, 7));
-      representative.setScheduledVisit(LocalDate.now());
-
-      session.save(representative);
-
-      var id = 1;
-      var repr = session.get(Representative.class, id);
-      repr.setRegion("V4");
+      var customer = session.get(Customer.class, 1);
+      var representative = session.get(Representative.class, 2);
+      System.out.println(customer.toString());
+      System.out.println(representative.toString());
 
       // commit the transaction
       session.getTransaction().commit();

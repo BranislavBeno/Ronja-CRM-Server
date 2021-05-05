@@ -26,14 +26,24 @@ public class Customer {
   @Enumerated(EnumType.STRING)
   private Status status;
 
+//  @OneToMany(fetch = FetchType.LAZY,
+//      mappedBy = "customer",
+//      cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+//          CascadeType.DETACH, CascadeType.REFRESH})
+//  private List<Representative> representatives;
+//
+//  public void addRepresentative(Representative representative) {
+//    if (representatives == null){
+//      representatives = new ArrayList<>();
+//    }
+//    representatives.add(representative);
+//    representative.setCustomer(this);
+//  }
+
   @Override
   public String toString() {
-    return "Customer[" +
-        "companyName=" + companyName +
-        ", category=" + category +
-        ", focus=" + focus +
-        ", status=" + status +
-        ']';
+    return String.format("Customer[companyName=%s, category=%s, focus=%s, status=%s]",
+        companyName, category, focus, status);
   }
 
   public int getId() {
