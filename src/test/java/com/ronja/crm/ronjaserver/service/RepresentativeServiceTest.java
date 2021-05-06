@@ -57,8 +57,7 @@ class RepresentativeServiceTest {
     when(repository.findById(anyInt())).thenReturn(Optional.of(new Representative()));
     Representative representative = cut.findById(1);
     verify(repository).findById(anyInt());
-    assertThat(representative.toString()).hasToString("Representative[firstName=null, lastName=null, position=null, "
-        + "region=null, notice=null, status=null, lastVisit=null, scheduledVisit=null]");
+    assertThat(representative).isNotNull();
   }
 
   @Test

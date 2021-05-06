@@ -2,10 +2,6 @@ package com.ronja.crm.ronjaserver.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Entity
 @Table(name = "representative")
@@ -45,30 +41,6 @@ public class Representative {
       CascadeType.DETACH, CascadeType.REFRESH})
   @JoinColumn(name = "customer_id")
   private Customer customer;
-
-  @Override
-  public String toString() {
-    record Field(String key, String val) {
-      @Override
-      public String toString() {
-        return String.format("%s=%s", key, val);
-      }
-    }
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-    return String.format("Representative[%s]", Stream.of(
-        new Field("firstName", firstName),
-        new Field("lastName", lastName),
-        new Field("position", position),
-        new Field("region", region),
-        new Field("notice", notice),
-        new Field("status", status.getLabel()),
-        new Field("lastVisit", lastVisit.format(formatter)),
-        new Field("scheduledVisit", scheduledVisit.format(formatter)),
-        new Field("companyName", Optional.ofNullable(customer.getCompanyName()).orElse("")))
-        .map(Field::toString)
-        .collect(Collectors.joining(", ")));
-  }
 
   public int getId() {
     return id;
