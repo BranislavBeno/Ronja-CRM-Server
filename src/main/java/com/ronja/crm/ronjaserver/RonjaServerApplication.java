@@ -9,5 +9,4 @@ public class RonjaServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RonjaServerApplication.class, args);
 	}
-
 }
