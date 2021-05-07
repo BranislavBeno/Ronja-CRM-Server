@@ -60,10 +60,12 @@ CREATE TABLE `representative` (
   `last_visit` date DEFAULT NULL,
   `scheduled_visit` date DEFAULT NULL,
   `customer_id` int(11) DEFAULT NULL,
+  `phone_numbers` json DEFAULT NULL,
+  `emails` json DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_CUSTOMER_idx` (`customer_id`),
   CONSTRAINT `FK_CUSTOMER` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +74,7 @@ CREATE TABLE `representative` (
 
 LOCK TABLES `representative` WRITE;
 /*!40000 ALTER TABLE `representative` DISABLE KEYS */;
-INSERT INTO `representative` VALUES (1,'John','Doe','CEO','V4','nothing special','ACTIVE','2020-10-07','2021-04-25',1),(2,'Jane','Smith','CFO','EMEA','anything special','INACTIVE','2020-10-07','2021-04-25',1);
+INSERT INTO `representative` VALUES (1,'John','Doe','CEO','V4','nothing special','ACTIVE','2020-10-07','2021-04-25',1,'[\"\"]','[\"\", \"\"]'),(2,'Jane','Smith','CFO','EMEA','anything special','INACTIVE','2020-10-07','2021-04-25',1,'[\"\"]','[\"\"]'),(3,'Patrick','Stewart','CTO','ASEAN','anything new','INACTIVE','2021-02-01','2021-05-14',2,'[\"\"]','[\"\"]');
 /*!40000 ALTER TABLE `representative` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -85,4 +87,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-06 22:34:37
+-- Dump completed on 2021-05-08  1:26:02

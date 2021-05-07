@@ -2,6 +2,7 @@ package com.ronja.crm.ronjaserver.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "representative")
@@ -36,6 +37,14 @@ public class Representative {
 
   @Column(name = "scheduled_visit")
   private LocalDate scheduledVisit;
+
+  @Column(name = "phone_numbers")
+  @Convert(converter = ListAttributeConverter.class)
+  private List<String> phoneNumbers;
+
+  @Column(name = "emails")
+  @Convert(converter = ListAttributeConverter.class)
+  private List<String> emails;
 
   @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
       CascadeType.DETACH, CascadeType.REFRESH})
@@ -120,5 +129,21 @@ public class Representative {
 
   public void setCustomer(Customer customer) {
     this.customer = customer;
+  }
+
+  public List<String> getPhoneNumbers() {
+    return phoneNumbers;
+  }
+
+  public void setPhoneNumbers(List<String> phoneNumbers) {
+    this.phoneNumbers = phoneNumbers;
+  }
+
+  public List<String> getEmails() {
+    return emails;
+  }
+
+  public void setEmails(List<String> emails) {
+    this.emails = emails;
   }
 }
