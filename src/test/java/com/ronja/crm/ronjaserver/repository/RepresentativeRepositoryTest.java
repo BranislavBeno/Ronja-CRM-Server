@@ -1,5 +1,6 @@
 package com.ronja.crm.ronjaserver.repository;
 
+import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.entity.Status;
 import org.junit.jupiter.api.Test;
@@ -14,6 +15,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -66,6 +68,9 @@ class RepresentativeRepositoryTest {
     assertThat(representative.getRegion()).isEqualTo("V4");
     assertThat(representative.getLastVisit()).isEqualTo(LocalDate.of(2020, 10, 7));
     assertThat(representative.getScheduledVisit()).isEqualTo(LocalDate.of(2021, 4, 25));
+    assertThat(representative.getCustomer()).isNull();
+    assertThat(representative.getPhoneNumbers()).hasSize(1);
+    assertThat(representative.getEmails()).hasSize(1);
   }
 
   @Test
@@ -87,6 +92,9 @@ class RepresentativeRepositoryTest {
     representative.setPosition("");
     representative.setLastVisit(LocalDate.now());
     representative.setScheduledVisit(LocalDate.now());
+    representative.setCustomer(new Customer());
+    representative.setPhoneNumbers(Collections.emptyList());
+    representative.setEmails(Collections.emptyList());
     cut.save(representative);
 
     assertThat(cut.findAll()).hasSize(3);

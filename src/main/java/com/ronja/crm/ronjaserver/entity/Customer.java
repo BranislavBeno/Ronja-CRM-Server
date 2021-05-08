@@ -26,12 +26,6 @@ public class Customer {
   @Enumerated(EnumType.STRING)
   private Status status;
 
-  @Override
-  public String toString() {
-    return String.format("Customer[companyName=%s, category=%s, focus=%s, status=%s]",
-        companyName, category, focus, status);
-  }
-
   public int getId() {
     return id;
   }

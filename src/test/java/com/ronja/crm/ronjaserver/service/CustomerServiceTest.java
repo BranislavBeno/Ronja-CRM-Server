@@ -57,7 +57,7 @@ class CustomerServiceTest {
     when(repository.findById(anyInt())).thenReturn(Optional.of(new Customer()));
     Customer customer = cut.findById(1);
     verify(repository).findById(anyInt());
-    assertThat(customer.toString()).hasToString("Customer[companyName=null, category=null, focus=null, status=null]");
+    assertThat(customer).isNotNull();
   }
 
   @Test
