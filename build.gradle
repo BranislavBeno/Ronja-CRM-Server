@@ -59,3 +59,7 @@ jacocoTestReport {
         xml.enabled true
     }
 }
+
+bootBuildImage {
+    imageName = "beo1975/ronja-server:${versionMajor}.${versionMinor}.${versionPatch}"
+}
