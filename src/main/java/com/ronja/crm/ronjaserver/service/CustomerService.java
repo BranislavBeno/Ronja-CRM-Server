@@ -37,11 +37,11 @@ public class CustomerService implements EntityService<Customer, CustomerDto> {
 
   @Override
   public Customer update(CustomerDto dto) {
-    Customer entity = findById(dto.getId());
-    entity.setCategory(dto.getCategory());
-    entity.setFocus(dto.getFocus());
-    entity.setStatus(dto.getStatus());
-    entity.setCompanyName(dto.getCompanyName());
+    Customer entity = findById(dto.id());
+    entity.setCategory(dto.category());
+    entity.setFocus(dto.focus());
+    entity.setStatus(dto.status());
+    entity.setCompanyName(dto.companyName());
     return customerRepository.save(entity);
   }
 
@@ -65,11 +65,11 @@ public class CustomerService implements EntityService<Customer, CustomerDto> {
 
   private Customer convertToEntity(CustomerDto dto) {
     var customer = new Customer();
-    customer.setId(dto.getId());
-    customer.setCategory(dto.getCategory());
-    customer.setFocus(dto.getFocus());
-    customer.setStatus(dto.getStatus());
-    customer.setCompanyName(dto.getCompanyName());
+    customer.setId(dto.id());
+    customer.setCategory(dto.category());
+    customer.setFocus(dto.focus());
+    customer.setStatus(dto.status());
+    customer.setCompanyName(dto.companyName());
 
     return customer;
   }

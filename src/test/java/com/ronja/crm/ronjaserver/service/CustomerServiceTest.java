@@ -1,7 +1,10 @@
 package com.ronja.crm.ronjaserver.service;
 
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
+import com.ronja.crm.ronjaserver.entity.Category;
 import com.ronja.crm.ronjaserver.entity.Customer;
+import com.ronja.crm.ronjaserver.entity.Focus;
+import com.ronja.crm.ronjaserver.entity.Status;
 import com.ronja.crm.ronjaserver.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,13 +25,16 @@ class CustomerServiceTest {
 
   @Mock
   private CustomerRepository repository;
-  @Mock
-  private CustomerDto dto;
+
   @Mock
   private Customer entity;
 
   @InjectMocks
   private CustomerService cut;
+
+  private CustomerDto initializeDto() {
+    return new CustomerDto(1, "company", Category.LEVEL_1, Focus.BUILDER, Status.ACTIVE);
+  }
 
   @Test
   void testFindAllReturnNull() {
@@ -63,13 +69,14 @@ class CustomerServiceTest {
   @Test
   void testSaveThrowException() {
     when(repository.save(any(Customer.class))).thenThrow(new IllegalArgumentException());
+    CustomerDto dto = initializeDto();
     assertThrows(IllegalArgumentException.class, () -> cut.save(dto));
   }
 
   @Test
   void testSaveRegular() {
     when(repository.save(any(Customer.class))).thenReturn(new Customer());
-    Customer customer = cut.save(dto);
+    Customer customer = cut.save(initializeDto());
     verify(repository).save(any(Customer.class));
     assertThat(customer).isNotNull();
   }
@@ -78,7 +85,7 @@ class CustomerServiceTest {
   void testUpdateRegular() {
     when(repository.findById(anyInt())).thenReturn(Optional.of(entity));
     when(repository.save(any(Customer.class))).thenReturn(entity);
-    Customer customer = cut.update(dto);
+    Customer customer = cut.update(initializeDto());
     verify(repository).save(entity);
     assertThat(customer).isNotNull();
   }

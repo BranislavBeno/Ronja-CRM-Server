@@ -2,6 +2,7 @@ package com.ronja.crm.ronjaserver.service;
 
 import com.ronja.crm.ronjaserver.dto.RepresentativeDto;
 import com.ronja.crm.ronjaserver.entity.Representative;
+import com.ronja.crm.ronjaserver.entity.Status;
 import com.ronja.crm.ronjaserver.repository.RepresentativeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,13 +24,17 @@ class RepresentativeServiceTest {
 
   @Mock
   private RepresentativeRepository repository;
-  @Mock
-  private RepresentativeDto dto;
+
   @Mock
   private Representative entity;
 
   @InjectMocks
   private RepresentativeService cut;
+
+  private RepresentativeDto initializeDto() {
+    return new RepresentativeDto(1, "John", "Doe", "CIO", "EMEA", "",
+        Status.ACTIVE, LocalDate.now(), LocalDate.now());
+  }
 
   @Test
   void testFindAllReturnNull() {
@@ -63,13 +69,14 @@ class RepresentativeServiceTest {
   @Test
   void testSaveThrowException() {
     when(repository.save(any(Representative.class))).thenThrow(new IllegalArgumentException());
+    RepresentativeDto dto = initializeDto();
     assertThrows(IllegalArgumentException.class, () -> cut.save(dto));
   }
 
   @Test
   void testSaveRegular() {
     when(repository.save(any(Representative.class))).thenReturn(new Representative());
-    Representative representative = cut.save(dto);
+    Representative representative = cut.save(initializeDto());
     verify(repository).save(any(Representative.class));
     assertThat(representative).isNotNull();
   }
@@ -78,7 +85,7 @@ class RepresentativeServiceTest {
   void testUpdateRegular() {
     when(repository.findById(anyInt())).thenReturn(Optional.of(entity));
     when(repository.save(any(Representative.class))).thenReturn(entity);
-    Representative representative = cut.update(dto);
+    Representative representative = cut.update(initializeDto());
     verify(repository).save(entity);
     assertThat(representative).isNotNull();
   }

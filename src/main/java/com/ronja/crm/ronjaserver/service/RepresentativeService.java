@@ -37,16 +37,20 @@ public class RepresentativeService implements EntityService<Representative, Repr
 
   @Override
   public Representative update(RepresentativeDto dto) {
-    Representative entity = findById(dto.getId());
-    entity.setFirstName(dto.getFirstName());
-    entity.setLastName(dto.getLastName());
-    entity.setStatus(dto.getStatus());
-    entity.setRegion(dto.getRegion());
-    entity.setNotice(dto.getNotice());
-    entity.setPosition(dto.getPosition());
-    entity.setLastVisit(dto.getLastVisit());
-    entity.setScheduledVisit(dto.getScheduledVisit());
+    Representative entity = findById(dto.id());
+    setEntity(dto, entity);
     return representativeRepository.save(entity);
+  }
+
+  private void setEntity(RepresentativeDto dto, Representative entity) {
+    entity.setFirstName(dto.firstName());
+    entity.setLastName(dto.lastName());
+    entity.setStatus(dto.status());
+    entity.setRegion(dto.region());
+    entity.setNotice(dto.notice());
+    entity.setPosition(dto.position());
+    entity.setLastVisit(dto.lastVisit());
+    entity.setScheduledVisit(dto.scheduledVisit());
   }
 
   @Override
@@ -69,16 +73,8 @@ public class RepresentativeService implements EntityService<Representative, Repr
 
   private Representative convertToEntity(RepresentativeDto dto) {
     var representative = new Representative();
-    representative.setId(dto.getId());
-    representative.setFirstName(dto.getFirstName());
-    representative.setLastName(dto.getLastName());
-    representative.setStatus(dto.getStatus());
-    representative.setRegion(dto.getRegion());
-    representative.setNotice(dto.getNotice());
-    representative.setPosition(dto.getPosition());
-    representative.setLastVisit(dto.getLastVisit());
-    representative.setScheduledVisit(dto.getScheduledVisit());
-
+    representative.setId(dto.id());
+    setEntity(dto, representative);
     return representative;
   }
 }
