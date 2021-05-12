@@ -11,7 +11,7 @@ targetCompatibility = JavaVersion.VERSION_16
 group = 'com.ronja.crm'
 
 def versionMajor = 0
-def versionMinor = 1
+def versionMinor = 2
 def versionPatch = 0
 version = "R${versionMajor}.${versionMinor}.${versionPatch}"
 
