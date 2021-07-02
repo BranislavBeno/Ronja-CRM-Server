@@ -24,63 +24,63 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CustomerRepositoryTest {
 
-  @Container
-  static final MySQLContainer<?> container = new MySQLContainer<>("mysql:5.7.29")
-      .withDatabaseName("test")
-      .withUsername("Jon")
-      .withPassword("Doe")
-      .withReuse(true);
+    @Container
+    static final MySQLContainer<?> container = new MySQLContainer<>("mysql:8.0.25")
+            .withDatabaseName("test")
+            .withUsername("Jon")
+            .withPassword("Doe")
+            .withReuse(true);
 
-  static {
-    container.start();
-  }
+    static {
+        container.start();
+    }
 
-  @DynamicPropertySource
-  static void properties(DynamicPropertyRegistry registry) {
-    registry.add("spring.datasource.url", container::getJdbcUrl);
-    registry.add("spring.datasource.password", container::getPassword);
-    registry.add("spring.datasource.username", container::getUsername);
-  }
+    @DynamicPropertySource
+    static void properties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", container::getJdbcUrl);
+        registry.add("spring.datasource.password", container::getPassword);
+        registry.add("spring.datasource.username", container::getUsername);
+    }
 
-  @Autowired
-  CustomerRepository cut;
+    @Autowired
+    CustomerRepository cut;
 
-  @Test
-  @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
-  void testFindAll() {
-    List<Customer> result = (List<Customer>) cut.findAll();
-    assertThat(result).hasSize(2);
-  }
+    @Test
+    @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
+    void testFindAll() {
+        List<Customer> result = (List<Customer>) cut.findAll();
+        assertThat(result).hasSize(2);
+    }
 
-  @Test
-  @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
-  void testSearchBy() {
-    List<Customer> result = cut.findByCompanyNameContainsAllIgnoreCase("John");
-    assertThat(result).hasSize(1);
-    assertThat(result.get(0).getId()).isEqualTo(1);
-    assertThat(result.get(0).getCategory()).isEqualTo(Category.LEVEL_1);
-    assertThat(result.get(0).getFocus()).isEqualTo(Focus.TRADE);
-    assertThat(result.get(0).getStatus()).isEqualTo(Status.ACTIVE);
-    assertThat(result.get(0).getCompanyName()).isEqualTo("JohnCorp");
-  }
+    @Test
+    @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
+    void testSearchBy() {
+        List<Customer> result = cut.findByCompanyNameContainsAllIgnoreCase("John");
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getId()).isEqualTo(1);
+        assertThat(result.get(0).getCategory()).isEqualTo(Category.LEVEL_1);
+        assertThat(result.get(0).getFocus()).isEqualTo(Focus.TRADE);
+        assertThat(result.get(0).getStatus()).isEqualTo(Status.ACTIVE);
+        assertThat(result.get(0).getCompanyName()).isEqualTo("JohnCorp");
+    }
 
-  @Test
-  @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
-  void testDeleteById() {
-    cut.deleteById(1);
-    assertThat(cut.findAll()).hasSize(1);
-  }
+    @Test
+    @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
+    void testDeleteById() {
+        cut.deleteById(1);
+        assertThat(cut.findAll()).hasSize(1);
+    }
 
-  @Test
-  @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
-  void testSave() {
-    Customer customer = new Customer();
-    customer.setCategory(Category.LEVEL_1);
-    customer.setFocus(Focus.BUILDER);
-    customer.setStatus(Status.ACTIVE);
-    customer.setCompanyName("NewmanCorp");
-    cut.save(customer);
+    @Test
+    @Sql(scripts = "/scripts/INIT_CUSTOMERS.sql")
+    void testSave() {
+        Customer customer = new Customer();
+        customer.setCategory(Category.LEVEL_1);
+        customer.setFocus(Focus.BUILDER);
+        customer.setStatus(Status.ACTIVE);
+        customer.setCompanyName("NewmanCorp");
+        cut.save(customer);
 
-    assertThat(cut.findAll()).hasSize(3);
-  }
+        assertThat(cut.findAll()).hasSize(3);
+    }
 }
