@@ -20,13 +20,6 @@ services:
       MYSQL_DATABASE: ronja
     volumes:
       - dbronja:/var/lib/mysql/
-    networks:
-      - ronjanet
-
-#Networks
-networks:
-  ronjanet:
-    driver: bridge
 
 #Volumes
 volumes:
