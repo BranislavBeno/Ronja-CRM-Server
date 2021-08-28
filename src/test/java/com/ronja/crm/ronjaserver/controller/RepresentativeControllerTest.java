@@ -25,7 +25,6 @@ class RepresentativeControllerTest {
 
   @MockBean
   EntityService<Representative, RepresentativeDto> service;
-
   @Autowired
   MockMvc mockMvc;
 
@@ -102,7 +101,19 @@ class RepresentativeControllerTest {
                     "notice": "anything special",
                     "status": "ACTIVE",
                     "lastVisit": "2021-01-17",
-                    "scheduledVisit": "2021-05-05"
+                    "scheduledVisit": "2021-05-05",
+                    "phoneNumbers": [
+                        "+555987654321"
+                    ],
+                    "emails": [
+                        "patrick@foo.com"
+                    ],
+                    "customer": {
+                        "companyName": "IdaCorp",
+                        "category": "LEVEL_3",
+                        "focus": "TRADE",
+                        "status": "ACTIVE"
+                    }
                 }
                 """))
         .andExpect(status().isCreated())

@@ -1,6 +1,9 @@
 package com.ronja.crm.ronjaserver.service;
 
+import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.dto.RepresentativeDto;
+import com.ronja.crm.ronjaserver.entity.Category;
+import com.ronja.crm.ronjaserver.entity.Focus;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.entity.Status;
 import com.ronja.crm.ronjaserver.repository.RepresentativeRepository;
@@ -33,7 +36,8 @@ class RepresentativeServiceTest {
 
   private RepresentativeDto initializeDto() {
     return new RepresentativeDto(1, "John", "Doe", "CIO", "EMEA", "",
-        Status.ACTIVE, LocalDate.now(), LocalDate.now());
+        Status.ACTIVE, LocalDate.now(), LocalDate.now(), List.of(), List.of(),
+        new CustomerDto(1, "company", Category.LEVEL_1, Focus.BUILDER, Status.ACTIVE));
   }
 
   @Test
