@@ -12,7 +12,7 @@ group = 'com.ronja.crm'
 
 def versionMajor = 0
 def versionMinor = 3
-def versionPatch = 1
+def versionPatch = 2
 version = "R${versionMajor}.${versionMinor}.${versionPatch}"
 
 ext {

@@ -3,6 +3,7 @@ package com.ronja.crm.ronjaserver.service;
 import com.ronja.crm.ronjaserver.dto.RepresentativeDto;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.repository.RepresentativeRepository;
+import com.ronja.crm.ronjaserver.utils.CustomerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,9 @@ public class RepresentativeService implements EntityService<Representative, Repr
     entity.setPosition(dto.position());
     entity.setLastVisit(dto.lastVisit());
     entity.setScheduledVisit(dto.scheduledVisit());
+    entity.setPhoneNumbers(dto.phoneNumbers());
+    entity.setEmails(dto.emails());
+    entity.setCustomer(CustomerUtils.convertToEntity(dto.customer()));
   }
 
   @Override

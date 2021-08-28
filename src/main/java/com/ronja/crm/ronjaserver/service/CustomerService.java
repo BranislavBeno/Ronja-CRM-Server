@@ -3,6 +3,7 @@ package com.ronja.crm.ronjaserver.service;
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.repository.CustomerRepository;
+import com.ronja.crm.ronjaserver.utils.CustomerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class CustomerService implements EntityService<Customer, CustomerDto> {
 
   @Override
   public Customer save(CustomerDto dto) {
-    return customerRepository.save(convertToEntity(dto));
+    return customerRepository.save(CustomerUtils.convertToEntity(dto));
   }
 
   @Override
@@ -61,16 +62,5 @@ public class CustomerService implements EntityService<Customer, CustomerDto> {
     }
 
     return results;
-  }
-
-  private Customer convertToEntity(CustomerDto dto) {
-    var customer = new Customer();
-    customer.setId(dto.id());
-    customer.setCategory(dto.category());
-    customer.setFocus(dto.focus());
-    customer.setStatus(dto.status());
-    customer.setCompanyName(dto.companyName());
-
-    return customer;
   }
 }
