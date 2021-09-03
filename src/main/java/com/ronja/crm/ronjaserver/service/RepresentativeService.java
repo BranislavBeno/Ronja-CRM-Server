@@ -14,74 +14,74 @@ import java.util.List;
 @Service
 public class RepresentativeService implements EntityService<Representative, RepresentativeDto> {
 
-  private final RepresentativeRepository representativeRepository;
+    private final RepresentativeRepository representativeRepository;
 
-  @Autowired
-  public RepresentativeService(RepresentativeRepository representativeRepository) {
-    this.representativeRepository = representativeRepository;
-  }
-
-  @Override
-  public List<Representative> findAll() {
-    return representativeRepository.findAllByOrderByLastNameAsc();
-  }
-
-  @Override
-  public Representative findById(int id) {
-    return representativeRepository
-        .findById(id)
-        .orElseThrow(() -> new RuntimeException("Did not find representative id - " + id));
-  }
-
-  @Override
-  public Representative save(RepresentativeDto dto) {
-    return representativeRepository.save(convertToEntity(dto));
-  }
-
-  @Override
-  public Representative update(RepresentativeDto dto) {
-    Representative entity = findById(dto.id());
-    setEntity(dto, entity);
-    return representativeRepository.save(entity);
-  }
-
-  private void setEntity(RepresentativeDto dto, Representative entity) {
-    entity.setFirstName(dto.firstName());
-    entity.setLastName(dto.lastName());
-    entity.setStatus(dto.status());
-    entity.setRegion(dto.region());
-    entity.setNotice(dto.notice());
-    entity.setPosition(dto.position());
-    entity.setLastVisit(dto.lastVisit());
-    entity.setScheduledVisit(dto.scheduledVisit());
-    entity.setPhoneNumbers(dto.phoneNumbers());
-    entity.setEmails(dto.emails());
-    CustomerDto customerDto = dto.customer();
-    entity.setCustomer(customerDto != null ? CustomerUtils.convertToEntity(customerDto) : null);
-  }
-
-  @Override
-  public void deleteById(int id) {
-    representativeRepository.deleteById(id);
-  }
-
-  @Override
-  public List<Representative> searchBy(String name) {
-    List<Representative> results;
-
-    if (name != null && (name.trim().length() > 0)) {
-      results = representativeRepository.findByLastNameContainsAllIgnoreCase(name);
-    } else {
-      results = findAll();
+    @Autowired
+    public RepresentativeService(RepresentativeRepository representativeRepository) {
+        this.representativeRepository = representativeRepository;
     }
 
-    return results;
-  }
+    @Override
+    public List<Representative> findAll() {
+        return representativeRepository.findAllByOrderByLastNameAsc();
+    }
 
-  private Representative convertToEntity(RepresentativeDto dto) {
-    var representative = new Representative();
-    representative.setId(dto.id());
-    setEntity(dto, representative);
-    return representative;
-  }
+    @Override
+    public Representative findById(int id) {
+        return representativeRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Did not find representative id - " + id));
+    }
+
+    @Override
+    public Representative add(RepresentativeDto dto) {
+        Representative representative = convertToEntity(dto);
+        return representativeRepository.save(representative);
+    }
+
+    @Override
+    public Representative update(RepresentativeDto dto) {
+        Representative entity = findById(dto.id());
+        setEntity(dto, entity);
+        return representativeRepository.save(entity);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        representativeRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Representative> searchBy(String name) {
+        List<Representative> results;
+
+        if (name != null && (name.trim().length() > 0)) {
+            results = representativeRepository.findByLastNameContainsAllIgnoreCase(name);
+        } else {
+            results = findAll();
+        }
+
+        return results;
+    }
+
+    private Representative convertToEntity(RepresentativeDto dto) {
+        var representative = new Representative();
+        setEntity(dto, representative);
+        return representative;
+    }
+
+    private void setEntity(RepresentativeDto dto, Representative entity) {
+        entity.setFirstName(dto.firstName());
+        entity.setLastName(dto.lastName());
+        entity.setStatus(dto.status());
+        entity.setRegion(dto.region());
+        entity.setNotice(dto.notice());
+        entity.setPosition(dto.position());
+        entity.setLastVisit(dto.lastVisit());
+        entity.setScheduledVisit(dto.scheduledVisit());
+        entity.setPhoneNumbers(dto.phoneNumbers());
+        entity.setEmails(dto.emails());
+        CustomerDto customerDto = dto.customer();
+        entity.setCustomer(customerDto != null ? CustomerUtils.convertToEntity(customerDto) : null);
+    }
 }

@@ -32,7 +32,7 @@ public class CustomerService implements EntityService<Customer, CustomerDto> {
   }
 
   @Override
-  public Customer save(CustomerDto dto) {
+  public Customer add(CustomerDto dto) {
     return customerRepository.save(CustomerUtils.convertToEntity(dto));
   }
 

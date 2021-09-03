@@ -32,7 +32,7 @@ public class RepresentativeController {
 
   @PostMapping("/add")
   public ResponseEntity<Representative> add(@RequestBody RepresentativeDto dto) {
-    var representative = representativeService.save(dto);
+    var representative = representativeService.add(dto);
     var uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(representative.getId())

@@ -64,7 +64,7 @@ class CustomerControllerTest {
 
   @Test
   void testSave() throws Exception {
-    when(service.save(any(CustomerDto.class))).thenReturn(new Customer());
+    when(service.add(any(CustomerDto.class))).thenReturn(new Customer());
     this.mockMvc
         .perform(post("/customers/add")
             .contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +79,7 @@ class CustomerControllerTest {
         .andExpect(status().isCreated())
         .andExpect(header().exists("Content-Type"))
         .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
-    verify(service).save(any(CustomerDto.class));
+    verify(service).add(any(CustomerDto.class));
   }
 
   @Test

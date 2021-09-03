@@ -32,7 +32,7 @@ public class CustomerController {
 
   @PostMapping("/add")
   public ResponseEntity<Customer> add(@RequestBody CustomerDto dto) {
-    var customer = customerService.save(dto);
+    var customer = customerService.add(dto);
     var uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(customer.getId())
