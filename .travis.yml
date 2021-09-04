@@ -1,0 +1,25 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  # Set Gradle builder executable permissions
+  - chmod +x gradlew
+
+language: java
+install: true
+jdk: openjdk16
+
+script:
+  # Use Gradle as tester
+  - ./gradlew test
+  # Trigger with Gradle static and dynamic code analysis
+  - ./gradlew jacocoTestReport
+
+notifications:
+  email:
+    recipients:
+      - hugo.rad@gmail.com
+    on_success: always
+    on_failure: always
