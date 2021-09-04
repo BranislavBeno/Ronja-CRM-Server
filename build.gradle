@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '2.5.4'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'jacoco'
+    id 'org.sonarqube' version '3.3'
 }
 
 sourceCompatibility = JavaVersion.VERSION_16
@@ -19,6 +20,8 @@ ext {
     flywayVersion = '7.14.0'
     testcontainersVersion = '1.16.0'
     jacocoDestinationFile = file("$buildDir/jacoco/test.exec")
+    sonarProjectName = 'RonjaServer'
+    sonarProjectKey = 'com.ronja.crm.ronjaserver'
 }
 
 repositories {
@@ -58,6 +61,12 @@ jacoco {
 jacocoTestReport {
     reports {
         xml.enabled true
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "BranislavBeno_RonjaServer"
     }
 }
 
