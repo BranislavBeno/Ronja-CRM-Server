@@ -26,7 +26,7 @@ test_code:
   image: openjdk:16
   stage: test
   script:
-    - sh ./gradlew -S test jacocoTestReport
+    - sh ./gradlew -S test jacocoTestReport sonarqube
     - cat build/reports/jacoco/test/html/index.html
   tags:
     - DOCKER

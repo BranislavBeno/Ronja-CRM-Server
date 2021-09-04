@@ -15,7 +15,7 @@ script:
   # Use Gradle as tester
   - ./gradlew test
   # Trigger with Gradle static and dynamic code analysis
-  - ./gradlew jacocoTestReport
+  - ./gradlew jacocoTestReport sonarqube
 
 notifications:
   email:
