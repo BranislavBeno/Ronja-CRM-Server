@@ -3,7 +3,7 @@ RUN mkdir /project
 COPY . /project
 WORKDIR /project
 # create fat jar
-RUN gradle shadowJar
+RUN gradle build -x test
 
 FROM adoptopenjdk/openjdk16:jre-16.0.1_9-alpine
 # install dumb-init

@@ -4,7 +4,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'jacoco'
     id 'org.sonarqube' version '3.3'
-    id 'com.github.johnrengelman.shadow' version '6.1.0'
 }
 
 sourceCompatibility = JavaVersion.VERSION_16
@@ -56,7 +55,7 @@ test {
 }
 
 jacoco {
-    toolVersion = '0.8.7'
+    toolVersion = "0.8.7"
 }
 
 jacocoTestReport {
@@ -71,11 +70,10 @@ sonarqube {
     }
 }
 
+bootJar {
+    archiveFileName = "ronja-server.jar"
+}
+
 bootBuildImage {
     imageName = "beo1975/ronja-server:${versionMajor}.${versionMinor}.${versionPatch}"
 }
-
-shadowJar{
-    setArchiveFileName('ronja-server.jar')
-}
-
