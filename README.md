@@ -1,6 +1,6 @@
 # Ronja CRM server
 
-[![Build Status](https://app.travis-ci.com/BranislavBeno/Ronja-Server.svg?branch=master)](https://app.travis-ci.com/BranislavBeno/Ronja-Server)
+[![Build Status](https://app.travis-ci.com/BranislavBeno/Ronja-CRM-Server.svg?branch=master)](https://app.travis-ci.com/BranislavBeno/Ronja-CRM-Server)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=BranislavBeno_RonjaServer&metric=alert_status)](https://sonarcloud.io/dashboard?id=BranislavBeno_RonjaServer)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=BranislavBeno_RonjaServer&metric=coverage)](https://sonarcloud.io/dashboard?id=BranislavBeno_RonjaServer)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=BranislavBeno_RonjaServer&metric=ncloc)](https://sonarcloud.io/dashboard?id=BranislavBeno_RonjaServer)
