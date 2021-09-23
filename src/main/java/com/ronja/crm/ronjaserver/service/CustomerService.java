@@ -8,32 +8,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
+@SuppressWarnings("ALL")
 @Service
 public class CustomerService implements EntityService<Customer, CustomerDto> {
 
-  private final CustomerRepository customerRepository;
+  private final CustomerRepository repository;
 
   @Autowired
-  public CustomerService(CustomerRepository customerRepository) {
-    this.customerRepository = customerRepository;
+  public CustomerService(CustomerRepository repository) {
+    this.repository = repository;
   }
 
   @Override
   public List<Customer> findAll() {
-    return customerRepository.findAllByOrderByCompanyNameAsc();
+    return repository.findAllByOrderByCompanyNameAsc();
   }
 
   @Override
   public Customer findById(int id) {
-    return customerRepository
+    return repository
         .findById(id)
         .orElseThrow(() -> new RuntimeException("Did not find customer id - " + id));
   }
 
   @Override
-  public Customer add(CustomerDto dto) {
-    return customerRepository.save(CustomerUtils.convertToEntity(dto));
+  public Customer add(Customer entity) {
+    Objects.requireNonNull(entity);
+    return repository.save(entity);
+  }
+
+  @Override
+  public Customer addDto(CustomerDto dto) {
+    return repository.save(CustomerUtils.convertToEntity(dto));
   }
 
   @Override
@@ -43,12 +51,12 @@ public class CustomerService implements EntityService<Customer, CustomerDto> {
     entity.setFocus(dto.focus());
     entity.setStatus(dto.status());
     entity.setCompanyName(dto.companyName());
-    return customerRepository.save(entity);
+    return repository.save(entity);
   }
 
   @Override
   public void deleteById(int id) {
-    customerRepository.deleteById(id);
+    repository.deleteById(id);
   }
 
   @Override
@@ -56,7 +64,7 @@ public class CustomerService implements EntityService<Customer, CustomerDto> {
     List<Customer> results;
 
     if (name != null && (name.trim().length() > 0)) {
-      results = customerRepository.findByCompanyNameContainsAllIgnoreCase(name);
+      results = repository.findByCompanyNameContainsAllIgnoreCase(name);
     } else {
       results = findAll();
     }

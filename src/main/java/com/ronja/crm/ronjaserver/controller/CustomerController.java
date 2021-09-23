@@ -1,6 +1,9 @@
 package com.ronja.crm.ronjaserver.controller;
 
+import com.ronja.crm.ronjaserver.dto.CustomerCreationDto;
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
+import com.ronja.crm.ronjaserver.dto.CustomerIdDto;
+import com.ronja.crm.ronjaserver.dto.CustomerMapper;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.service.EntityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,9 @@ import java.util.List;
 @RequestMapping("/customers")
 public class CustomerController {
 
+  @Autowired
+  CustomerMapper mapper;
+
   private final EntityService<Customer, CustomerDto> customerService;
 
   public CustomerController(@Autowired EntityService<Customer, CustomerDto> customerService) {
@@ -21,24 +27,19 @@ public class CustomerController {
   }
 
   @GetMapping("/list")
-  public List<Customer> list() {
-    return customerService.findAll();
-  }
-
-  @GetMapping("/search")
-  public List<Customer> search(@RequestParam("companyName") String theName) {
-    return customerService.searchBy(theName);
+  public List<CustomerDto> list() {
+    return customerService.findAll()
+        .stream()
+        .map(mapper::toDto)
+        .toList();
   }
 
   @PostMapping("/add")
-  public ResponseEntity<Customer> add(@RequestBody CustomerDto dto) {
-    var customer = customerService.add(dto);
-    var uri = ServletUriComponentsBuilder.fromCurrentRequest()
-        .path("/{id}")
-        .buildAndExpand(customer.getId())
-        .toUri();
+  @ResponseBody
+  public CustomerIdDto add(@RequestBody CustomerCreationDto dto) {
+    Customer customer = customerService.add(mapper.toEntity(dto));
 
-    return ResponseEntity.created(uri).body(customer);
+    return new CustomerIdDto(customer.getId());
   }
 
   @PostMapping("/update")

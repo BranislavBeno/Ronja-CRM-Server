@@ -8,7 +8,9 @@ public interface EntityService<T, U> {
 
   T findById(int theId);
 
-  T add(U dto);
+  T add(T entity);
+
+  T addDto(U dto);
 
   T update(U dto);
 

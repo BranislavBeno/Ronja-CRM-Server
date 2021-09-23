@@ -10,6 +10,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
+@SuppressWarnings("ClassCanBeRecord")
 @RestController
 @RequestMapping("/representatives")
 public class RepresentativeController {
@@ -32,7 +33,7 @@ public class RepresentativeController {
 
   @PostMapping("/add")
   public ResponseEntity<Representative> add(@RequestBody RepresentativeDto dto) {
-    var representative = representativeService.add(dto);
+    var representative = representativeService.addDto(dto);
     var uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(representative.getId())

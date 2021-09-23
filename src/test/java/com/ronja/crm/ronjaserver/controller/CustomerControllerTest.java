@@ -1,10 +1,13 @@
 package com.ronja.crm.ronjaserver.controller;
 
+import com.ronja.crm.ronjaserver.dto.CustomerCreationDto;
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
+import com.ronja.crm.ronjaserver.dto.CustomerMapper;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.service.EntityService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,6 +28,9 @@ class CustomerControllerTest {
 
   @MockBean
   EntityService<Customer, CustomerDto> service;
+
+  @MockBean
+  CustomerMapper mapper;
 
   @Autowired
   MockMvc mockMvc;
@@ -52,19 +58,12 @@ class CustomerControllerTest {
   }
 
   @Test
-  void testSearch() throws Exception {
-    when(service.searchBy(anyString())).thenReturn(List.of(new Customer()));
-    this.mockMvc
-        .perform(get("/customers/search?companyName=Emma")
-            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.size()", is(1)));
-    verify(service).searchBy(anyString());
-  }
-
-  @Test
   void testSave() throws Exception {
-    when(service.add(any(CustomerDto.class))).thenReturn(new Customer());
+    when(mapper.toEntity(any(CustomerCreationDto.class))).thenReturn(new Customer());
+    Customer customer = Mockito.mock(Customer.class);
+    when(service.add(any(Customer.class))).thenReturn(customer);
+    when(customer.getId()).thenReturn(1);
+
     this.mockMvc
         .perform(post("/customers/add")
             .contentType(MediaType.APPLICATION_JSON)
@@ -76,10 +75,11 @@ class CustomerControllerTest {
                      "status": "ACTIVE"
                 }
                 """))
-        .andExpect(status().isCreated())
-        .andExpect(header().exists("Content-Type"))
-        .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
-    verify(service).add(any(CustomerDto.class));
+        .andExpect(status().isOk());
+
+    verify(customer).getId();
+    verify(service).add(any(Customer.class));
+    verify(mapper).toEntity(any(CustomerCreationDto.class));
   }
 
   @Test

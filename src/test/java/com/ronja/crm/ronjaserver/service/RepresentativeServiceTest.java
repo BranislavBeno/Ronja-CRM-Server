@@ -74,13 +74,13 @@ class RepresentativeServiceTest {
   void testSaveThrowException() {
     when(repository.save(any(Representative.class))).thenThrow(new IllegalArgumentException());
     RepresentativeDto dto = initializeDto();
-    assertThrows(IllegalArgumentException.class, () -> cut.add(dto));
+    assertThrows(IllegalArgumentException.class, () -> cut.addDto(dto));
   }
 
   @Test
   void testSaveRegular() {
     when(repository.save(any(Representative.class))).thenReturn(new Representative());
-    Representative representative = cut.add(initializeDto());
+    Representative representative = cut.addDto(initializeDto());
     verify(repository).save(any(Representative.class));
     assertThat(representative).isNotNull();
   }

@@ -70,13 +70,13 @@ class CustomerServiceTest {
   void testSaveThrowException() {
     when(repository.save(any(Customer.class))).thenThrow(new IllegalArgumentException());
     CustomerDto dto = initializeDto();
-    assertThrows(IllegalArgumentException.class, () -> cut.add(dto));
+    assertThrows(IllegalArgumentException.class, () -> cut.addDto(dto));
   }
 
   @Test
   void testSaveRegular() {
     when(repository.save(any(Customer.class))).thenReturn(new Customer());
-    Customer customer = cut.add(initializeDto());
+    Customer customer = cut.addDto(initializeDto());
     verify(repository).save(any(Customer.class));
     assertThat(customer).isNotNull();
   }
