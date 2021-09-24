@@ -75,7 +75,7 @@ class CustomerControllerTest {
                      "status": "ACTIVE"
                 }
                 """))
-        .andExpect(status().isOk());
+        .andExpect(status().isCreated());
 
     verify(customer).getId();
     verify(service).add(any(Customer.class));

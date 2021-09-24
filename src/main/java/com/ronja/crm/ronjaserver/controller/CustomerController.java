@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -35,11 +36,17 @@ public class CustomerController {
   }
 
   @PostMapping("/add")
-  @ResponseBody
-  public CustomerIdDto add(@RequestBody CustomerCreationDto dto) {
+  public ResponseEntity<CustomerIdDto> add(@RequestBody CustomerCreationDto dto) {
     Customer customer = customerService.add(mapper.toEntity(dto));
 
-    return new CustomerIdDto(customer.getId());
+    int id = customer.getId();
+    URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+        .path("/{id}")
+        .buildAndExpand(id)
+        .toUri();
+
+    CustomerIdDto customerIdDto = new CustomerIdDto(id);
+    return ResponseEntity.created(uri).body(customerIdDto);
   }
 
   @PostMapping("/update")
