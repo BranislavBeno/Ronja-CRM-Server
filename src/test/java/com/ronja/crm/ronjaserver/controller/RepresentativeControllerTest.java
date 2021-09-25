@@ -87,7 +87,7 @@ class RepresentativeControllerTest {
 
   @Test
   void testUpdate() throws Exception {
-    when(service.update(any(RepresentativeDto.class))).thenReturn(new Representative());
+    when(service.updateDto(any(RepresentativeDto.class))).thenReturn(new Representative());
     this.mockMvc
         .perform(post("/representatives/update")
             .contentType(MediaType.APPLICATION_JSON)
@@ -119,7 +119,7 @@ class RepresentativeControllerTest {
         .andExpect(status().isCreated())
         .andExpect(header().exists("Content-Type"))
         .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
-    verify(service).update(any(RepresentativeDto.class));
+    verify(service).updateDto(any(RepresentativeDto.class));
   }
 
   @Test

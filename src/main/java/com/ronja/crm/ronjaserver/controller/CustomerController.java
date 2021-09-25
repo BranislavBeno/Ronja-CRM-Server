@@ -21,15 +21,15 @@ public class CustomerController {
   @Autowired
   CustomerMapper mapper;
 
-  private final EntityService<Customer, CustomerDto> customerService;
+  private final EntityService<Customer, CustomerDto> service;
 
-  public CustomerController(@Autowired EntityService<Customer, CustomerDto> customerService) {
-    this.customerService = customerService;
+  public CustomerController(@Autowired EntityService<Customer, CustomerDto> service) {
+    this.service = service;
   }
 
   @GetMapping("/list")
   public List<CustomerDto> list() {
-    return customerService.findAll()
+    return service.findAll()
         .stream()
         .map(mapper::toDto)
         .toList();
@@ -37,7 +37,7 @@ public class CustomerController {
 
   @PostMapping("/add")
   public ResponseEntity<CustomerIdDto> add(@RequestBody CustomerCreationDto dto) {
-    Customer customer = customerService.add(mapper.toEntity(dto));
+    Customer customer = service.save(mapper.toEntity(dto));
 
     int id = customer.getId();
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -50,19 +50,19 @@ public class CustomerController {
   }
 
   @PostMapping("/update")
-  public ResponseEntity<Customer> update(@RequestBody CustomerDto dto) {
-    var customer = customerService.update(dto);
-    var uri = ServletUriComponentsBuilder.fromCurrentRequest()
-        .path("/{id}")
-        .buildAndExpand(customer.getId())
-        .toUri();
-
-    return ResponseEntity.created(uri).body(customer);
+  public ResponseEntity<CustomerIdDto> update(@RequestBody CustomerDto dto) {
+    if (service.existsById(dto.id())) {
+      Customer customer = service.save(mapper.toEntity(dto));
+      CustomerIdDto customerIdDto = new CustomerIdDto(customer.getId());
+      return ResponseEntity.ok(customerIdDto);
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<Object> delete(@PathVariable int id) {
-    customerService.deleteById(id);
+    service.deleteById(id);
     return ResponseEntity.noContent().build();
   }
 }

@@ -6,6 +6,7 @@ import com.ronja.crm.ronjaserver.dto.CustomerMapper;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.service.EntityService;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ class CustomerControllerTest {
   MockMvc mockMvc;
 
   @Test
+  @DisplayName("Test that response is not in xml format")
   void testShouldNotReturnXML() throws Exception {
     this.mockMvc
         .perform(get("/customers/list")
@@ -44,8 +46,10 @@ class CustomerControllerTest {
   }
 
   @Test
+  @DisplayName("Test whether fetching all customers is successful")
   void testFindAll() throws Exception {
     when(service.findAll()).thenReturn(List.of(new Customer(), new Customer()));
+
     this.mockMvc
         .perform(get("/customers/list")
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
@@ -54,14 +58,16 @@ class CustomerControllerTest {
         .andExpect(jsonPath("$.size()", is(2)))
         .andDo(print())
         .andReturn();
+
     verify(service).findAll();
   }
 
   @Test
-  void testSave() throws Exception {
+  @DisplayName("Test whether adding new customer is successful")
+  void testAdd() throws Exception {
     when(mapper.toEntity(any(CustomerCreationDto.class))).thenReturn(new Customer());
     Customer customer = Mockito.mock(Customer.class);
-    when(service.add(any(Customer.class))).thenReturn(customer);
+    when(service.save(any(Customer.class))).thenReturn(customer);
     when(customer.getId()).thenReturn(1);
 
     this.mockMvc
@@ -75,40 +81,84 @@ class CustomerControllerTest {
                      "status": "ACTIVE"
                 }
                 """))
-        .andExpect(status().isCreated());
+        .andExpect(status().isCreated())
+        .andExpect(header().exists("Content-Type"))
+        .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
 
     verify(customer).getId();
-    verify(service).add(any(Customer.class));
+    verify(service).save(any(Customer.class));
     verify(mapper).toEntity(any(CustomerCreationDto.class));
   }
 
   @Test
+  @DisplayName("Test whether updating an existing customer is successful")
   void testUpdate() throws Exception {
-    when(service.update(any(CustomerDto.class))).thenReturn(new Customer());
+    when(service.existsById(anyInt())).thenReturn(true);
+    when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
+    Customer customer = Mockito.mock(Customer.class);
+    when(service.save(any(Customer.class))).thenReturn(customer);
+    when(customer.getId()).thenReturn(anyInt());
+
     this.mockMvc
         .perform(post("/customers/update")
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
                 {
-                     "id": 6,
+                     "id": 1,
                      "companyName": "IdaCorp",
                      "category": "LEVEL_3",
                      "focus": "TRADE",
                      "status": "ACTIVE"
                 }
                 """))
-        .andExpect(status().isCreated())
+        .andExpect(status().isOk())
         .andExpect(header().exists("Content-Type"))
         .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
-    verify(service).update(any(CustomerDto.class));
+
+    verify(service).existsById(anyInt());
+    verify(mapper).toEntity(any(CustomerDto.class));
+    verify(service).save(any(Customer.class));
+    verify(customer).getId();
   }
 
   @Test
+  @DisplayName("Test whether updating customer fails due to not existing customer")
+  void testFailingUpdate() throws Exception {
+    when(service.existsById(anyInt())).thenReturn(false);
+    when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
+    Customer customer = Mockito.mock(Customer.class);
+    when(service.save(any(Customer.class))).thenReturn(customer);
+    when(customer.getId()).thenReturn(anyInt());
+
+    this.mockMvc
+        .perform(post("/customers/update")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                     "id": 1,
+                     "companyName": "IdaCorp",
+                     "category": "LEVEL_3",
+                     "focus": "TRADE",
+                     "status": "ACTIVE"
+                }
+                """))
+        .andExpect(status().isNotFound());
+
+    verify(service).existsById(anyInt());
+    verify(mapper, never()).toEntity(any(CustomerDto.class));
+    verify(service, never()).save(any(Customer.class));
+    verify(customer, never()).getId();
+  }
+
+  @Test
+  @DisplayName("Test whether deleting customer is successful")
   void testDelete() throws Exception {
     service.deleteById(anyInt());
+
     this.mockMvc
         .perform(delete("/customers/delete/1"))
         .andExpect(status().is(204));
+
     verify(service, times(2)).deleteById(anyInt());
   }
 }

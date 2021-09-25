@@ -8,11 +8,13 @@ public interface EntityService<T, U> {
 
   T findById(int theId);
 
-  T add(T entity);
+  boolean existsById(int theId);
+
+  T save(T entity);
 
   T addDto(U dto);
 
-  T update(U dto);
+  T updateDto(U dto);
 
   void deleteById(int theId);
 

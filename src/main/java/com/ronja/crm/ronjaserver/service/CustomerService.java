@@ -34,9 +34,14 @@ public class CustomerService implements EntityService<Customer, CustomerDto> {
   }
 
   @Override
-  public Customer add(Customer entity) {
-    Objects.requireNonNull(entity);
-    return repository.save(entity);
+  public boolean existsById(int id) {
+    return repository.existsById(id);
+  }
+
+  @Override
+  public Customer save(Customer customer) {
+    Objects.requireNonNull(customer);
+    return repository.save(customer);
   }
 
   @Override
@@ -45,7 +50,7 @@ public class CustomerService implements EntityService<Customer, CustomerDto> {
   }
 
   @Override
-  public Customer update(CustomerDto dto) {
+  public Customer updateDto(CustomerDto dto) {
     Customer entity = findById(dto.id());
     entity.setCategory(dto.category());
     entity.setFocus(dto.focus());

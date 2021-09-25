@@ -14,46 +14,51 @@ import java.util.List;
 @Service
 public class RepresentativeService implements EntityService<Representative, RepresentativeDto> {
 
-  private final RepresentativeRepository representativeRepository;
+  private final RepresentativeRepository repository;
 
   @Autowired
-  public RepresentativeService(RepresentativeRepository representativeRepository) {
-    this.representativeRepository = representativeRepository;
+  public RepresentativeService(RepresentativeRepository repository) {
+    this.repository = repository;
   }
 
   @Override
   public List<Representative> findAll() {
-    return representativeRepository.findAllByOrderByLastNameAsc();
+    return repository.findAllByOrderByLastNameAsc();
   }
 
   @Override
   public Representative findById(int id) {
-    return representativeRepository
+    return repository
         .findById(id)
         .orElseThrow(() -> new RuntimeException("Did not find representative id - " + id));
   }
 
   @Override
-  public Representative add(Representative entity) {
+  public boolean existsById(int id) {
+    return repository.existsById(id);
+  }
+
+  @Override
+  public Representative save(Representative entity) {
     return null;
   }
 
   @Override
   public Representative addDto(RepresentativeDto dto) {
     Representative representative = convertToEntity(dto);
-    return representativeRepository.save(representative);
+    return repository.save(representative);
   }
 
   @Override
-  public Representative update(RepresentativeDto dto) {
+  public Representative updateDto(RepresentativeDto dto) {
     Representative entity = findById(dto.id());
     setEntity(dto, entity);
-    return representativeRepository.save(entity);
+    return repository.save(entity);
   }
 
   @Override
   public void deleteById(int id) {
-    representativeRepository.deleteById(id);
+    repository.deleteById(id);
   }
 
   @Override
@@ -61,7 +66,7 @@ public class RepresentativeService implements EntityService<Representative, Repr
     List<Representative> results;
 
     if (name != null && (name.trim().length() > 0)) {
-      results = representativeRepository.findByLastNameContainsAllIgnoreCase(name);
+      results = repository.findByLastNameContainsAllIgnoreCase(name);
     } else {
       results = findAll();
     }

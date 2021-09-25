@@ -44,7 +44,7 @@ public class RepresentativeController {
 
   @PostMapping("/update")
   public ResponseEntity<Representative> update(@RequestBody RepresentativeDto dto) {
-    var representative = representativeService.update(dto);
+    var representative = representativeService.updateDto(dto);
     var uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(representative.getId())

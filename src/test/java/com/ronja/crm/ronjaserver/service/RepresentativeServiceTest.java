@@ -89,7 +89,7 @@ class RepresentativeServiceTest {
   void testUpdateRegular() {
     when(repository.findById(anyInt())).thenReturn(Optional.of(entity));
     when(repository.save(any(Representative.class))).thenReturn(entity);
-    Representative representative = cut.update(initializeDto());
+    Representative representative = cut.updateDto(initializeDto());
     verify(repository).save(entity);
     assertThat(representative).isNotNull();
   }

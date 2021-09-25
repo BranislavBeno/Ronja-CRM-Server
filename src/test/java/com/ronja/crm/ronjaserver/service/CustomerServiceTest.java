@@ -85,7 +85,7 @@ class CustomerServiceTest {
   void testUpdateRegular() {
     when(repository.findById(anyInt())).thenReturn(Optional.of(entity));
     when(repository.save(any(Customer.class))).thenReturn(entity);
-    Customer customer = cut.update(initializeDto());
+    Customer customer = cut.updateDto(initializeDto());
     verify(repository).save(entity);
     assertThat(customer).isNotNull();
   }
