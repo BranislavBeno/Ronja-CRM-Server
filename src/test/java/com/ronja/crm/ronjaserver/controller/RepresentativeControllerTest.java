@@ -4,6 +4,7 @@ import com.ronja.crm.ronjaserver.dto.RepresentativeDto;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.service.EntityService;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -123,11 +124,30 @@ class RepresentativeControllerTest {
   }
 
   @Test
+  @DisplayName("Test whether deleting representative is successful")
   void testDelete() throws Exception {
+    when(service.existsById(anyInt())).thenReturn(true);
     service.deleteById(anyInt());
+
     this.mockMvc
         .perform(delete("/representatives/delete/1"))
-        .andExpect(status().is(204));
+        .andExpect(status().isNoContent());
+
+    verify(service).existsById(anyInt());
     verify(service, times(2)).deleteById(anyInt());
+  }
+
+  @Test
+  @DisplayName("Test whether deleting representative fails due to not existing representative")
+  void testFailingDelete() throws Exception {
+    when(service.existsById(anyInt())).thenReturn(false);
+    service.deleteById(anyInt());
+
+    this.mockMvc
+        .perform(delete("/representatives/delete/1"))
+        .andExpect(status().isNotFound());
+
+    verify(service).existsById(anyInt());
+    verify(service).deleteById(anyInt());
   }
 }

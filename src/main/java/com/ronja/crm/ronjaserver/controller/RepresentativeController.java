@@ -15,25 +15,25 @@ import java.util.List;
 @RequestMapping("/representatives")
 public class RepresentativeController {
 
-  private final EntityService<Representative, RepresentativeDto> representativeService;
+  private final EntityService<Representative, RepresentativeDto> service;
 
-  public RepresentativeController(@Autowired EntityService<Representative, RepresentativeDto> representativeService) {
-    this.representativeService = representativeService;
+  public RepresentativeController(@Autowired EntityService<Representative, RepresentativeDto> service) {
+    this.service = service;
   }
 
   @GetMapping("/list")
   public List<Representative> representativeList() {
-    return representativeService.findAll();
+    return service.findAll();
   }
 
   @GetMapping("/search")
   public List<Representative> search(@RequestParam("lastName") String lastName) {
-    return representativeService.searchBy(lastName);
+    return service.searchBy(lastName);
   }
 
   @PostMapping("/add")
   public ResponseEntity<Representative> add(@RequestBody RepresentativeDto dto) {
-    var representative = representativeService.addDto(dto);
+    var representative = service.addDto(dto);
     var uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(representative.getId())
@@ -44,7 +44,7 @@ public class RepresentativeController {
 
   @PostMapping("/update")
   public ResponseEntity<Representative> update(@RequestBody RepresentativeDto dto) {
-    var representative = representativeService.updateDto(dto);
+    var representative = service.updateDto(dto);
     var uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(representative.getId())
@@ -55,7 +55,11 @@ public class RepresentativeController {
 
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<Object> delete(@PathVariable int id) {
-    representativeService.deleteById(id);
-    return ResponseEntity.noContent().build();
+    if (service.existsById(id)) {
+      service.deleteById(id);
+      return ResponseEntity.noContent().build();
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 }

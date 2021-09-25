@@ -71,6 +71,14 @@ class RepresentativeServiceTest {
   }
 
   @Test
+  void testExistsById() {
+    when(repository.existsById(anyInt())).thenReturn(true);
+    boolean isPresent = cut.existsById(1);
+    verify(repository).existsById(anyInt());
+    assertThat(isPresent).isTrue();
+  }
+
+  @Test
   void testSaveThrowException() {
     when(repository.save(any(Representative.class))).thenThrow(new IllegalArgumentException());
     RepresentativeDto dto = initializeDto();
