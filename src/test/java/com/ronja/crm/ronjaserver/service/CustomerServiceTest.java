@@ -67,16 +67,24 @@ class CustomerServiceTest {
   }
 
   @Test
+  void testExistsById() {
+    when(repository.existsById(anyInt())).thenReturn(true);
+    boolean isPresent = cut.existsById(1);
+    verify(repository).existsById(anyInt());
+    assertThat(isPresent).isTrue();
+  }
+
+  @Test
   void testSaveThrowException() {
     when(repository.save(any(Customer.class))).thenThrow(new IllegalArgumentException());
-    CustomerDto dto = initializeDto();
-    assertThrows(IllegalArgumentException.class, () -> cut.addDto(dto));
+    Customer customer = new Customer();
+    assertThrows(IllegalArgumentException.class, () -> cut.save(customer));
   }
 
   @Test
   void testSaveRegular() {
     when(repository.save(any(Customer.class))).thenReturn(new Customer());
-    Customer customer = cut.addDto(initializeDto());
+    Customer customer = cut.save(new Customer());
     verify(repository).save(any(Customer.class));
     assertThat(customer).isNotNull();
   }
