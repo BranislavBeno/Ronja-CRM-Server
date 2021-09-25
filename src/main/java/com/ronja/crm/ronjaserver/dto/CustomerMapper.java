@@ -29,14 +29,4 @@ public class CustomerMapper {
 
     return customer;
   }
-
-  public Customer toEntity(CustomerCreationDto dto) {
-    var customer = new Customer();
-    customer.setCategory(dto.category());
-    customer.setFocus(dto.focus());
-    customer.setStatus(dto.status());
-    customer.setCompanyName(dto.companyName());
-
-    return customer;
-  }
 }

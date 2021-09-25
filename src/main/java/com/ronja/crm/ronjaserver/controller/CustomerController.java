@@ -1,8 +1,6 @@
 package com.ronja.crm.ronjaserver.controller;
 
-import com.ronja.crm.ronjaserver.dto.CustomerCreationDto;
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
-import com.ronja.crm.ronjaserver.dto.CustomerIdDto;
 import com.ronja.crm.ronjaserver.dto.CustomerMapper;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.service.EntityService;
@@ -36,25 +34,22 @@ public class CustomerController {
   }
 
   @PostMapping("/add")
-  public ResponseEntity<CustomerIdDto> add(@RequestBody CustomerCreationDto dto) {
+  public ResponseEntity<CustomerDto> add(@RequestBody CustomerDto dto) {
     Customer customer = service.save(mapper.toEntity(dto));
 
-    int id = customer.getId();
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
-        .buildAndExpand(id)
+        .buildAndExpand(customer.getId())
         .toUri();
 
-    CustomerIdDto customerIdDto = new CustomerIdDto(id);
-    return ResponseEntity.created(uri).body(customerIdDto);
+    return ResponseEntity.created(uri).body(mapper.toDto(customer));
   }
 
   @PostMapping("/update")
-  public ResponseEntity<CustomerIdDto> update(@RequestBody CustomerDto dto) {
+  public ResponseEntity<CustomerDto> update(@RequestBody CustomerDto dto) {
     if (service.existsById(dto.id())) {
       Customer customer = service.save(mapper.toEntity(dto));
-      CustomerIdDto customerIdDto = new CustomerIdDto(customer.getId());
-      return ResponseEntity.ok(customerIdDto);
+      return ResponseEntity.ok(mapper.toDto(customer));
     } else {
       return ResponseEntity.notFound().build();
     }
@@ -62,7 +57,11 @@ public class CustomerController {
 
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<Object> delete(@PathVariable int id) {
-    service.deleteById(id);
-    return ResponseEntity.noContent().build();
+    if (service.existsById(id)) {
+      service.deleteById(id);
+      return ResponseEntity.noContent().build();
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 }

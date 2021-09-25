@@ -1,11 +1,9 @@
 package com.ronja.crm.ronjaserver.controller;
 
-import com.ronja.crm.ronjaserver.dto.CustomerCreationDto;
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.dto.CustomerMapper;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.service.EntityService;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -65,7 +63,7 @@ class CustomerControllerTest {
   @Test
   @DisplayName("Test whether adding new customer is successful")
   void testAdd() throws Exception {
-    when(mapper.toEntity(any(CustomerCreationDto.class))).thenReturn(new Customer());
+    when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
     Customer customer = Mockito.mock(Customer.class);
     when(service.save(any(Customer.class))).thenReturn(customer);
     when(customer.getId()).thenReturn(1);
@@ -81,13 +79,11 @@ class CustomerControllerTest {
                      "status": "ACTIVE"
                 }
                 """))
-        .andExpect(status().isCreated())
-        .andExpect(header().exists("Content-Type"))
-        .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
+        .andExpect(status().isCreated());
 
     verify(customer).getId();
     verify(service).save(any(Customer.class));
-    verify(mapper).toEntity(any(CustomerCreationDto.class));
+    verify(mapper).toEntity(any(CustomerDto.class));
   }
 
   @Test
@@ -95,9 +91,7 @@ class CustomerControllerTest {
   void testUpdate() throws Exception {
     when(service.existsById(anyInt())).thenReturn(true);
     when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
-    Customer customer = Mockito.mock(Customer.class);
-    when(service.save(any(Customer.class))).thenReturn(customer);
-    when(customer.getId()).thenReturn(anyInt());
+    when(service.save(any(Customer.class))).thenReturn(any(Customer.class));
 
     this.mockMvc
         .perform(post("/customers/update")
@@ -111,14 +105,11 @@ class CustomerControllerTest {
                      "status": "ACTIVE"
                 }
                 """))
-        .andExpect(status().isOk())
-        .andExpect(header().exists("Content-Type"))
-        .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
+        .andExpect(status().isOk());
 
     verify(service).existsById(anyInt());
     verify(mapper).toEntity(any(CustomerDto.class));
     verify(service).save(any(Customer.class));
-    verify(customer).getId();
   }
 
   @Test
@@ -126,9 +117,7 @@ class CustomerControllerTest {
   void testFailingUpdate() throws Exception {
     when(service.existsById(anyInt())).thenReturn(false);
     when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
-    Customer customer = Mockito.mock(Customer.class);
-    when(service.save(any(Customer.class))).thenReturn(customer);
-    when(customer.getId()).thenReturn(anyInt());
+    when(service.save(any(Customer.class))).thenReturn(any(Customer.class));
 
     this.mockMvc
         .perform(post("/customers/update")
@@ -147,18 +136,33 @@ class CustomerControllerTest {
     verify(service).existsById(anyInt());
     verify(mapper, never()).toEntity(any(CustomerDto.class));
     verify(service, never()).save(any(Customer.class));
-    verify(customer, never()).getId();
   }
 
   @Test
   @DisplayName("Test whether deleting customer is successful")
   void testDelete() throws Exception {
+    when(service.existsById(anyInt())).thenReturn(true);
     service.deleteById(anyInt());
 
     this.mockMvc
         .perform(delete("/customers/delete/1"))
-        .andExpect(status().is(204));
+        .andExpect(status().isNoContent());
 
+    verify(service).existsById(anyInt());
     verify(service, times(2)).deleteById(anyInt());
+  }
+
+  @Test
+  @DisplayName("Test whether deleting customer fails due to not existing customer")
+  void testFailingDelete() throws Exception {
+    when(service.existsById(anyInt())).thenReturn(false);
+    service.deleteById(anyInt());
+
+    this.mockMvc
+        .perform(delete("/customers/delete/1"))
+        .andExpect(status().isNotFound());
+
+    verify(service).existsById(anyInt());
+    verify(service).deleteById(anyInt());
   }
 }
