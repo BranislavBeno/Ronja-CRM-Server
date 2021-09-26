@@ -94,7 +94,7 @@ class CustomerControllerTest {
     when(service.save(any(Customer.class))).thenReturn(any(Customer.class));
 
     this.mockMvc
-        .perform(post("/customers/update")
+        .perform(put("/customers/update")
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
                 {
@@ -120,7 +120,7 @@ class CustomerControllerTest {
     when(service.save(any(Customer.class))).thenReturn(any(Customer.class));
 
     this.mockMvc
-        .perform(post("/customers/update")
+        .perform(put("/customers/update")
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
                 {

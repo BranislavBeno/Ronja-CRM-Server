@@ -45,7 +45,7 @@ public class CustomerController {
     return ResponseEntity.created(uri).body(mapper.toDto(customer));
   }
 
-  @PostMapping("/update")
+  @PutMapping("/update")
   public ResponseEntity<CustomerDto> update(@RequestBody CustomerDto dto) {
     if (service.existsById(dto.id())) {
       Customer customer = service.save(mapper.toEntity(dto));

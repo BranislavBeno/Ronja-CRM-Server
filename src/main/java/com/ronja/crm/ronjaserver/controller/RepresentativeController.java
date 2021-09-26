@@ -10,7 +10,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
-@SuppressWarnings("ClassCanBeRecord")
 @RestController
 @RequestMapping("/representatives")
 public class RepresentativeController {

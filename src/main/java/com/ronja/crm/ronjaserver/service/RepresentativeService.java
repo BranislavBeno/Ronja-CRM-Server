@@ -1,16 +1,13 @@
 package com.ronja.crm.ronjaserver.service;
 
-import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.dto.RepresentativeDto;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.repository.RepresentativeRepository;
-import com.ronja.crm.ronjaserver.utils.CustomerUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@SuppressWarnings("ClassCanBeRecord")
 @Service
 public class RepresentativeService implements EntityService<Representative, RepresentativeDto> {
 
@@ -91,7 +88,6 @@ public class RepresentativeService implements EntityService<Representative, Repr
     entity.setScheduledVisit(dto.scheduledVisit());
     entity.setPhoneNumbers(dto.phoneNumbers());
     entity.setEmails(dto.emails());
-    CustomerDto customerDto = dto.customer();
-    entity.setCustomer(customerDto != null ? CustomerUtils.convertToEntity(customerDto) : null);
+    entity.setCustomer(null);
   }
 }
