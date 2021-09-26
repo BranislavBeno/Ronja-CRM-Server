@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class RepresentativeService implements EntityService<Representative, RepresentativeDto> {
@@ -36,8 +37,9 @@ public class RepresentativeService implements EntityService<Representative, Repr
   }
 
   @Override
-  public Representative save(Representative entity) {
-    return null;
+  public Representative save(Representative representative) {
+    Objects.requireNonNull(representative);
+    return repository.save(representative);
   }
 
   @Override

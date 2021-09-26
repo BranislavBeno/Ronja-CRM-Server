@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.IntFunction;
 
 @Component
 public class RepresentativeMapper {
@@ -33,7 +31,7 @@ public class RepresentativeMapper {
         phoneNumbers, emails, customerId);
   }
 
-  public Representative toEntity(RepresentativeDto dto, IntFunction<Optional<Customer>> function) {
+  public Representative toEntity(RepresentativeDto dto, Customer customer) {
     var representative = new Representative();
     representative.setFirstName(dto.firstName());
     representative.setLastName(dto.lastName());
@@ -45,7 +43,6 @@ public class RepresentativeMapper {
     representative.setScheduledVisit(dto.scheduledVisit());
     representative.setPhoneNumbers(dto.phoneNumbers());
     representative.setEmails(dto.emails());
-    Customer customer = function.apply(dto.customerId()).orElse(null);
     representative.setCustomer(customer);
 
     return representative;

@@ -17,7 +17,7 @@ import java.util.List;
 public class CustomerController {
 
   @Autowired
-  CustomerMapper mapper;
+  private CustomerMapper mapper;
 
   private final EntityService<Customer, CustomerDto> service;
 

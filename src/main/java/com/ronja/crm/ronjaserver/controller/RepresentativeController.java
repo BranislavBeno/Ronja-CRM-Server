@@ -1,6 +1,9 @@
 package com.ronja.crm.ronjaserver.controller;
 
+import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.dto.RepresentativeDto;
+import com.ronja.crm.ronjaserver.dto.RepresentativeMapper;
+import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.service.EntityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/representatives")
 public class RepresentativeController {
+
+  @Autowired
+  private RepresentativeMapper mapper;
+
+  @Autowired
+  EntityService<Customer, CustomerDto> customerService;
 
   private final EntityService<Representative, RepresentativeDto> service;
 
@@ -41,15 +50,15 @@ public class RepresentativeController {
     return ResponseEntity.created(uri).body(representative);
   }
 
-  @PostMapping("/update")
-  public ResponseEntity<Representative> update(@RequestBody RepresentativeDto dto) {
-    var representative = service.updateDto(dto);
-    var uri = ServletUriComponentsBuilder.fromCurrentRequest()
-        .path("/{id}")
-        .buildAndExpand(representative.getId())
-        .toUri();
-
-    return ResponseEntity.created(uri).body(representative);
+  @PutMapping("/update")
+  public ResponseEntity<RepresentativeDto> update(@RequestBody RepresentativeDto dto) {
+    if (service.existsById(dto.id())) {
+      Customer customer = customerService.findById(dto.customerId());
+      Representative representative = service.save(mapper.toEntity(dto, customer));
+      return ResponseEntity.ok(mapper.toDto(representative));
+    } else {
+      return ResponseEntity.notFound().build();
+    }
   }
 
   @DeleteMapping("/delete/{id}")

@@ -1,6 +1,9 @@
 package com.ronja.crm.ronjaserver.controller;
 
+import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.dto.RepresentativeDto;
+import com.ronja.crm.ronjaserver.dto.RepresentativeMapper;
+import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.service.EntityService;
 import org.hamcrest.Matchers;
@@ -26,6 +29,13 @@ class RepresentativeControllerTest {
 
   @MockBean
   EntityService<Representative, RepresentativeDto> service;
+
+  @MockBean
+  EntityService<Customer, CustomerDto> customerService;
+
+  @MockBean
+  RepresentativeMapper mapper;
+
   @Autowired
   MockMvc mockMvc;
 
@@ -87,10 +97,14 @@ class RepresentativeControllerTest {
   }
 
   @Test
-  void testUpdate() throws Exception {
-    when(service.updateDto(any(RepresentativeDto.class))).thenReturn(new Representative());
+  void testFullUpdate() throws Exception {
+    when(service.existsById(anyInt())).thenReturn(true);
+    when(customerService.findById(anyInt())).thenReturn(new Customer());
+    when(mapper.toEntity(any(RepresentativeDto.class), any(Customer.class))).thenReturn(new Representative());
+    when(service.save(any(Representative.class))).thenReturn(any(Representative.class));
+
     this.mockMvc
-        .perform(post("/representatives/update")
+        .perform(put("/representatives/update")
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
                 {
@@ -117,10 +131,12 @@ class RepresentativeControllerTest {
                     }
                 }
                 """))
-        .andExpect(status().isCreated())
-        .andExpect(header().exists("Content-Type"))
-        .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
-    verify(service).updateDto(any(RepresentativeDto.class));
+        .andExpect(status().isOk());
+
+    verify(service).existsById(anyInt());
+    verify(customerService).findById(anyInt());
+    verify(mapper).toEntity(any(RepresentativeDto.class), any(Customer.class));
+    verify(service).save(any(Representative.class));
   }
 
   @Test

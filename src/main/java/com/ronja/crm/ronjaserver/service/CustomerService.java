@@ -28,9 +28,7 @@ public class CustomerService implements EntityService<Customer, CustomerDto> {
 
   @Override
   public Customer findById(int id) {
-    return repository
-        .findById(id)
-        .orElseThrow(() -> new RuntimeException("Did not find customer id - " + id));
+    return repository.findById(id).orElse(null);
   }
 
   @Override
