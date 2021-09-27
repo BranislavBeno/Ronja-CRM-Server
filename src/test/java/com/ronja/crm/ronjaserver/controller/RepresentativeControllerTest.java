@@ -1,14 +1,15 @@
 package com.ronja.crm.ronjaserver.controller;
 
-import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.dto.RepresentativeDto;
 import com.ronja.crm.ronjaserver.dto.RepresentativeMapper;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.service.EntityService;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -27,11 +28,75 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(RepresentativeController.class)
 class RepresentativeControllerTest {
 
-  @MockBean
-  EntityService<Representative, RepresentativeDto> service;
+  private static final String ADD_BODY_FULL = """
+      {
+          "firstName": "Roger",
+          "lastName": "Patrick",
+          "position": "CTO",
+          "region": "ASEAN",
+          "notice": "anything special",
+          "status": "ACTIVE",
+          "lastVisit": "2021-01-17",
+          "scheduledVisit": "2021-05-05",
+          "phoneNumbers": [
+              "+555987654321"
+          ],
+          "emails": [
+              "patrick@foo.com"
+          ],
+          "customerId": 1
+      }""";
+
+  private static final String UPDATE_BODY_FULL = """
+      {
+          "id": 3,
+          "firstName": "Roger",
+          "lastName": "Patrick",
+          "position": "CTO",
+          "region": "ASEAN",
+          "notice": "anything special",
+          "status": "ACTIVE",
+          "lastVisit": "2021-01-17",
+          "scheduledVisit": "2021-05-05",
+          "phoneNumbers": [
+              "+555987654321"
+          ],
+          "emails": [
+              "patrick@foo.com"
+          ],
+          "customerId": 1
+      }""";
+
+  private static final String ADD_BODY_SHORT = """
+      {
+          "firstName": "Roger",
+          "lastName": "Patrick",
+          "position": "CTO",
+          "region": "ASEAN",
+          "notice": "anything special",
+          "status": "ACTIVE",
+          "lastVisit": "2021-01-17",
+          "scheduledVisit": "2021-05-05"
+      }""";
+
+  private static final String UPDATE_BODY_SHORT = """
+      {
+          "id": 3,
+          "firstName": "Roger",
+          "lastName": "Patrick",
+          "position": "CTO",
+          "region": "ASEAN",
+          "notice": "anything special",
+          "status": "ACTIVE",
+          "lastVisit": "2021-01-17",
+          "scheduledVisit": "2021-05-05"
+      }""";
 
   @MockBean
-  EntityService<Customer, CustomerDto> customerService;
+  EntityService<Representative> service;
+
+  @MockBean
+  EntityService<Customer> customerService;
 
   @MockBean
   RepresentativeMapper mapper;
@@ -61,43 +126,30 @@ class RepresentativeControllerTest {
     verify(service).findAll();
   }
 
-  @Test
-  void testSearch() throws Exception {
-    when(service.searchBy(anyString())).thenReturn(List.of(new Representative()));
-    this.mockMvc
-        .perform(get("/representatives/search?lastName=Baumann")
-            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.size()", is(1)));
-    verify(service).searchBy(anyString());
-  }
+  @ParameterizedTest
+  @ValueSource(strings = {ADD_BODY_SHORT, ADD_BODY_FULL, "{}"})
+  void testAdd(String requestBody) throws Exception {
+    when(customerService.findById(anyInt())).thenReturn(new Customer());
+    when(mapper.toEntity(any(RepresentativeDto.class), any(Customer.class))).thenReturn(new Representative());
+    Representative representative = Mockito.mock(Representative.class);
+    when(service.save(any(Representative.class))).thenReturn(representative);
+    when(representative.getId()).thenReturn(1);
 
-  @Test
-  void testSave() throws Exception {
-    when(service.addDto(any(RepresentativeDto.class))).thenReturn(new Representative());
     this.mockMvc
         .perform(post("/representatives/add")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("""
-                {
-                    "firstName": "Roger",
-                    "lastName": "Patrick",
-                    "position": "CTO",
-                    "region": "ASEAN",
-                    "notice": "anything special",
-                    "status": "ACTIVE",
-                    "lastVisit": "2021-01-17",
-                    "scheduledVisit": "2021-05-05"
-                }
-                """))
-        .andExpect(status().isCreated())
-        .andExpect(header().exists("Content-Type"))
-        .andExpect(header().string("Content-Type", Matchers.equalTo("application/json")));
-    verify(service).addDto(any(RepresentativeDto.class));
+            .content(requestBody))
+        .andExpect(status().isCreated());
+
+    verify(customerService).findById(anyInt());
+    verify(mapper).toEntity(any(RepresentativeDto.class), any(Customer.class));
+    verify(service).save(any(Representative.class));
+    verify(representative).getId();
   }
 
-  @Test
-  void testFullUpdate() throws Exception {
+  @ParameterizedTest
+  @ValueSource(strings = {UPDATE_BODY_SHORT, UPDATE_BODY_FULL, "{}"})
+  void testUpdate(String requestBody) throws Exception {
     when(service.existsById(anyInt())).thenReturn(true);
     when(customerService.findById(anyInt())).thenReturn(new Customer());
     when(mapper.toEntity(any(RepresentativeDto.class), any(Customer.class))).thenReturn(new Representative());
@@ -106,37 +158,32 @@ class RepresentativeControllerTest {
     this.mockMvc
         .perform(put("/representatives/update")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("""
-                {
-                    "id": 3,
-                    "firstName": "Roger",
-                    "lastName": "Patrick",
-                    "position": "CTO",
-                    "region": "ASEAN",
-                    "notice": "anything special",
-                    "status": "ACTIVE",
-                    "lastVisit": "2021-01-17",
-                    "scheduledVisit": "2021-05-05",
-                    "phoneNumbers": [
-                        "+555987654321"
-                    ],
-                    "emails": [
-                        "patrick@foo.com"
-                    ],
-                    "customer": {
-                        "companyName": "IdaCorp",
-                        "category": "LEVEL_3",
-                        "focus": "TRADE",
-                        "status": "ACTIVE"
-                    }
-                }
-                """))
+            .content(requestBody))
         .andExpect(status().isOk());
 
     verify(service).existsById(anyInt());
     verify(customerService).findById(anyInt());
     verify(mapper).toEntity(any(RepresentativeDto.class), any(Customer.class));
     verify(service).save(any(Representative.class));
+  }
+
+  @Test
+  void testFailingUpdate() throws Exception {
+    when(service.existsById(anyInt())).thenReturn(false);
+    when(customerService.findById(anyInt())).thenReturn(new Customer());
+    when(mapper.toEntity(any(RepresentativeDto.class), any(Customer.class))).thenReturn(new Representative());
+    when(service.save(any(Representative.class))).thenReturn(any(Representative.class));
+
+    this.mockMvc
+        .perform(put("/representatives/update")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(UPDATE_BODY_FULL))
+        .andExpect(status().isNotFound());
+
+    verify(service).existsById(anyInt());
+    verify(customerService, never()).findById(anyInt());
+    verify(mapper, never()).toEntity(any(RepresentativeDto.class), any(Customer.class));
+    verify(service, never()).save(any(Representative.class));
   }
 
   @Test

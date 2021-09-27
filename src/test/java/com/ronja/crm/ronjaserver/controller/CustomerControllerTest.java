@@ -6,6 +6,8 @@ import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.service.EntityService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,8 +27,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(CustomerController.class)
 class CustomerControllerTest {
 
+  private static final String ADD_BODY = """
+      {
+          "companyName": "IdaCorp",
+          "category": "LEVEL_3",
+          "focus": "TRADE",
+          "status": "ACTIVE"
+      }""";
+
+  private static final String UPDATE_BODY = """
+      {
+          "id": 1,
+          "companyName": "IdaCorp",
+          "category": "LEVEL_3",
+          "focus": "TRADE",
+          "status": "ACTIVE"
+      }""";
+
   @MockBean
-  EntityService<Customer, CustomerDto> service;
+  EntityService<Customer> service;
 
   @MockBean
   CustomerMapper mapper;
@@ -60,9 +79,10 @@ class CustomerControllerTest {
     verify(service).findAll();
   }
 
-  @Test
+  @ParameterizedTest
+  @ValueSource(strings = {ADD_BODY, "{}"})
   @DisplayName("Test whether adding new customer is successful")
-  void testAdd() throws Exception {
+  void testAdd(String body) throws Exception {
     when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
     Customer customer = Mockito.mock(Customer.class);
     when(service.save(any(Customer.class))).thenReturn(customer);
@@ -71,14 +91,7 @@ class CustomerControllerTest {
     this.mockMvc
         .perform(post("/customers/add")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("""
-                {
-                     "companyName": "IdaCorp",
-                     "category": "LEVEL_3",
-                     "focus": "TRADE",
-                     "status": "ACTIVE"
-                }
-                """))
+            .content(body))
         .andExpect(status().isCreated());
 
     verify(customer).getId();
@@ -86,9 +99,10 @@ class CustomerControllerTest {
     verify(mapper).toEntity(any(CustomerDto.class));
   }
 
-  @Test
+  @ParameterizedTest
+  @ValueSource(strings = {UPDATE_BODY, "{}"})
   @DisplayName("Test whether updating an existing customer is successful")
-  void testUpdate() throws Exception {
+  void testUpdate(String body) throws Exception {
     when(service.existsById(anyInt())).thenReturn(true);
     when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
     when(service.save(any(Customer.class))).thenReturn(any(Customer.class));
@@ -96,15 +110,7 @@ class CustomerControllerTest {
     this.mockMvc
         .perform(put("/customers/update")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("""
-                {
-                     "id": 1,
-                     "companyName": "IdaCorp",
-                     "category": "LEVEL_3",
-                     "focus": "TRADE",
-                     "status": "ACTIVE"
-                }
-                """))
+            .content(body))
         .andExpect(status().isOk());
 
     verify(service).existsById(anyInt());
@@ -122,15 +128,7 @@ class CustomerControllerTest {
     this.mockMvc
         .perform(put("/customers/update")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("""
-                {
-                     "id": 1,
-                     "companyName": "IdaCorp",
-                     "category": "LEVEL_3",
-                     "focus": "TRADE",
-                     "status": "ACTIVE"
-                }
-                """))
+            .content(UPDATE_BODY))
         .andExpect(status().isNotFound());
 
     verify(service).existsById(anyInt());

@@ -1,10 +1,6 @@
 package com.ronja.crm.ronjaserver.service;
 
-import com.ronja.crm.ronjaserver.dto.CustomerDto;
-import com.ronja.crm.ronjaserver.entity.Category;
 import com.ronja.crm.ronjaserver.entity.Customer;
-import com.ronja.crm.ronjaserver.entity.Focus;
-import com.ronja.crm.ronjaserver.entity.Status;
 import com.ronja.crm.ronjaserver.repository.CustomerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -26,15 +21,8 @@ class CustomerServiceTest {
   @Mock
   private CustomerRepository repository;
 
-  @Mock
-  private Customer entity;
-
   @InjectMocks
   private CustomerService cut;
-
-  private CustomerDto initializeDto() {
-    return new CustomerDto(1, "company", Category.LEVEL_1, Focus.BUILDER, Status.ACTIVE);
-  }
 
   @Test
   void testFindAllReturnNull() {
@@ -53,17 +41,19 @@ class CustomerServiceTest {
   }
 
   @Test
-  void testFindByIdThrowException() {
-    when(repository.findById(anyInt())).thenThrow(new RuntimeException());
-    assertThatThrownBy(() -> cut.findById(1)).hasMessage(null);
-  }
-
-  @Test
   void testFindByIdRegular() {
     when(repository.findById(anyInt())).thenReturn(Optional.of(new Customer()));
     Customer customer = cut.findById(1);
     verify(repository).findById(anyInt());
     assertThat(customer).isNotNull();
+  }
+
+  @Test
+  void testFindByIdNull() {
+    when(repository.findById(anyInt())).thenReturn(Optional.empty());
+    Customer customer = cut.findById(1);
+    verify(repository).findById(anyInt());
+    assertThat(customer).isNull();
   }
 
   @Test
@@ -90,54 +80,9 @@ class CustomerServiceTest {
   }
 
   @Test
-  void testUpdateRegular() {
-    when(repository.findById(anyInt())).thenReturn(Optional.of(entity));
-    when(repository.save(any(Customer.class))).thenReturn(entity);
-    Customer customer = cut.updateDto(initializeDto());
-    verify(repository).save(entity);
-    assertThat(customer).isNotNull();
-  }
-
-  @Test
   void testDeleteByIdRegular() {
     doNothing().when(repository).deleteById(anyInt());
     cut.deleteById(1);
     verify(repository).deleteById(anyInt());
-  }
-
-  @Test
-  void testSearchByReturnNull() {
-    when(repository.findByCompanyNameContainsAllIgnoreCase(anyString()))
-        .thenReturn(null);
-    List<Customer> customers = cut.searchBy("MikeCorp");
-    verify(repository).findByCompanyNameContainsAllIgnoreCase(anyString());
-    assertThat(customers).isNull();
-  }
-
-  @Test
-  void testSearchByReturnList() {
-    when(repository.findByCompanyNameContainsAllIgnoreCase(anyString()))
-        .thenReturn(List.of(new Customer()));
-    List<Customer> customers = cut.searchBy("MikeCorp");
-    verify(repository).findByCompanyNameContainsAllIgnoreCase(anyString());
-    assertThat(customers).hasSize(1);
-  }
-
-  @Test
-  void testSearchEmptyByReturnList() {
-    when(repository.findAllByOrderByCompanyNameAsc())
-        .thenReturn(List.of(new Customer()));
-    List<Customer> customers = cut.searchBy("");
-    verify(repository).findAllByOrderByCompanyNameAsc();
-    assertThat(customers).hasSize(1);
-  }
-
-  @Test
-  void testSearchNullByReturnList() {
-    when(repository.findAllByOrderByCompanyNameAsc())
-        .thenReturn(List.of(new Customer()));
-    List<Customer> customers = cut.searchBy(null);
-    verify(repository).findAllByOrderByCompanyNameAsc();
-    assertThat(customers).hasSize(1);
   }
 }

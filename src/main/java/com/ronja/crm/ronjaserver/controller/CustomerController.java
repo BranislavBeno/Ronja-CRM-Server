@@ -19,9 +19,9 @@ public class CustomerController {
   @Autowired
   private CustomerMapper mapper;
 
-  private final EntityService<Customer, CustomerDto> service;
+  private final EntityService<Customer> service;
 
-  public CustomerController(@Autowired EntityService<Customer, CustomerDto> service) {
+  public CustomerController(@Autowired EntityService<Customer> service) {
     this.service = service;
   }
 
@@ -36,7 +36,6 @@ public class CustomerController {
   @PostMapping("/add")
   public ResponseEntity<CustomerDto> add(@RequestBody CustomerDto dto) {
     Customer customer = service.save(mapper.toEntity(dto));
-
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(customer.getId())

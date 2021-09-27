@@ -1,6 +1,5 @@
 package com.ronja.crm.ronjaserver.controller;
 
-import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.dto.RepresentativeDto;
 import com.ronja.crm.ronjaserver.dto.RepresentativeMapper;
 import com.ronja.crm.ronjaserver.entity.Customer;
@@ -11,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,40 +21,34 @@ public class RepresentativeController {
   private RepresentativeMapper mapper;
 
   @Autowired
-  EntityService<Customer, CustomerDto> customerService;
+  EntityService<Customer> customerService;
 
-  private final EntityService<Representative, RepresentativeDto> service;
+  private final EntityService<Representative> service;
 
-  public RepresentativeController(@Autowired EntityService<Representative, RepresentativeDto> service) {
+  public RepresentativeController(@Autowired EntityService<Representative> service) {
     this.service = service;
   }
 
   @GetMapping("/list")
-  public List<Representative> representativeList() {
+  public List<Representative> list() {
     return service.findAll();
   }
 
-  @GetMapping("/search")
-  public List<Representative> search(@RequestParam("lastName") String lastName) {
-    return service.searchBy(lastName);
-  }
-
   @PostMapping("/add")
-  public ResponseEntity<Representative> add(@RequestBody RepresentativeDto dto) {
-    var representative = service.addDto(dto);
-    var uri = ServletUriComponentsBuilder.fromCurrentRequest()
+  public ResponseEntity<RepresentativeDto> add(@RequestBody RepresentativeDto dto) {
+    Representative representative = provideRepresentative(dto);
+    URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
         .buildAndExpand(representative.getId())
         .toUri();
 
-    return ResponseEntity.created(uri).body(representative);
+    return ResponseEntity.created(uri).body(mapper.toDto(representative));
   }
 
   @PutMapping("/update")
   public ResponseEntity<RepresentativeDto> update(@RequestBody RepresentativeDto dto) {
     if (service.existsById(dto.id())) {
-      Customer customer = customerService.findById(dto.customerId());
-      Representative representative = service.save(mapper.toEntity(dto, customer));
+      Representative representative = provideRepresentative(dto);
       return ResponseEntity.ok(mapper.toDto(representative));
     } else {
       return ResponseEntity.notFound().build();
@@ -69,5 +63,10 @@ public class RepresentativeController {
     } else {
       return ResponseEntity.notFound().build();
     }
+  }
+
+  private Representative provideRepresentative(RepresentativeDto dto) {
+    Customer customer = customerService.findById(dto.customerId());
+    return service.save(mapper.toEntity(dto, customer));
   }
 }
