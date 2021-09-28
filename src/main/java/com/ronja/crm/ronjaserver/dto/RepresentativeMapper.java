@@ -33,6 +33,7 @@ public class RepresentativeMapper {
 
   public Representative toEntity(RepresentativeDto dto, Customer customer) {
     var representative = new Representative();
+    representative.setId(dto.id());
     representative.setFirstName(dto.firstName());
     representative.setLastName(dto.lastName());
     representative.setStatus(dto.status());
