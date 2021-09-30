@@ -17,7 +17,7 @@ def versionPatch = 3
 version = "R${versionMajor}.${versionMinor}.${versionPatch}"
 
 ext {
-    flywayVersion = '7.14.0'
+    flywayVersion = '7.14.1'
     testcontainersVersion = '1.16.0'
     jacocoDestinationFile = file("$buildDir/jacoco/test.exec")
     sonarProjectName = 'RonjaServer'
