@@ -1,5 +1,7 @@
 package com.ronja.crm.ronjaserver.entity;
 
+import com.ronja.crm.ronjaserver.validator.Category;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,9 +16,9 @@ public class Customer {
   @Column(name = "company_name")
   private String companyName;
 
+  @Category
   @Column(name = "category")
-  @Enumerated(EnumType.STRING)
-  private Category category;
+  private String category;
 
   @Column(name = "focus")
   @Enumerated(EnumType.STRING)
@@ -42,11 +44,11 @@ public class Customer {
     this.companyName = companyName;
   }
 
-  public Category getCategory() {
+  public String getCategory() {
     return category;
   }
 
-  public void setCategory(Category category) {
+  public void setCategory(String category) {
     this.category = category;
   }
 

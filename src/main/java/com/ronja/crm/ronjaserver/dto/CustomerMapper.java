@@ -1,6 +1,5 @@
 package com.ronja.crm.ronjaserver.dto;
 
-import com.ronja.crm.ronjaserver.entity.Category;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Focus;
 import com.ronja.crm.ronjaserver.entity.Status;
@@ -12,7 +11,7 @@ public class CustomerMapper {
   public CustomerDto toDto(Customer customer) {
     int id = customer.getId();
     String name = customer.getCompanyName();
-    Category category = customer.getCategory();
+    String category = customer.getCategory();
     Focus focus = customer.getFocus();
     Status status = customer.getStatus();
 

@@ -25,78 +25,85 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class RepresentativeRepositoryTest {
 
-    @Container
-    static final MySQLContainer<?> container = new MySQLContainer<>("mysql:8.0.25")
-            .withDatabaseName("test")
-            .withUsername("Jon")
-            .withPassword("Doe")
-            .withReuse(true);
+  @Container
+  static final MySQLContainer<?> container = new MySQLContainer<>("mysql:8.0.25")
+      .withDatabaseName("test")
+      .withUsername("Jon")
+      .withPassword("Doe")
+      .withReuse(true);
 
-    static {
-        container.start();
-    }
+  static {
+    container.start();
+  }
 
-    @DynamicPropertySource
-    static void properties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", container::getJdbcUrl);
-        registry.add("spring.datasource.password", container::getPassword);
-        registry.add("spring.datasource.username", container::getUsername);
-    }
+  @DynamicPropertySource
+  static void properties(DynamicPropertyRegistry registry) {
+    registry.add("spring.datasource.url", container::getJdbcUrl);
+    registry.add("spring.datasource.password", container::getPassword);
+    registry.add("spring.datasource.username", container::getUsername);
+  }
 
-    @Autowired
-    RepresentativeRepository cut;
+  @Autowired
+  RepresentativeRepository cut;
 
-    @Test
-    @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
-    void testFindAll() {
-        List<Representative> result = (List<Representative>) cut.findAll();
-        assertThat(result).hasSize(2);
-    }
+  @Test
+  @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
+  void testFindAll() {
+    List<Representative> result = (List<Representative>) cut.findAll();
+    assertThat(result).hasSize(2);
+  }
 
-    @Test
-    @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
-    void testSearchBy() {
-        List<Representative> result = cut.findByLastNameContainsAllIgnoreCase("Doe");
-        assertThat(result).hasSize(1);
-        Representative representative = result.get(0);
-        assertThat(representative.getId()).isEqualTo(1);
-        assertThat(representative.getFirstName()).isEqualTo("John");
-        assertThat(representative.getLastName()).isEqualTo("Doe");
-        assertThat(representative.getStatus()).isEqualTo(Status.ACTIVE);
-        assertThat(representative.getNotice()).isEqualTo("nothing special");
-        assertThat(representative.getPosition()).isEqualTo("CEO");
-        assertThat(representative.getRegion()).isEqualTo("V4");
-        assertThat(representative.getLastVisit()).isEqualTo(LocalDate.of(2020, 10, 7));
-        assertThat(representative.getScheduledVisit()).isEqualTo(LocalDate.of(2021, 4, 25));
-        assertThat(representative.getCustomer()).isNull();
-        assertThat(representative.getPhoneNumbers()).hasSize(1);
-        assertThat(representative.getEmails()).hasSize(1);
-    }
+  @Test
+  @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
+  void testSearchBy() {
+    List<Representative> result = cut.findByLastNameContainsAllIgnoreCase("Doe");
+    assertThat(result).hasSize(1);
+    Representative representative = result.get(0);
+    assertThat(representative.getId()).isEqualTo(1);
+    assertThat(representative.getFirstName()).isEqualTo("John");
+    assertThat(representative.getLastName()).isEqualTo("Doe");
+    assertThat(representative.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(representative.getNotice()).isEqualTo("nothing special");
+    assertThat(representative.getPosition()).isEqualTo("CEO");
+    assertThat(representative.getRegion()).isEqualTo("V4");
+    assertThat(representative.getLastVisit()).isEqualTo(LocalDate.of(2020, 10, 7));
+    assertThat(representative.getScheduledVisit()).isEqualTo(LocalDate.of(2021, 4, 25));
+    assertThat(representative.getCustomer()).isNull();
+    assertThat(representative.getPhoneNumbers()).hasSize(1);
+    assertThat(representative.getEmails()).hasSize(1);
+  }
 
-    @Test
-    @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
-    void testDeleteById() {
-        cut.deleteById(1);
-        assertThat(cut.findAll()).hasSize(1);
-    }
+  @Test
+  @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
+  void testDeleteById() {
+    cut.deleteById(1);
+    assertThat(cut.findAll()).hasSize(1);
+  }
 
-    @Test
-    @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
-    void testSave() {
-        Representative representative = new Representative();
-        representative.setFirstName("Charles");
-        representative.setLastName("Smith");
-        representative.setStatus(Status.INACTIVE);
-        representative.setNotice("");
-        representative.setRegion("");
-        representative.setPosition("");
-        representative.setLastVisit(LocalDate.now());
-        representative.setScheduledVisit(LocalDate.now());
-        representative.setCustomer(new Customer());
-        representative.setPhoneNumbers(Collections.emptyList());
-        representative.setEmails(Collections.emptyList());
-        cut.save(representative);
+  @Test
+  @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
+  void testSave() {
+    Representative representative = new Representative();
+    representative.setFirstName("Charles");
+    representative.setLastName("Smith");
+    representative.setStatus(Status.INACTIVE);
+    representative.setNotice("");
+    representative.setRegion("");
+    representative.setPosition("");
+    representative.setLastVisit(LocalDate.now());
+    representative.setScheduledVisit(LocalDate.now());
+    representative.setCustomer(provideCustomer());
+    representative.setPhoneNumbers(Collections.emptyList());
+    representative.setEmails(Collections.emptyList());
+    cut.save(representative);
 
-        assertThat(cut.findAll()).hasSize(3);
-    }
+    assertThat(cut.findAll()).hasSize(3);
+  }
+
+  private Customer provideCustomer() {
+    Customer customer = new Customer();
+    customer.setCategory("LEVEL_1");
+
+    return customer;
+  }
 }
