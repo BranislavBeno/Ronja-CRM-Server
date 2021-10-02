@@ -1,7 +1,6 @@
 package com.ronja.crm.ronjaserver.dto;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
-import com.ronja.crm.ronjaserver.entity.Focus;
 import com.ronja.crm.ronjaserver.entity.Status;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +11,7 @@ public class CustomerMapper {
     int id = customer.getId();
     String name = customer.getCompanyName();
     String category = customer.getCategory();
-    Focus focus = customer.getFocus();
+    String focus = customer.getFocus();
     Status status = customer.getStatus();
 
     return new CustomerDto(id, name, category, focus, status);

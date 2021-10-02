@@ -1,7 +1,6 @@
 package com.ronja.crm.ronjaserver.dto;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
-import com.ronja.crm.ronjaserver.entity.Focus;
 import com.ronja.crm.ronjaserver.entity.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,10 +18,10 @@ class CustomerMapperTest {
 
   @Test
   void testMappingToEntity() {
-    CustomerDto dto = new CustomerDto(1, "company", "LEVEL_1", Focus.BUILDER, Status.ACTIVE);
+    CustomerDto dto = new CustomerDto(1, "company", "LEVEL_1", "BUILDER", Status.ACTIVE);
     Customer customer = mapper.toEntity(dto);
     assertThat(customer.getCategory()).isEqualTo("LEVEL_1");
-    assertThat(customer.getFocus().getLabel()).isEqualTo("Stavebník");
+    assertThat(customer.getFocus()).isEqualTo("BUILDER");
   }
 
   @Test

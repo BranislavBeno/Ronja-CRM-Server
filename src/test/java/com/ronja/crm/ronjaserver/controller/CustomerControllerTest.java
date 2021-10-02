@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -97,6 +98,28 @@ class CustomerControllerTest {
     verify(customer).getId();
     verify(service).save(any(Customer.class));
     verify(mapper).toEntity(any(CustomerDto.class));
+  }
+
+  @Test
+  @DisplayName("Test whether adding new customer fails due to constraint violation")
+  void testFailingAddDueConstraintViolation() throws Exception {
+    String body = """
+          "companyName": "TestCorp",
+          "category": "LEVEL",
+          "focus": "MAN",
+          "status": "ACT"
+        """;
+    when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
+    when(service.save(any(Customer.class))).thenThrow(ConstraintViolationException.class);
+
+    this.mockMvc
+        .perform(post("/customers/add")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+        .andExpect(status().isBadRequest());
+
+    verify(mapper, never()).toEntity(any(CustomerDto.class));
+    verify(service, never()).save(any(Customer.class));
   }
 
   @ParameterizedTest

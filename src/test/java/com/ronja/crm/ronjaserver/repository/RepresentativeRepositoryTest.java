@@ -103,6 +103,7 @@ class RepresentativeRepositoryTest {
   private Customer provideCustomer() {
     Customer customer = new Customer();
     customer.setCategory("LEVEL_1");
+    customer.setFocus("MANUFACTURE");
 
     return customer;
   }
