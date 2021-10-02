@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class CustomerController {
   }
 
   @PostMapping("/add")
-  public ResponseEntity<CustomerDto> add(@RequestBody CustomerDto dto) {
+  public ResponseEntity<CustomerDto> add(@Valid @RequestBody CustomerDto dto) {
     Customer customer = service.save(mapper.toEntity(dto));
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
@@ -45,7 +46,7 @@ public class CustomerController {
   }
 
   @PutMapping("/update")
-  public ResponseEntity<CustomerDto> update(@RequestBody CustomerDto dto) {
+  public ResponseEntity<CustomerDto> update(@Valid @RequestBody CustomerDto dto) {
     if (service.existsById(dto.id())) {
       Customer customer = service.save(mapper.toEntity(dto));
       return ResponseEntity.ok(mapper.toDto(customer));
