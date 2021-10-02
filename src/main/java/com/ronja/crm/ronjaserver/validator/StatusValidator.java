@@ -4,12 +4,12 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
-public class FocusValidator implements ConstraintValidator<Focus, String> {
+public class StatusValidator implements ConstraintValidator<Status, String> {
 
-  private final List<String> focuses = List.of("BUILDER", "MANUFACTURE", "SPECIALIZED_MANUFACTURE", "TRADE");
+  private final List<String> statuses = List.of("ACTIVE", "INACTIVE");
 
   @Override
   public boolean isValid(String value, ConstraintValidatorContext context) {
-    return focuses.contains(value);
+    return statuses.contains(value);
   }
 }

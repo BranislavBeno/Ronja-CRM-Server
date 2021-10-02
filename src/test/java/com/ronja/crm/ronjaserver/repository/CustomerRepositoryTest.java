@@ -1,7 +1,6 @@
 package com.ronja.crm.ronjaserver.repository;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
-import com.ronja.crm.ronjaserver.entity.Status;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -58,7 +57,7 @@ class CustomerRepositoryTest {
     assertThat(result.get(0).getId()).isEqualTo(1);
     assertThat(result.get(0).getCategory()).isEqualTo("LEVEL_1");
     assertThat(result.get(0).getFocus()).isEqualTo("TRADE");
-    assertThat(result.get(0).getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(result.get(0).getStatus()).isEqualTo("ACTIVE");
     assertThat(result.get(0).getCompanyName()).isEqualTo("JohnCorp");
   }
 
@@ -75,7 +74,7 @@ class CustomerRepositoryTest {
     Customer customer = new Customer();
     customer.setCategory("LEVEL_1");
     customer.setFocus("BUILDER");
-    customer.setStatus(Status.ACTIVE);
+    customer.setStatus("ACTIVE");
     customer.setCompanyName("NewmanCorp");
     cut.save(customer);
 

@@ -104,6 +104,7 @@ class RepresentativeRepositoryTest {
     Customer customer = new Customer();
     customer.setCategory("LEVEL_1");
     customer.setFocus("MANUFACTURE");
+    customer.setStatus("ACTIVE");
 
     return customer;
   }

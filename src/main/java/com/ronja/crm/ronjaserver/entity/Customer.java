@@ -2,6 +2,7 @@ package com.ronja.crm.ronjaserver.entity;
 
 import com.ronja.crm.ronjaserver.validator.Category;
 import com.ronja.crm.ronjaserver.validator.Focus;
+import com.ronja.crm.ronjaserver.validator.Status;
 
 import javax.persistence.*;
 
@@ -25,9 +26,9 @@ public class Customer {
   @Column(name = "focus")
   private String focus;
 
+  @Status
   @Column(name = "status")
-  @Enumerated(EnumType.STRING)
-  private Status status;
+  private String status;
 
   public int getId() {
     return id;
@@ -61,11 +62,11 @@ public class Customer {
     this.focus = focus;
   }
 
-  public Status getStatus() {
+  public String getStatus() {
     return status;
   }
 
-  public void setStatus(Status status) {
+  public void setStatus(String status) {
     this.status = status;
   }
 }

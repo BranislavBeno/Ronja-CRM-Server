@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("ALL")
 @Service
 public class CustomerService implements EntityService<Customer> {
 
