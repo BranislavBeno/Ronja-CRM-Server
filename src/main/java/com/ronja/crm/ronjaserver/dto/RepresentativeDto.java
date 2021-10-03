@@ -1,7 +1,5 @@
 package com.ronja.crm.ronjaserver.dto;
 
-import com.ronja.crm.ronjaserver.entity.Status;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,7 +10,7 @@ public record RepresentativeDto(
     String position,
     String region,
     String notice,
-    Status status,
+    String status,
     LocalDate lastVisit,
     LocalDate scheduledVisit,
     List<String> phoneNumbers,

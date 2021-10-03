@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -145,6 +146,34 @@ class RepresentativeControllerTest {
     verify(mapper).toEntity(any(RepresentativeDto.class), any(Customer.class));
     verify(service).save(any(Representative.class));
     verify(representative).getId();
+  }
+
+  @Test
+  @DisplayName("Test whether adding new representative fails due to constraint violation")
+  void testFailingAddDueConstraintViolation() throws Exception {
+    String body = """
+          "firstName": "Roger",
+          "lastName": "Patrick",
+          "position": "CTO",
+          "region": "ASEAN",
+          "notice": "anything special",
+          "status": "ACTIVE",
+          "lastVisit": "2021-01-17",
+          "scheduledVisit": "2021-05-05"
+        """;
+    when(customerService.findById(anyInt())).thenReturn(new Customer());
+    when(mapper.toEntity(any(RepresentativeDto.class), any(Customer.class))).thenReturn(new Representative());
+    when(service.save(any(Representative.class))).thenThrow(ConstraintViolationException.class);
+
+    this.mockMvc
+        .perform(post("/representatives/add")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(body))
+        .andExpect(status().isBadRequest());
+
+    verify(customerService, never()).findById(anyInt());
+    verify(mapper, never()).toEntity(any(RepresentativeDto.class), any(Customer.class));
+    verify(service, never()).save(any(Representative.class));
   }
 
   @ParameterizedTest

@@ -1,5 +1,7 @@
 package com.ronja.crm.ronjaserver.entity;
 
+import com.ronja.crm.ronjaserver.validator.Status;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,9 +30,9 @@ public class Representative {
   @Column(name = "notice")
   private String notice;
 
+  @Status
   @Column(name = "status")
-  @Enumerated(EnumType.STRING)
-  private Status status;
+  private String status;
 
   @Column(name = "last_visit")
   private LocalDate lastVisit;
@@ -99,11 +101,11 @@ public class Representative {
     this.notice = notice;
   }
 
-  public Status getStatus() {
+  public String getStatus() {
     return status;
   }
 
-  public void setStatus(Status status) {
+  public void setStatus(String status) {
     this.status = status;
   }
 

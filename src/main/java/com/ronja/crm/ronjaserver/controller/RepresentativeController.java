@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class RepresentativeController {
   }
 
   @PostMapping("/add")
-  public ResponseEntity<RepresentativeDto> add(@RequestBody RepresentativeDto dto) {
+  public ResponseEntity<RepresentativeDto> add(@Valid @RequestBody RepresentativeDto dto) {
     Representative representative = provideRepresentative(dto);
     URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
@@ -46,7 +47,7 @@ public class RepresentativeController {
   }
 
   @PutMapping("/update")
-  public ResponseEntity<RepresentativeDto> update(@RequestBody RepresentativeDto dto) {
+  public ResponseEntity<RepresentativeDto> update(@Valid @RequestBody RepresentativeDto dto) {
     if (service.existsById(dto.id())) {
       Representative representative = provideRepresentative(dto);
       return ResponseEntity.ok(mapper.toDto(representative));

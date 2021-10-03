@@ -2,7 +2,6 @@ package com.ronja.crm.ronjaserver.dto;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
-import com.ronja.crm.ronjaserver.entity.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,12 +22,12 @@ class RepresentativeMapperTest {
   @Test
   void testMappingToEntity() {
     RepresentativeDto dto = new RepresentativeDto(1, "Joe", "Doe", "CEO", "EMEA",
-        "notice", Status.ACTIVE, LocalDate.now(), LocalDate.now(), Collections.emptyList(),
+        "notice", "ACTIVE", LocalDate.now(), LocalDate.now(), Collections.emptyList(),
         Collections.emptyList(), 1);
     Representative representative = mapper.toEntity(dto, new Customer());
 
     assertThat(representative.getCustomer().getCompanyName()).isNull();
-    assertThat(representative.getStatus().getLabel()).isEqualTo("Aktívny");
+    assertThat(representative.getStatus()).isEqualTo("ACTIVE");
   }
 
   @Test

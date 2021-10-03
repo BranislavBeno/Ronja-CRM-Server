@@ -2,7 +2,6 @@ package com.ronja.crm.ronjaserver.repository;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
-import com.ronja.crm.ronjaserver.entity.Status;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -62,7 +61,7 @@ class RepresentativeRepositoryTest {
     assertThat(representative.getId()).isEqualTo(1);
     assertThat(representative.getFirstName()).isEqualTo("John");
     assertThat(representative.getLastName()).isEqualTo("Doe");
-    assertThat(representative.getStatus()).isEqualTo(Status.ACTIVE);
+    assertThat(representative.getStatus()).isEqualTo("ACTIVE");
     assertThat(representative.getNotice()).isEqualTo("nothing special");
     assertThat(representative.getPosition()).isEqualTo("CEO");
     assertThat(representative.getRegion()).isEqualTo("V4");
@@ -86,7 +85,7 @@ class RepresentativeRepositoryTest {
     Representative representative = new Representative();
     representative.setFirstName("Charles");
     representative.setLastName("Smith");
-    representative.setStatus(Status.INACTIVE);
+    representative.setStatus("INACTIVE");
     representative.setNotice("");
     representative.setRegion("");
     representative.setPosition("");
