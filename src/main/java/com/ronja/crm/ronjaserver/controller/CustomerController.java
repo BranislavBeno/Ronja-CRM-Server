@@ -18,12 +18,14 @@ import java.util.List;
 public class CustomerController {
 
   @Autowired
-  private CustomerMapper mapper;
+  private final CustomerMapper mapper;
 
   private final EntityService<Customer> service;
 
-  public CustomerController(@Autowired EntityService<Customer> service) {
+  public CustomerController(@Autowired EntityService<Customer> service,
+                            @Autowired CustomerMapper mapper) {
     this.service = service;
+    this.mapper = mapper;
   }
 
   @GetMapping("/list")

@@ -9,14 +9,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class RepresentativeService implements EntityService<Representative> {
-
-  private final RepresentativeRepository repository;
-
-  @Autowired
-  public RepresentativeService(RepresentativeRepository repository) {
-    this.repository = repository;
-  }
+public record RepresentativeService(
+    @Autowired RepresentativeRepository repository) implements EntityService<Representative> {
 
   @Override
   public List<Representative> findAll() {

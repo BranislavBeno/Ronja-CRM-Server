@@ -15,8 +15,11 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-  @Autowired
-  ObjectMapper mapper;
+  private final ObjectMapper mapper;
+
+  public GlobalExceptionHandler(@Autowired ObjectMapper mapper) {
+    this.mapper = mapper;
+  }
 
   @ExceptionHandler(ConstraintViolationException.class)
   public ResponseEntity<String> inputValidationException(ConstraintViolationException e) throws JsonProcessingException {

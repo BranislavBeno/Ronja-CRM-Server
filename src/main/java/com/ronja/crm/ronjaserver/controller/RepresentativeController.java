@@ -18,21 +18,21 @@ import java.util.List;
 @RequestMapping("/representatives")
 public class RepresentativeController {
 
-  @Autowired
-  private RepresentativeMapper mapper;
+  private final RepresentativeMapper mapper;
+  private final EntityService<Customer> customerService;
+  private final EntityService<Representative> representativeService;
 
-  @Autowired
-  EntityService<Customer> customerService;
-
-  private final EntityService<Representative> service;
-
-  public RepresentativeController(@Autowired EntityService<Representative> service) {
-    this.service = service;
+  public RepresentativeController(@Autowired EntityService<Representative> representativeService,
+                                  @Autowired EntityService<Customer> customerService,
+                                  @Autowired RepresentativeMapper mapper) {
+    this.representativeService = representativeService;
+    this.customerService = customerService;
+    this.mapper = mapper;
   }
 
   @GetMapping("/list")
   public List<Representative> list() {
-    return service.findAll();
+    return representativeService.findAll();
   }
 
   @PostMapping("/add")
@@ -48,7 +48,7 @@ public class RepresentativeController {
 
   @PutMapping("/update")
   public ResponseEntity<RepresentativeDto> update(@Valid @RequestBody RepresentativeDto dto) {
-    if (service.existsById(dto.id())) {
+    if (representativeService.existsById(dto.id())) {
       Representative representative = provideRepresentative(dto);
       return ResponseEntity.ok(mapper.toDto(representative));
     } else {
@@ -58,8 +58,8 @@ public class RepresentativeController {
 
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<Object> delete(@PathVariable int id) {
-    if (service.existsById(id)) {
-      service.deleteById(id);
+    if (representativeService.existsById(id)) {
+      representativeService.deleteById(id);
       return ResponseEntity.noContent().build();
     } else {
       return ResponseEntity.notFound().build();
@@ -68,6 +68,6 @@ public class RepresentativeController {
 
   private Representative provideRepresentative(RepresentativeDto dto) {
     Customer customer = customerService.findById(dto.customerId());
-    return service.save(mapper.toEntity(dto, customer));
+    return representativeService.save(mapper.toEntity(dto, customer));
   }
 }
