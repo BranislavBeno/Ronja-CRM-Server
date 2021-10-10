@@ -9,7 +9,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public record CustomerService(@Autowired CustomerRepository repository) implements EntityService<Customer> {
+public final class CustomerService implements EntityService<Customer> {
+
+  private final CustomerRepository repository;
+
+  public CustomerService(@Autowired CustomerRepository repository) {
+    this.repository = repository;
+  }
 
   @Override
   public List<Customer> findAll() {
