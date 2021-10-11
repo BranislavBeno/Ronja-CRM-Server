@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface Status {
 
-  String message() default "Value is not allowed.";
+  String message() default "Neznámy stav.";
 
   Class<?>[] groups() default {};
 

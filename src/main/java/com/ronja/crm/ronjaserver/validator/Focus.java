@@ -15,9 +15,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface Focus {
 
-  String message() default "Value is not allowed.";
-
   Class<?>[] groups() default {};
+
+  String message() default "Neznáme zameranie.";
 
   Class<? extends Payload>[] payload() default {};
 }

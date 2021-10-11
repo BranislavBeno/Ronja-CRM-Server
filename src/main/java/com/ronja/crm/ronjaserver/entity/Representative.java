@@ -3,6 +3,8 @@ package com.ronja.crm.ronjaserver.entity;
 import com.ronja.crm.ronjaserver.validator.Status;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,9 +36,11 @@ public class Representative {
   @Column(name = "status")
   private String status;
 
+  @PastOrPresent(message = "Dátum poslednej návštevy nesmie byť novší ako dnešný.")
   @Column(name = "last_visit")
   private LocalDate lastVisit;
 
+  @FutureOrPresent(message = "Dátum plánovanej návštevy nesmie byť starší ako dnešný.")
   @Column(name = "scheduled_visit")
   private LocalDate scheduledVisit;
 

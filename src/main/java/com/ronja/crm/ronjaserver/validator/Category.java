@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface Category {
 
-  String message() default "Value is not allowed.";
+  String message() default "Neznáma kategória.";
 
   Class<?>[] groups() default {};
 
