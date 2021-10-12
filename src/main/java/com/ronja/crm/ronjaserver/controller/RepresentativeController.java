@@ -4,6 +4,7 @@ import com.ronja.crm.ronjaserver.dto.RepresentativeDto;
 import com.ronja.crm.ronjaserver.dto.RepresentativeMapper;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
+import com.ronja.crm.ronjaserver.exception.EntityNotFoundException;
 import com.ronja.crm.ronjaserver.service.EntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +53,7 @@ public class RepresentativeController {
       Representative representative = provideRepresentative(dto);
       return ResponseEntity.ok(mapper.toDto(representative));
     } else {
-      return ResponseEntity.notFound().build();
+      throw new EntityNotFoundException("Reprezentant", String.join(" ", dto.firstName(), dto.lastName()));
     }
   }
 
@@ -62,7 +63,7 @@ public class RepresentativeController {
       representativeService.deleteById(id);
       return ResponseEntity.noContent().build();
     } else {
-      return ResponseEntity.notFound().build();
+      throw new EntityNotFoundException("Reprezentant");
     }
   }
 

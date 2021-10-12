@@ -35,6 +35,15 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(EntityNotFoundException.class)
+  public ResponseEntity<String> entityNotFoundException(EntityNotFoundException e) throws JsonProcessingException {
+    List<Violation> violations = List.of(new Violation("Whole entity", e.getMessage()));
+    ValidationErrorResponse error = new ValidationErrorResponse(violations);
+    String message = mapper.writeValueAsString(error);
+
+    return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+  }
+
   private record Violation(String fieldName, String message) {
   }
 

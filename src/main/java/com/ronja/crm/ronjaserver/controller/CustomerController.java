@@ -3,6 +3,7 @@ package com.ronja.crm.ronjaserver.controller;
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.dto.CustomerMapper;
 import com.ronja.crm.ronjaserver.entity.Customer;
+import com.ronja.crm.ronjaserver.exception.EntityNotFoundException;
 import com.ronja.crm.ronjaserver.service.EntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class CustomerController {
       Customer customer = service.save(mapper.toEntity(dto));
       return ResponseEntity.ok(mapper.toDto(customer));
     } else {
-      return ResponseEntity.notFound().build();
+      throw new EntityNotFoundException("Zákazník", dto.companyName());
     }
   }
 
@@ -63,7 +64,7 @@ public class CustomerController {
       service.deleteById(id);
       return ResponseEntity.noContent().build();
     } else {
-      return ResponseEntity.notFound().build();
+      throw new EntityNotFoundException("Zákazník");
     }
   }
 }
