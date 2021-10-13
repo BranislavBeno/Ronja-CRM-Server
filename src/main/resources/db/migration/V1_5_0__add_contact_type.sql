@@ -1,0 +1,1 @@
+ALTER TABLE representative ADD contact_type VARCHAR(50) DEFAULT NULL;
