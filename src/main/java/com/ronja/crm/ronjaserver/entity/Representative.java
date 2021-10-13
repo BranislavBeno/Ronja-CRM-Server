@@ -1,5 +1,6 @@
 package com.ronja.crm.ronjaserver.entity;
 
+import com.ronja.crm.ronjaserver.validator.ContactType;
 import com.ronja.crm.ronjaserver.validator.Status;
 
 import javax.persistence.*;
@@ -56,6 +57,18 @@ public class Representative {
       CascadeType.DETACH, CascadeType.REFRESH})
   @JoinColumn(name = "customer_id")
   private Customer customer;
+
+  @ContactType
+  @Column(name = "contact_type")
+  private String contactType;
+
+  public String getContactType() {
+    return contactType;
+  }
+
+  public void setContactType(String contactType) {
+    this.contactType = contactType;
+  }
 
   public int getId() {
     return id;
