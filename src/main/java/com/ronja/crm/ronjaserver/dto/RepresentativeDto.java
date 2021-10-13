@@ -15,5 +15,6 @@ public record RepresentativeDto(
     LocalDate scheduledVisit,
     List<String> phoneNumbers,
     List<String> emails,
-    int customerId) {
+    int customerId,
+    String contactType) {
 }

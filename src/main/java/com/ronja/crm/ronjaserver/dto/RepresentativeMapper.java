@@ -25,9 +25,10 @@ public class RepresentativeMapper {
     int customerId = representative.getCustomer() != null
         ? representative.getCustomer().getId()
         : 0;
+    String contactType = representative.getContactType();
 
     return new RepresentativeDto(id, firstName, lastName, position, region, notice, status, lastVisit, scheduledVisit,
-        phoneNumbers, emails, customerId);
+        phoneNumbers, emails, customerId, contactType);
   }
 
   public Representative toEntity(RepresentativeDto dto, Customer customer) {
@@ -44,6 +45,7 @@ public class RepresentativeMapper {
     representative.setPhoneNumbers(dto.phoneNumbers());
     representative.setEmails(dto.emails());
     representative.setCustomer(customer);
+    representative.setContactType(dto.contactType());
 
     return representative;
   }

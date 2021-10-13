@@ -23,7 +23,7 @@ class RepresentativeMapperTest {
   void testMappingToEntity() {
     RepresentativeDto dto = new RepresentativeDto(1, "Joe", "Doe", "CEO", "EMEA",
         "notice", "ACTIVE", LocalDate.now(), LocalDate.now(), Collections.emptyList(),
-        Collections.emptyList(), 1);
+        Collections.emptyList(), 1, "MAIL");
     Representative representative = mapper.toEntity(dto, new Customer());
 
     assertThat(representative.getCustomer().getCompanyName()).isNull();
