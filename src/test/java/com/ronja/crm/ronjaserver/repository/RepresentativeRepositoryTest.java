@@ -65,6 +65,7 @@ class RepresentativeRepositoryTest {
     assertThat(representative.getNotice()).isEqualTo("nothing special");
     assertThat(representative.getPosition()).isEqualTo("CEO");
     assertThat(representative.getRegion()).isEqualTo("V4");
+    assertThat(representative.getContactType()).isEqualTo("MAIL");
     assertThat(representative.getLastVisit()).isEqualTo(LocalDate.of(2020, 10, 7));
     assertThat(representative.getScheduledVisit()).isEqualTo(LocalDate.of(2021, 4, 25));
     assertThat(representative.getCustomer()).isNull();
@@ -89,6 +90,7 @@ class RepresentativeRepositoryTest {
     representative.setNotice("");
     representative.setRegion("");
     representative.setPosition("");
+    representative.setContactType("PERSONAL");
     representative.setLastVisit(LocalDate.now());
     representative.setScheduledVisit(LocalDate.now());
     representative.setCustomer(provideCustomer());
