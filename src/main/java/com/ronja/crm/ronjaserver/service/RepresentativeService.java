@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public final class RepresentativeService implements EntityService<Representative> {
+public final class RepresentativeService implements ExtendedEntityService<Representative> {
 
   private final RepresentativeRepository repository;
 
@@ -25,6 +25,11 @@ public final class RepresentativeService implements EntityService<Representative
   @Override
   public Representative findById(int id) {
     return repository.findById(id).orElse(null);
+  }
+
+  @Override
+  public List<Representative> findByCustomerId(int id) {
+    return repository.findByCustomerId(id);
   }
 
   @Override

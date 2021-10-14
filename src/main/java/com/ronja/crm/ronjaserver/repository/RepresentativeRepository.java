@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RepresentativeRepository extends CrudRepository<Representative, Integer> {
 
-  List<Representative> findAllByOrderByLastNameAsc();
+  List<Representative> findByCustomerId(int id);
 
-  List<Representative> findByLastNameContainsAllIgnoreCase(String name);
+  List<Representative> findAllByOrderByLastNameAsc();
 }

@@ -46,16 +46,16 @@ class RepresentativeRepositoryTest {
   RepresentativeRepository cut;
 
   @Test
-  @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
+  @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
   void testFindAll() {
     List<Representative> result = (List<Representative>) cut.findAll();
     assertThat(result).hasSize(2);
   }
 
   @Test
-  @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
+  @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
   void testSearchBy() {
-    List<Representative> result = cut.findByLastNameContainsAllIgnoreCase("Doe");
+    List<Representative> result = cut.findByCustomerId(1);
     assertThat(result).hasSize(1);
     Representative representative = result.get(0);
     assertThat(representative.getId()).isEqualTo(1);
@@ -68,20 +68,21 @@ class RepresentativeRepositoryTest {
     assertThat(representative.getContactType()).isEqualTo("MAIL");
     assertThat(representative.getLastVisit()).isEqualTo(LocalDate.of(2020, 10, 7));
     assertThat(representative.getScheduledVisit()).isEqualTo(LocalDate.of(2021, 4, 25));
-    assertThat(representative.getCustomer()).isNull();
     assertThat(representative.getPhoneNumbers()).hasSize(1);
     assertThat(representative.getEmails()).hasSize(1);
+    assertThat(representative.getCustomer()).isNotNull();
+    assertThat(representative.getCustomer().getId()).isEqualTo(1);
   }
 
   @Test
-  @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
+  @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
   void testDeleteById() {
     cut.deleteById(1);
     assertThat(cut.findAll()).hasSize(1);
   }
 
   @Test
-  @Sql(scripts = "/scripts/INIT_REPRESENTATIVES.sql")
+  @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
   void testSave() {
     Representative representative = new Representative();
     representative.setFirstName("Charles");

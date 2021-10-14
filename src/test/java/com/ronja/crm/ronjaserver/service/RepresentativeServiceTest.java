@@ -57,6 +57,14 @@ class RepresentativeServiceTest {
   }
 
   @Test
+  void testFindByCustomerIdRegular() {
+    when(repository.findByCustomerId(anyInt())).thenReturn(List.of(new Representative()));
+    List<Representative> representatives = cut.findByCustomerId(1);
+    verify(repository).findByCustomerId(anyInt());
+    assertThat(representatives).hasSize(1);
+  }
+
+  @Test
   void testExistsById() {
     when(repository.existsById(anyInt())).thenReturn(true);
     boolean isPresent = cut.existsById(1);

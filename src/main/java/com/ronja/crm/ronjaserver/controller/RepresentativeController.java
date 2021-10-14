@@ -6,6 +6,7 @@ import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.exception.EntityNotFoundException;
 import com.ronja.crm.ronjaserver.service.EntityService;
+import com.ronja.crm.ronjaserver.service.ExtendedEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,11 @@ import java.util.List;
 @RequestMapping("/representatives")
 public class RepresentativeController {
 
-  private final RepresentativeMapper mapper;
+  private final ExtendedEntityService<Representative> representativeService;
   private final EntityService<Customer> customerService;
-  private final EntityService<Representative> representativeService;
+  private final RepresentativeMapper mapper;
 
-  public RepresentativeController(@Autowired EntityService<Representative> representativeService,
+  public RepresentativeController(@Autowired ExtendedEntityService<Representative> representativeService,
                                   @Autowired EntityService<Customer> customerService,
                                   @Autowired RepresentativeMapper mapper) {
     this.representativeService = representativeService;
@@ -34,6 +35,11 @@ public class RepresentativeController {
   @GetMapping("/list")
   public List<Representative> list() {
     return representativeService.findAll();
+  }
+
+  @GetMapping("/search")
+  public List<Representative> search(@RequestParam("customerId") int id) {
+    return representativeService.findByCustomerId(id);
   }
 
   @PostMapping("/add")

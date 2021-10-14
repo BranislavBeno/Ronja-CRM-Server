@@ -5,6 +5,7 @@ import com.ronja.crm.ronjaserver.dto.RepresentativeMapper;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.service.EntityService;
+import com.ronja.crm.ronjaserver.service.ExtendedEntityService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -94,7 +95,7 @@ class RepresentativeControllerTest {
       }""";
 
   @MockBean
-  EntityService<Representative> service;
+  ExtendedEntityService<Representative> representativeService;
 
   @MockBean
   EntityService<Customer> customerService;
@@ -115,7 +116,7 @@ class RepresentativeControllerTest {
 
   @Test
   void testFindAll() throws Exception {
-    when(service.findAll()).thenReturn(List.of(new Representative(), new Representative()));
+    when(representativeService.findAll()).thenReturn(List.of(new Representative(), new Representative()));
     this.mockMvc
         .perform(get("/representatives/list")
             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
@@ -124,7 +125,21 @@ class RepresentativeControllerTest {
         .andExpect(jsonPath("$.size()", is(2)))
         .andDo(print())
         .andReturn();
-    verify(service).findAll();
+    verify(representativeService).findAll();
+  }
+
+  @Test
+  void testFindByCustomerId() throws Exception {
+    when(representativeService.findByCustomerId(anyInt())).thenReturn(List.of(new Representative()));
+    this.mockMvc
+        .perform(get("/representatives/search?customerId=1")
+            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+        .andExpect(status().is(200))
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.size()", is(1)))
+        .andDo(print())
+        .andReturn();
+    verify(representativeService).findByCustomerId(anyInt());
   }
 
   @ParameterizedTest
@@ -133,7 +148,7 @@ class RepresentativeControllerTest {
     when(customerService.findById(anyInt())).thenReturn(new Customer());
     when(mapper.toEntity(any(RepresentativeDto.class), any(Customer.class))).thenReturn(new Representative());
     Representative representative = Mockito.mock(Representative.class);
-    when(service.save(any(Representative.class))).thenReturn(representative);
+    when(representativeService.save(any(Representative.class))).thenReturn(representative);
     when(representative.getId()).thenReturn(1);
 
     this.mockMvc
@@ -144,7 +159,7 @@ class RepresentativeControllerTest {
 
     verify(customerService).findById(anyInt());
     verify(mapper).toEntity(any(RepresentativeDto.class), any(Customer.class));
-    verify(service).save(any(Representative.class));
+    verify(representativeService).save(any(Representative.class));
     verify(representative).getId();
   }
 
@@ -163,7 +178,7 @@ class RepresentativeControllerTest {
         """;
     when(customerService.findById(anyInt())).thenReturn(new Customer());
     when(mapper.toEntity(any(RepresentativeDto.class), any(Customer.class))).thenReturn(new Representative());
-    when(service.save(any(Representative.class))).thenThrow(ConstraintViolationException.class);
+    when(representativeService.save(any(Representative.class))).thenThrow(ConstraintViolationException.class);
 
     this.mockMvc
         .perform(post("/representatives/add")
@@ -173,16 +188,16 @@ class RepresentativeControllerTest {
 
     verify(customerService, never()).findById(anyInt());
     verify(mapper, never()).toEntity(any(RepresentativeDto.class), any(Customer.class));
-    verify(service, never()).save(any(Representative.class));
+    verify(representativeService, never()).save(any(Representative.class));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {UPDATE_BODY_SHORT, UPDATE_BODY_FULL, "{}"})
   void testUpdate(String requestBody) throws Exception {
-    when(service.existsById(anyInt())).thenReturn(true);
+    when(representativeService.existsById(anyInt())).thenReturn(true);
     when(customerService.findById(anyInt())).thenReturn(new Customer());
     when(mapper.toEntity(any(RepresentativeDto.class), any(Customer.class))).thenReturn(new Representative());
-    when(service.save(any(Representative.class))).thenReturn(any(Representative.class));
+    when(representativeService.save(any(Representative.class))).thenReturn(any(Representative.class));
 
     this.mockMvc
         .perform(put("/representatives/update")
@@ -190,18 +205,18 @@ class RepresentativeControllerTest {
             .content(requestBody))
         .andExpect(status().isOk());
 
-    verify(service).existsById(anyInt());
+    verify(representativeService).existsById(anyInt());
     verify(customerService).findById(anyInt());
     verify(mapper).toEntity(any(RepresentativeDto.class), any(Customer.class));
-    verify(service).save(any(Representative.class));
+    verify(representativeService).save(any(Representative.class));
   }
 
   @Test
   void testFailingUpdate() throws Exception {
-    when(service.existsById(anyInt())).thenReturn(false);
+    when(representativeService.existsById(anyInt())).thenReturn(false);
     when(customerService.findById(anyInt())).thenReturn(new Customer());
     when(mapper.toEntity(any(RepresentativeDto.class), any(Customer.class))).thenReturn(new Representative());
-    when(service.save(any(Representative.class))).thenReturn(any(Representative.class));
+    when(representativeService.save(any(Representative.class))).thenReturn(any(Representative.class));
 
     this.mockMvc
         .perform(put("/representatives/update")
@@ -209,37 +224,37 @@ class RepresentativeControllerTest {
             .content(UPDATE_BODY_FULL))
         .andExpect(status().isNotFound());
 
-    verify(service).existsById(anyInt());
+    verify(representativeService).existsById(anyInt());
     verify(customerService, never()).findById(anyInt());
     verify(mapper, never()).toEntity(any(RepresentativeDto.class), any(Customer.class));
-    verify(service, never()).save(any(Representative.class));
+    verify(representativeService, never()).save(any(Representative.class));
   }
 
   @Test
   @DisplayName("Test whether deleting representative is successful")
   void testDelete() throws Exception {
-    when(service.existsById(anyInt())).thenReturn(true);
-    service.deleteById(anyInt());
+    when(representativeService.existsById(anyInt())).thenReturn(true);
+    representativeService.deleteById(anyInt());
 
     this.mockMvc
         .perform(delete("/representatives/delete/1"))
         .andExpect(status().isNoContent());
 
-    verify(service).existsById(anyInt());
-    verify(service, times(2)).deleteById(anyInt());
+    verify(representativeService).existsById(anyInt());
+    verify(representativeService, times(2)).deleteById(anyInt());
   }
 
   @Test
   @DisplayName("Test whether deleting representative fails due to not existing representative")
   void testFailingDelete() throws Exception {
-    when(service.existsById(anyInt())).thenReturn(false);
-    service.deleteById(anyInt());
+    when(representativeService.existsById(anyInt())).thenReturn(false);
+    representativeService.deleteById(anyInt());
 
     this.mockMvc
         .perform(delete("/representatives/delete/1"))
         .andExpect(status().isNotFound());
 
-    verify(service).existsById(anyInt());
-    verify(service).deleteById(anyInt());
+    verify(representativeService).existsById(anyInt());
+    verify(representativeService).deleteById(anyInt());
   }
 }
