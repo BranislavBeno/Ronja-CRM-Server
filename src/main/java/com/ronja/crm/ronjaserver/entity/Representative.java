@@ -47,14 +47,13 @@ public class Representative {
 
   @Column(name = "phone_numbers")
   @Convert(converter = ListAttributeConverter.class)
-  private List<String> phoneNumbers;
+  private List<Contact> phoneNumbers;
 
   @Column(name = "emails")
   @Convert(converter = ListAttributeConverter.class)
-  private List<String> emails;
+  private List<Contact> emails;
 
-  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
-      CascadeType.DETACH, CascadeType.REFRESH})
+  @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
   @JoinColumn(name = "customer_id")
   private Customer customer;
 
@@ -150,19 +149,19 @@ public class Representative {
     this.customer = customer;
   }
 
-  public List<String> getPhoneNumbers() {
+  public List<Contact> getPhoneNumbers() {
     return phoneNumbers;
   }
 
-  public void setPhoneNumbers(List<String> phoneNumbers) {
+  public void setPhoneNumbers(List<Contact> phoneNumbers) {
     this.phoneNumbers = phoneNumbers;
   }
 
-  public List<String> getEmails() {
+  public List<Contact> getEmails() {
     return emails;
   }
 
-  public void setEmails(List<String> emails) {
+  public void setEmails(List<Contact> emails) {
     this.emails = emails;
   }
 }

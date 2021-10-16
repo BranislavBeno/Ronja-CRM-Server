@@ -1,5 +1,7 @@
 package com.ronja.crm.ronjaserver.dto;
 
+import com.ronja.crm.ronjaserver.entity.Contact;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,8 +15,8 @@ public record RepresentativeDto(
     String status,
     LocalDate lastVisit,
     LocalDate scheduledVisit,
-    List<String> phoneNumbers,
-    List<String> emails,
+    List<Contact> phoneNumbers,
+    List<Contact> emails,
     int customerId,
     String contactType) {
 }

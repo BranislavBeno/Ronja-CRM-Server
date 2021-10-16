@@ -1,5 +1,6 @@
 package com.ronja.crm.ronjaserver.dto;
 
+import com.ronja.crm.ronjaserver.entity.Contact;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import org.springframework.stereotype.Component;
@@ -20,8 +21,8 @@ public class RepresentativeMapper {
     String status = representative.getStatus();
     LocalDate lastVisit = representative.getLastVisit();
     LocalDate scheduledVisit = representative.getScheduledVisit();
-    List<String> phoneNumbers = representative.getPhoneNumbers();
-    List<String> emails = representative.getEmails();
+    List<Contact> phoneNumbers = representative.getPhoneNumbers();
+    List<Contact> emails = representative.getEmails();
     int customerId = representative.getCustomer() != null
         ? representative.getCustomer().getId()
         : 0;

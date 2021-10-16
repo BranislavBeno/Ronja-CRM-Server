@@ -41,10 +41,18 @@ class RepresentativeControllerTest {
           "lastVisit": "2021-01-17",
           "scheduledVisit": "2021-05-05",
           "phoneNumbers": [
-              "+555987654321"
+              {
+                  "contact": "+420920920920",
+                  "type": "HOME",
+                  "primary": false
+              }
           ],
           "emails": [
-              "patrick@foo.com"
+              {
+                  "contact": "patrick@example.com",
+                  "type": "WORK",
+                  "primary": true
+              }
           ],
           "customerId": 1
       }""";
@@ -61,10 +69,18 @@ class RepresentativeControllerTest {
           "lastVisit": "2021-01-17",
           "scheduledVisit": "2021-05-05",
           "phoneNumbers": [
-              "+555987654321"
+              {
+                  "contact": "+420920920920",
+                  "type": "HOME",
+                  "primary": false
+              }
           ],
           "emails": [
-              "patrick@foo.com"
+              {
+                  "contact": "patrick@example.com",
+                  "type": "WORK",
+                  "primary": true
+              }
           ],
           "customerId": 1
       }""";

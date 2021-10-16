@@ -68,7 +68,7 @@ class RepresentativeRepositoryTest {
     assertThat(representative.getContactType()).isEqualTo("MAIL");
     assertThat(representative.getLastVisit()).isEqualTo(LocalDate.of(2020, 10, 7));
     assertThat(representative.getScheduledVisit()).isEqualTo(LocalDate.of(2021, 4, 25));
-    assertThat(representative.getPhoneNumbers()).hasSize(1);
+    assertThat(representative.getPhoneNumbers()).hasSize(2);
     assertThat(representative.getEmails()).hasSize(1);
     assertThat(representative.getCustomer()).isNotNull();
     assertThat(representative.getCustomer().getId()).isEqualTo(1);
