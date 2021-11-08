@@ -13,6 +13,7 @@ RUN mkdir /app
 RUN addgroup --system javauser && adduser -S -s /bin/false -G javauser javauser
 # copy jar from build stage
 COPY --from=build /project/build/libs/ronja-server.jar /app/ronja-server.jar
+COPY build/libs/application.properties /app/application.properties
 WORKDIR /app
 # change owner for jar directory
 RUN chown -R javauser:javauser /app
