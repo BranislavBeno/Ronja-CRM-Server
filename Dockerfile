@@ -1,11 +1,11 @@
-FROM gradle:7.2.0-jdk16-hotspot AS build
+FROM gradle:7.2-jdk17 AS build
 RUN mkdir /project
 COPY . /project
 WORKDIR /project
 # create fat jar
 RUN gradle build -x test
 
-FROM adoptopenjdk/openjdk16:jre-16.0.1_9-alpine
+FROM eclipse-temurin:17-alpine
 # install dumb-init
 RUN apk add dumb-init
 RUN mkdir /app
