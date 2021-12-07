@@ -6,11 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDate;
@@ -19,43 +15,25 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
 @Testcontainers(disabledWithoutDocker = true)
+@DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class RepresentativeRepositoryTest {
-
-  @Container
-  static final MySQLContainer<?> container = new MySQLContainer<>("mysql:8.0.25")
-      .withDatabaseName("test")
-      .withUsername("Jon")
-      .withPassword("Doe")
-      .withReuse(true);
-
-  static {
-    container.start();
-  }
-
-  @DynamicPropertySource
-  static void properties(DynamicPropertyRegistry registry) {
-    registry.add("spring.datasource.url", container::getJdbcUrl);
-    registry.add("spring.datasource.password", container::getPassword);
-    registry.add("spring.datasource.username", container::getUsername);
-  }
+class RepresentativeRepositoryTest extends BaseRepositoryTest {
 
   @Autowired
-  RepresentativeRepository cut;
+  RepresentativeRepository repository;
 
   @Test
   @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
   void testFindAll() {
-    List<Representative> result = (List<Representative>) cut.findAll();
+    List<Representative> result = (List<Representative>) repository.findAll();
     assertThat(result).hasSize(2);
   }
 
   @Test
   @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
   void testSearchBy() {
-    List<Representative> result = cut.findByCustomerId(1);
+    List<Representative> result = repository.findByCustomerId(1);
     assertThat(result).hasSize(1);
     Representative representative = result.get(0);
     assertThat(representative.getId()).isEqualTo(1);
@@ -77,8 +55,8 @@ class RepresentativeRepositoryTest {
   @Test
   @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
   void testDeleteById() {
-    cut.deleteById(1);
-    assertThat(cut.findAll()).hasSize(1);
+    repository.deleteById(1);
+    assertThat(repository.findAll()).hasSize(1);
   }
 
   @Test
@@ -97,9 +75,9 @@ class RepresentativeRepositoryTest {
     representative.setCustomer(provideCustomer());
     representative.setPhoneNumbers(Collections.emptyList());
     representative.setEmails(Collections.emptyList());
-    cut.save(representative);
+    repository.save(representative);
 
-    assertThat(cut.findAll()).hasSize(3);
+    assertThat(repository.findAll()).hasSize(3);
   }
 
   private Customer provideCustomer() {
