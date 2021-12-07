@@ -3,10 +3,11 @@ package com.ronja.crm.ronjaserver.repository;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.utility.DockerImageName;
 
 abstract class BaseRepositoryTest {
 
-  static final MySQLContainer<?> CONTAINER_DB = new MySQLContainer<>("mysql:8.0.25")
+  static final MySQLContainer<?> CONTAINER_DB = new MySQLContainer<>(DockerImageName.parse("mysql:8.0.25"))
       .withDatabaseName("test")
       .withUsername("Jon")
       .withPassword("Doe")
