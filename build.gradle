@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.6.1'
+    id 'org.springframework.boot' version '2.6.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'jacoco'
     id 'org.sonarqube' version '3.3'
@@ -13,7 +13,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 def versionMajor = 1
 def versionMinor = 2
-def versionPatch = 0
+def versionPatch = 1
 version = "R${versionMajor}.${versionMinor}.${versionPatch}" as Object
 
 ext {
@@ -31,8 +31,9 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("mysql:mysql-connector-java")
-    implementation("io.micrometer:micrometer-registry-prometheus:1.8.0")
-    implementation("org.flywaydb:flyway-core:8.2.0")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.8.1")
+    implementation("org.flywaydb:flyway-core:8.3.0")
+    implementation("org.flywaydb:flyway-mysql:8.3.0")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
