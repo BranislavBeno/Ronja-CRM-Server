@@ -3,13 +3,9 @@ RUN mkdir /project
 COPY . /project
 WORKDIR /project
 # create fat jar
-RUN gradle build -x test
-# create temporary env variable to reach out built the jar file
-ARG JAR_FILE=build/libs/ronja-server.jar
-# rename the jar file
-COPY ${JAR_FILE} application.jar
+RUN gradle build -x test && cp build/libs/ronja-server.jar ./
 # extrect layered jar file
-RUN java -Djarmode=layertools -jar application.jar extract
+RUN java -Djarmode=layertools -jar ronja-server.jar extract
 
 FROM azul/zulu-openjdk-alpine:17-jre
 # install dumb-init
