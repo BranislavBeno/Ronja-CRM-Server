@@ -9,7 +9,7 @@ RUN java -Djarmode=layertools -jar ronja-server.jar extract
 
 FROM azul/zulu-openjdk-alpine:17-jre
 # install dumb-init
-RUN apk add dumb-init
+RUN apk add --no-cache dumb-init=1.2.5-r1
 RUN mkdir /app
 # add specific non root user for running application
 RUN addgroup --system javauser && adduser -S -s /bin/false -G javauser javauser
