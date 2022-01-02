@@ -18,7 +18,6 @@ import java.util.List;
 @RequestMapping("/customers")
 public class CustomerController {
 
-  @Autowired
   private final CustomerMapper mapper;
 
   private final EntityService<Customer> service;
