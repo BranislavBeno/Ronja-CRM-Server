@@ -2,20 +2,11 @@ package com.ronja.crm.ronjaserver.service;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
-@Service
-public final class CustomerService implements EntityService<Customer> {
-
-  private final CustomerRepository repository;
-
-  public CustomerService(@Autowired CustomerRepository repository) {
-    this.repository = repository;
-  }
+public record CustomerService(CustomerRepository repository) implements EntityService<Customer> {
 
   @Override
   public List<Customer> findAll() {
