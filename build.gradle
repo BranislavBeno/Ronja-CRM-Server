@@ -30,6 +30,7 @@ repositories {
     mavenCentral()
 }
 
+var flywayVersion = '8.4.0'
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -37,8 +38,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("mysql:mysql-connector-java")
     implementation("io.micrometer:micrometer-registry-prometheus:1.8.1")
-    implementation("org.flywaydb:flyway-core:8.4.0")
-    implementation("org.flywaydb:flyway-mysql:8.4.0")
+    implementation("org.flywaydb:flyway-core:${flywayVersion}")
+    implementation("org.flywaydb:flyway-mysql:${flywayVersion}")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
