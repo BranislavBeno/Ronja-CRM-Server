@@ -38,7 +38,7 @@ dependencies {
     implementation("mysql:mysql-connector-java")
     implementation("io.micrometer:micrometer-registry-prometheus:1.8.1")
     implementation("org.flywaydb:flyway-core:8.3.0")
-    implementation("org.flywaydb:flyway-mysql:8.3.0")
+    implementation("org.flywaydb:flyway-mysql:8.4.0")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
