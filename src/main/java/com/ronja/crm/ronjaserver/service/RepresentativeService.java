@@ -23,7 +23,6 @@ public record RepresentativeService(
   public List<Representative> findByCustomerId(int id) {
     return repository.findByCustomerId(id);
   }
-
   @Override
   public boolean existsById(int id) {
     return repository.existsById(id);
@@ -38,5 +37,10 @@ public record RepresentativeService(
   @Override
   public void deleteById(int id) {
     repository.deleteById(id);
+  }
+
+  @Override
+  public List<Representative> findScheduledForNextNDays(int offset) {
+    return repository.findScheduledForNextNDays(offset);
   }
 }

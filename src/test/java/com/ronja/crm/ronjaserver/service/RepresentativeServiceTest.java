@@ -65,6 +65,14 @@ class RepresentativeServiceTest {
   }
 
   @Test
+  void testFindScheduledForNextNDays() {
+    when(repository.findScheduledForNextNDays(anyInt())).thenReturn(List.of(new Representative()));
+    List<Representative> representatives = cut.findScheduledForNextNDays(1);
+    verify(repository).findScheduledForNextNDays(anyInt());
+    assertThat(representatives).hasSize(1);
+  }
+
+  @Test
   void testExistsById() {
     when(repository.existsById(anyInt())).thenReturn(true);
     boolean isPresent = cut.existsById(1);

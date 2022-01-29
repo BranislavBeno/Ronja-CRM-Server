@@ -158,6 +158,20 @@ class RepresentativeControllerTest {
     verify(representativeService).findByCustomerId(anyInt());
   }
 
+  @Test
+  void testFindScheduledForNextNDays() throws Exception {
+    when(representativeService.findScheduledForNextNDays(anyInt())).thenReturn(List.of(new Representative()));
+    this.mockMvc
+        .perform(get("/representatives/scheduled?days=7")
+            .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
+        .andExpect(status().is(200))
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.size()", is(1)))
+        .andDo(print())
+        .andReturn();
+    verify(representativeService).findScheduledForNextNDays(anyInt());
+  }
+
   @ParameterizedTest
   @ValueSource(strings = {ADD_BODY_SHORT, ADD_BODY_FULL, "{}"})
   void testAdd(String requestBody) throws Exception {

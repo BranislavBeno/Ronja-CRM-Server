@@ -42,6 +42,11 @@ public class RepresentativeController {
     return representativeService.findByCustomerId(id);
   }
 
+  @GetMapping("/scheduled")
+  public List<Representative> fetchScheduled(@RequestParam("days") int offset) {
+    return representativeService.findScheduledForNextNDays(offset);
+  }
+
   @PostMapping("/add")
   public ResponseEntity<RepresentativeDto> add(@Valid @RequestBody RepresentativeDto dto) {
     Representative representative = provideRepresentative(dto);

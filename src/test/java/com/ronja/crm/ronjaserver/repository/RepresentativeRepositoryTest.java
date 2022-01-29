@@ -12,6 +12,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,7 +36,37 @@ class RepresentativeRepositoryTest extends BaseRepositoryTest {
   void testSearchBy() {
     List<Representative> result = repository.findByCustomerId(1);
     assertThat(result).hasSize(1);
-    Representative representative = result.get(0);
+    assertRepresentative(result.get(0));
+  }
+
+  @Test
+  @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
+  void testDeleteById() {
+    repository.deleteById(1);
+    assertThat(repository.findAll()).hasSize(1);
+  }
+
+  @Test
+  @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
+  void testSave() {
+    Representative representative = createRepresentative(LocalDate.now());
+    repository.save(representative);
+
+    assertThat(repository.findAll()).hasSize(3);
+  }
+
+  @Test
+  void testFindScheduledForNextNDays() {
+    IntStream.of(0, 7, 8).forEach(days -> {
+      Representative representative = createRepresentative(LocalDate.now().plusDays(days));
+      repository.save(representative);
+    });
+
+    List<Representative> result = repository.findScheduledForNextNDays(7);
+    assertThat(result).hasSize(2);
+  }
+
+  private void assertRepresentative(Representative representative) {
     assertThat(representative.getId()).isEqualTo(1);
     assertThat(representative.getFirstName()).isEqualTo("John");
     assertThat(representative.getLastName()).isEqualTo("Doe");
@@ -52,16 +83,7 @@ class RepresentativeRepositoryTest extends BaseRepositoryTest {
     assertThat(representative.getCustomer().getId()).isEqualTo(1);
   }
 
-  @Test
-  @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
-  void testDeleteById() {
-    repository.deleteById(1);
-    assertThat(repository.findAll()).hasSize(1);
-  }
-
-  @Test
-  @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
-  void testSave() {
+  private Representative createRepresentative(LocalDate scheduledDate) {
     Representative representative = new Representative();
     representative.setFirstName("Charles");
     representative.setLastName("Smith");
@@ -71,16 +93,14 @@ class RepresentativeRepositoryTest extends BaseRepositoryTest {
     representative.setPosition("");
     representative.setContactType("PERSONAL");
     representative.setLastVisit(LocalDate.now());
-    representative.setScheduledVisit(LocalDate.now());
-    representative.setCustomer(provideCustomer());
+    representative.setScheduledVisit(scheduledDate);
+    representative.setCustomer(createCustomer());
     representative.setPhoneNumbers(Collections.emptyList());
     representative.setEmails(Collections.emptyList());
-    repository.save(representative);
-
-    assertThat(repository.findAll()).hasSize(3);
+    return representative;
   }
 
-  private Customer provideCustomer() {
+  private Customer createCustomer() {
     Customer customer = new Customer();
     customer.setCategory("LEVEL_1");
     customer.setFocus("MANUFACTURE");
