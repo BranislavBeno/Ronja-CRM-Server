@@ -30,3 +30,6 @@ jobs:
 
     - name: Run Tests
       run: ./gradlew test
+
+    - name: Run Code Analysis
+      run: ./gradlew sonarqube
