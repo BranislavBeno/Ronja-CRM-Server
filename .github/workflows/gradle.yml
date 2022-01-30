@@ -29,4 +29,4 @@ jobs:
         java-package: jdk
 
     - name: Run Tests
-      uses: ./gradlew test
+      run: ./gradlew test
