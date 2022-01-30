@@ -16,6 +16,7 @@ jobs:
     - name: Setup Cache      
       uses: actions/cache@v2
       with:
+        fetch-depth: 0
         path: ~/.gradle/caches
         key: ${{ runner.os }}-gradle-jdk17-${{ hashFiles('**/*.gradle') }}
         restore-keys: |
@@ -29,4 +30,10 @@ jobs:
         java-package: jdk
 
     - name: Run Tests and Code Analysis
-      run: ./gradlew test sonarqube
+      run: ./gradlew test
+
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
