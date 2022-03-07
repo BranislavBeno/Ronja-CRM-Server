@@ -30,7 +30,7 @@ repositories {
     mavenCentral()
 }
 
-var flywayVersion = '8.5.1'
+var flywayVersion = '8.5.2'
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
