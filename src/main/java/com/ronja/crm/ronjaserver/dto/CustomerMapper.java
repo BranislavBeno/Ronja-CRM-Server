@@ -1,9 +1,7 @@
 package com.ronja.crm.ronjaserver.dto;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
-import org.springframework.stereotype.Component;
 
-@Component
 public class CustomerMapper {
 
   public CustomerDto toDto(Customer customer) {

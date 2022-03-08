@@ -1,0 +1,12 @@
+{
+  "success": true,
+  "timestamp": 1643927520,
+  "date": "2022-02-02",
+  "base": "USD",
+  "rates": {
+    "LME-ALU": 10.573385811699,
+    "LME-LEAD": 14.319008911883,
+    "LME-XCU": 3.256136987247
+  },
+  "unit": "per ounce"
+}

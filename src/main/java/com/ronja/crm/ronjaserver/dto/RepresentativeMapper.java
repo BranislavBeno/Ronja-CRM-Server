@@ -3,12 +3,10 @@ package com.ronja.crm.ronjaserver.dto;
 import com.ronja.crm.ronjaserver.entity.Contact;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Component
 public class RepresentativeMapper {
 
   public RepresentativeDto toDto(Representative representative) {
