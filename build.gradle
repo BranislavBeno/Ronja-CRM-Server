@@ -46,13 +46,12 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
     testImplementation "org.testcontainers:mockserver"
-    testImplementation "org.mock-server:mockserver-client-java:5.12.0"
+    testImplementation "org.mock-server:mockserver-client-java:5.13.0"
     testImplementation "org.bouncycastle:bcprov-jdk15on:${bouncyCastleVersion}"
     testImplementation "org.bouncycastle:bcpkix-jdk15on:${bouncyCastleVersion}"
     testImplementation("io.rest-assured:spring-mock-mvc:4.5.1")
-    testImplementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.3"))
-    testImplementation "com.squareup.okhttp3:okhttp"
-    testImplementation "com.squareup.okhttp3:mockwebserver"
+    testImplementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.6"
+    testImplementation "com.squareup.okhttp3:mockwebserver:5.0.0-alpha.6"
 }
 
 dependencyManagement {
