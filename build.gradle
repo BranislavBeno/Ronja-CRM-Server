@@ -39,7 +39,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("mysql:mysql-connector-java")
-    implementation("io.micrometer:micrometer-registry-prometheus:1.8.3")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.8.4")
     implementation("org.flywaydb:flyway-core:${flywayVersion}")
     implementation("org.flywaydb:flyway-mysql:${flywayVersion}")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -50,9 +50,8 @@ dependencies {
     testImplementation "org.bouncycastle:bcprov-jdk15on:${bouncyCastleVersion}"
     testImplementation "org.bouncycastle:bcpkix-jdk15on:${bouncyCastleVersion}"
     testImplementation("io.rest-assured:spring-mock-mvc:4.5.1")
-    testImplementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.3"))
-    testImplementation "com.squareup.okhttp3:okhttp"
-    testImplementation "com.squareup.okhttp3:mockwebserver"
+    testImplementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.6"
+    testImplementation "com.squareup.okhttp3:mockwebserver:5.0.0-alpha.6"
 }
 
 dependencyManagement {
