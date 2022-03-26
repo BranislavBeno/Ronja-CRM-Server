@@ -5,7 +5,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=BranislavBeno_RonjaServer&metric=coverage)](https://sonarcloud.io/dashboard?id=BranislavBeno_RonjaServer)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=BranislavBeno_RonjaServer&metric=ncloc)](https://sonarcloud.io/dashboard?id=BranislavBeno_RonjaServer)  
 [![](https://img.shields.io/badge/Java-17-blue)](/build.gradle)
-[![](https://img.shields.io/badge/Spring%20Boot-2.6.4-blue)](/build.gradle)
+[![](https://img.shields.io/badge/Spring%20Boot-2.6.5-blue)](/build.gradle)
 [![](https://img.shields.io/badge/Testcontainers-1.16.3-blue)](/build.gradle)
 [![](https://img.shields.io/badge/Gradle-7.4.1-blue)](/gradle/wrapper/gradle-wrapper.properties)
 [![](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
