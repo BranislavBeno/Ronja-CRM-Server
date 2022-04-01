@@ -1,4 +1,4 @@
-FROM gradle:7.4-jdk17-alpine AS build
+FROM gradle:7.4.1-jdk17-alpine AS build
 RUN mkdir /project
 COPY . /project
 WORKDIR /project
@@ -7,7 +7,7 @@ RUN gradle build -x test && cp build/libs/ronja-server.jar ./
 # extrect layered jar file
 RUN java -Djarmode=layertools -jar ronja-server.jar extract
 
-FROM azul/zulu-openjdk-alpine:17-jre
+FROM eclipse-temurin:17-jre-alpine
 # install dumb-init
 RUN apk add --no-cache dumb-init=1.2.5-r1
 RUN mkdir /app
