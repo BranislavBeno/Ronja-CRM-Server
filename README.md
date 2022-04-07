@@ -7,7 +7,7 @@
 [![](https://img.shields.io/badge/Java-17-blue)](/build.gradle)
 [![](https://img.shields.io/badge/Spring%20Boot-2.6.6-blue)](/build.gradle)
 [![](https://img.shields.io/badge/Testcontainers-1.16.3-blue)](/build.gradle)
-[![](https://img.shields.io/badge/Gradle-7.4.1-blue)](/gradle/wrapper/gradle-wrapper.properties)
+[![](https://img.shields.io/badge/Gradle-7.4.2-blue)](/gradle/wrapper/gradle-wrapper.properties)
 [![](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 REST-API server, which provides basic CRUD operations over connected database for simple CRM system

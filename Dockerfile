@@ -1,4 +1,4 @@
-FROM gradle:7.4.1-jdk17-alpine AS build
+FROM gradle:7.4.2-jdk17-alpine AS build
 RUN mkdir /project
 COPY . /project
 WORKDIR /project
