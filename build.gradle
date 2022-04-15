@@ -30,7 +30,7 @@ repositories {
     mavenCentral()
 }
 
-var flywayVersion = '8.5.7'
+var flywayVersion = '8.5.8'
 var bouncyCastleVersion = "1.70"
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
