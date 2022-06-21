@@ -33,23 +33,23 @@ repositories {
 var flywayVersion = '8.5.13'
 var bouncyCastleVersion = "1.70"
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("mysql:mysql-connector-java")
-    implementation("io.micrometer:micrometer-registry-prometheus:1.9.1")
-    implementation("org.flywaydb:flyway-core:${flywayVersion}")
-    implementation("org.flywaydb:flyway-mysql:${flywayVersion}")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.testcontainers:junit-jupiter")
-    testImplementation("org.testcontainers:mysql")
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "mysql:mysql-connector-java"
+    implementation "io.micrometer:micrometer-registry-prometheus:1.9.1"
+    implementation "org.flywaydb:flyway-core:${flywayVersion}"
+    implementation "org.flywaydb:flyway-mysql:${flywayVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation "org.testcontainers:junit-jupiter"
+    testImplementation "org.testcontainers:mysql"
     testImplementation "org.testcontainers:mockserver"
     testImplementation "org.mock-server:mockserver-client-java:5.13.2"
     testImplementation "org.bouncycastle:bcprov-jdk15on:${bouncyCastleVersion}"
     testImplementation "org.bouncycastle:bcpkix-jdk15on:${bouncyCastleVersion}"
-    testImplementation("io.rest-assured:spring-mock-mvc:5.1.1")
+    testImplementation "io.rest-assured:spring-mock-mvc:5.1.1"
     testImplementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.9"
     testImplementation "com.squareup.okhttp3:mockwebserver:5.0.0-alpha.9"
 }

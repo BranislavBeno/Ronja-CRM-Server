@@ -31,7 +31,7 @@ class MetalExchangeWebClientIT {
     static {
         MOCK_SERVER.start();
         URL = "http://%s:%s/api/latest?base=USD&symbols=LME-ALU,LME-XCU,LME-LEAD&access_key="
-                .formatted(MOCK_SERVER.getContainerIpAddress(), MOCK_SERVER.getServerPort());
+                .formatted(MOCK_SERVER.getHost(), MOCK_SERVER.getServerPort());
     }
 
     @BeforeAll
@@ -42,34 +42,30 @@ class MetalExchangeWebClientIT {
     @Test
     void testFetchData() throws IOException {
         String json = readResourceFile();
-        mockResponse(json);
+        try (MockServerClient mockServerClient = new MockServerClient(MOCK_SERVER.getHost(), MOCK_SERVER.getServerPort())) {
+            mockResponse(mockServerClient, json);
 
-        assertThat(webClient).isNotNull();
-        MetalExchange metalExchange = webClient.fetchExchangeData();
+            assertThat(webClient).isNotNull();
+            MetalExchange metalExchange = webClient.fetchExchangeData();
 
-        assertThat(metalExchange).isNotNull();
-        assertThat(metalExchange.success()).isTrue();
-        assertThat(metalExchange.rates().aluminum()).isEqualTo(new BigDecimal("10.573385811699"));
-        assertThat(metalExchange.rates().copper()).isEqualTo(new BigDecimal("3.256136987247"));
-        assertThat(metalExchange.rates().lead()).isEqualTo(new BigDecimal("14.319008911883"));
-        assertThat(metalExchange.currency()).isEqualTo("USD");
-        assertThat(metalExchange.date()).isBeforeOrEqualTo(LocalDate.now());
+            assertThat(metalExchange).isNotNull();
+            assertThat(metalExchange.success()).isTrue();
+            assertThat(metalExchange.rates().aluminum()).isEqualTo(new BigDecimal("10.573385811699"));
+            assertThat(metalExchange.rates().copper()).isEqualTo(new BigDecimal("3.256136987247"));
+            assertThat(metalExchange.rates().lead()).isEqualTo(new BigDecimal("14.319008911883"));
+            assertThat(metalExchange.currency()).isEqualTo("USD");
+            assertThat(metalExchange.date()).isBeforeOrEqualTo(LocalDate.now());
+        }
     }
 
-    private void mockResponse(String json) {
-        MockServerClient mockServerClient = provideMockServer();
-        mockServerClient
+    private void mockResponse(MockServerClient mockClient, String json) {
+        mockClient
                 .when(HttpRequest.request()
                         .withMethod("GET"))
                 .respond(new HttpResponse()
                         .withStatusCode(200)
                         .withHeader("Content-Type", "application/json")
-                        .withBody(json)
-                );
-    }
-
-    private MockServerClient provideMockServer() {
-        return new MockServerClient(MOCK_SERVER.getContainerIpAddress(), MOCK_SERVER.getServerPort());
+                        .withBody(json));
     }
 
     private String readResourceFile() throws IOException {
