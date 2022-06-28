@@ -50,7 +50,7 @@ dependencies {
     testImplementation "org.bouncycastle:bcprov-jdk15on:${bouncyCastleVersion}"
     testImplementation "org.bouncycastle:bcpkix-jdk15on:${bouncyCastleVersion}"
     testImplementation "io.rest-assured:spring-mock-mvc:5.1.1"
-    testImplementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.9"
+    testImplementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.10"
     testImplementation "com.squareup.okhttp3:mockwebserver:5.0.0-alpha.9"
 }
 
