@@ -1,5 +1,5 @@
 ## Specific image for DinD
-image: docker:19.03.15
+image: docker:20.10.17
 
 # DinD (Docker in Docker) service is required for test containers
 services:
@@ -26,7 +26,8 @@ test_code:
   image: openjdk:17
   stage: test
   script:
-    - sh ./gradlew -S test jacocoTestReport sonarqube
+    - chmod +x gradlew
+    - ./gradlew -S jacocoTestReport
     - cat build/reports/jacoco/test/html/index.html
   tags:
-    - DOCKER
+    - gitlab-org-docker
