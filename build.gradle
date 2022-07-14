@@ -30,7 +30,6 @@ repositories {
     mavenCentral()
 }
 
-var flywayVersion = '9.0.0'
 var bouncyCastleVersion = "1.70"
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
@@ -40,8 +39,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "mysql:mysql-connector-java"
     implementation "io.micrometer:micrometer-registry-prometheus:1.9.2"
-    implementation "org.flywaydb:flyway-core:${flywayVersion}"
-    implementation "org.flywaydb:flyway-mysql:${flywayVersion}"
+    implementation "org.flywaydb:flyway-core"
+    implementation "org.flywaydb:flyway-mysql"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.testcontainers:junit-jupiter"
     testImplementation "org.testcontainers:mysql"
