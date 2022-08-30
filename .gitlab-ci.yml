@@ -23,7 +23,7 @@ variables:
 ## - run unit tests
 ## - evaluate test coverage 
 test_code:
-  image: openjdk:17
+  image: openjdk:20
   stage: test
   script:
     - chmod +x gradlew
