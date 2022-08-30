@@ -7,7 +7,7 @@ RUN gradle build -x test && cp build/libs/ronja-server.jar ./
 # extrect layered jar file
 RUN java -Djarmode=layertools -jar ronja-server.jar extract
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:18-jre-alpine
 # install dumb-init
 RUN apk add --no-cache dumb-init=1.2.5-r1
 RUN mkdir /app
