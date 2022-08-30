@@ -5,7 +5,7 @@ services:
 
   #MySQL Service
   ronja_db:
-    image: mysql:8.0.28
+    image: mysql:8.0.30
     container_name: ronja_db
     restart: unless-stopped
     tty: true
