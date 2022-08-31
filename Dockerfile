@@ -1,9 +1,11 @@
-FROM gradle:7.5.1-jdk18-alpine AS build
+FROM eclipse-temurin:18-jdk-alpine AS build
 RUN mkdir /project
 COPY . /project
 WORKDIR /project
 # create fat jar
-RUN gradle build -x test && cp build/libs/ronja-server.jar ./
+RUN chmod +x gradlew && ./gradlew build -x test
+# move the jar file
+RUN cd build/libs/ && cp ronja-server.jar /project/
 # extrect layered jar file
 RUN java -Djarmode=layertools -jar ronja-server.jar extract
 
