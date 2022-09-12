@@ -3,6 +3,7 @@ package com.ronja.crm.ronjaserver.client.api;
 import com.ronja.crm.ronjaserver.client.domain.MetalExchange;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers(disabledWithoutDocker = true)
+@DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "No ARM64 support")
 class MetalExchangeWebClientIT {
 
     private static final MockServerContainer MOCK_SERVER = new MockServerContainer(DockerImageName.parse("mockserver/mockserver"));
