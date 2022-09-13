@@ -3,17 +3,19 @@
   "extends": [
     "config:base"
   ],
+  "ignorePaths": [],
   "baseBranches": [
     "master",
-    "renovate-testcontainers"
+    "renovate-testcontainers",
+    "testcontainers-renovate"
   ],
   "regexManagers": [
     {
       "fileMatch": [
-        "^src/test/java/.+?\\.java$"
+        "src/test/java/.+\\.java$"
       ],
       "matchStrings": [
-        "DockerImageName.parse\\(\"(?<depName>.*?):(?<currentValue>.*?)\")"
+        "\"(?<depName>.*?):(?<currentValue>.*?)\""
       ],
       "datasourceTemplate": "docker"
     }
