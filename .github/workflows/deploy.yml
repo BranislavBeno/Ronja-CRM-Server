@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: [Application tests]
     types: [completed]
-    branches: [main]
+    branches: [master]
 
 jobs:
   build-docker-image:
