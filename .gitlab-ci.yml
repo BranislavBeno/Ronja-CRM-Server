@@ -23,7 +23,7 @@ variables:
 ## - run unit tests
 ## - evaluate test coverage 
 test_code:
-  image: eclipse-temurin:18-jdk
+  image: eclipse-temurin:19-jdk
   stage: test
   script:
     - chmod +x gradlew
