@@ -41,7 +41,7 @@ dependencies {
     implementation "io.micrometer:micrometer-registry-prometheus:1.9.4"
     implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
-    implementation "org.yaml:snakeyaml:1.32"
+    implementation "org.yaml:snakeyaml:1.33"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.testcontainers:junit-jupiter"
     testImplementation "org.testcontainers:mysql"
