@@ -9,7 +9,7 @@ RUN cd build/libs/ && cp ronja-server.jar /project/
 # extrect layered jar file
 RUN java -Djarmode=layertools -jar ronja-server.jar extract
 
-FROM azul/zulu-openjdk-alpine:18-jre
+FROM azul/zulu-openjdk-alpine:19-jre
 # install dumb-init
 RUN apk add --no-cache dumb-init=1.2.5-r1
 RUN mkdir /app
