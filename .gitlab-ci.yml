@@ -1,5 +1,5 @@
 ## Specific image for DinD
-image: docker:20.10.20
+image: docker:20.10.21
 
 # DinD (Docker in Docker) service is required for test containers
 services:
