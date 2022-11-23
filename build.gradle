@@ -1,11 +1,11 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.4'
-    id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.1.0'
     id 'jacoco'
-    id 'org.sonarqube' version '3.4.0.2513'
+    id 'org.sonarqube' version '3.5.0.2730'
     id 'com.gorylenko.gradle-git-properties' version '2.4.1'
-    id 'com.github.ben-manes.versions' version '0.42.0'
+    id 'com.github.ben-manes.versions' version '0.44.0'
 }
 
 group = 'com.ronja.crm'
@@ -38,10 +38,11 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "mysql:mysql-connector-java"
-    implementation "io.micrometer:micrometer-registry-prometheus:1.9.4"
+    implementation "io.micrometer:micrometer-registry-prometheus:1.10.2"
     implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
     implementation "org.yaml:snakeyaml:1.33"
+    implementation 'org.apache.commons:commons-text:1.10.0'
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.testcontainers:junit-jupiter"
     testImplementation "org.testcontainers:mysql"
@@ -49,14 +50,14 @@ dependencies {
     testImplementation "org.mock-server:mockserver-client-java:5.14.0"
     testImplementation "org.bouncycastle:bcprov-jdk15on:${bouncyCastleVersion}"
     testImplementation "org.bouncycastle:bcpkix-jdk15on:${bouncyCastleVersion}"
-    testImplementation "io.rest-assured:spring-mock-mvc:5.2.0"
+    testImplementation "io.rest-assured:spring-mock-mvc:5.3.0"
     testImplementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.10"
     testImplementation "com.squareup.okhttp3:mockwebserver:5.0.0-alpha.10"
 }
 
 dependencyManagement {
     imports {
-        mavenBom "org.testcontainers:testcontainers-bom:1.17.5"
+        mavenBom "org.testcontainers:testcontainers-bom:1.17.6"
     }
 }
 
