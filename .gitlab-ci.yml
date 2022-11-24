@@ -1,28 +1,24 @@
-## Specific image for DinD
 image: docker:20.10.21
 
-# DinD (Docker in Docker) service is required for test containers
 services:
   - docker:dind
 
-## Environment variables
 variables:
-  # Instruct test containers to use the daemon of DinD
   DOCKER_HOST: "tcp://docker:2375"
-
-  # Specify to Docker where to create the certificates, Docker will
-  # create them automatically on boot, and will create
-  # `/certs/client` that will be shared between the service and job
-  # container, thanks to volume mount from config.toml
   DOCKER_TLS_CERTDIR: ""
-
-  # Improve performance with overlayfs.
   DOCKER_DRIVER: overlay2
 
-## Job test_code
-## - run unit tests
-## - evaluate test coverage 
-test_code:
+scan-code:
+  stage: .pre
+  image:
+    name: "zricethezav/gitleaks:latest"
+    entrypoint: [ "" ]
+  script:
+    - gitleaks detect --verbose --redact --no-git --source="$CI_PROJECT_DIR"
+  tags:
+    - docker
+
+test-code:
   image: eclipse-temurin:18-jdk
   stage: test
   script:
