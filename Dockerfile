@@ -1,4 +1,4 @@
-FROM gradle:7.5.1-jdk18-jammy AS build
+FROM gradle:7.6.0-jdk19-jammy AS build
 RUN mkdir /project
 COPY . /project
 WORKDIR /project
@@ -9,7 +9,7 @@ RUN cd build/libs/ && cp ronja-server.jar /project/
 # extrect layered jar file
 RUN java -Djarmode=layertools -jar ronja-server.jar extract
 
-FROM azul/zulu-openjdk-alpine:18-jre
+FROM azul/zulu-openjdk-alpine:19-jre
 # install dumb-init
 RUN apk add --no-cache dumb-init=1.2.5-r1
 RUN mkdir /app
