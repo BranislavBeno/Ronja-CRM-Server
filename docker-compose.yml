@@ -3,7 +3,6 @@ version: '3.5'
 ## Services
 services:
 
-  #MySQL Service
   ronja_db:
     image: mysql:8.0.31
     container_name: ronja_db
