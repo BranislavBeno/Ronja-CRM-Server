@@ -2,6 +2,7 @@ package com.ronja.crm.ronjaserver.controller;
 
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,7 +11,6 @@ import org.mockito.Mockito;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;

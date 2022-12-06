@@ -1,15 +1,16 @@
 package com.ronja.crm.ronjaserver.validator;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
 import java.util.List;
 
 public class CurrencyValidator implements ConstraintValidator<Currency, String> {
 
-  private final List<String> currencies = List.of("USD", "EUR");
+    private final List<String> currencies = List.of("USD", "EUR");
 
-  @Override
-  public boolean isValid(String value, ConstraintValidatorContext context) {
-    return currencies.contains(value);
-  }
+    @Override
+    public boolean isValid(String value, ConstraintValidatorContext context) {
+        return currencies.contains(value);
+    }
 }

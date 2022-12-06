@@ -44,7 +44,7 @@ jobs:
         file: ./Dockerfile
         platforms: linux/amd64, linux/arm64
         push: true
-        tags: beo1975/ronja-server:1.3.2
+        tags: beo1975/ronja-server:1.3.3
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -68,7 +68,7 @@ jobs:
                       "registry_type": "DOCKER_HUB",
                       "registry": "beo1975",
                       "repository": "ronja-server",
-                      "tag": "1.3.2"
+                      "tag": "1.3.3"
                     }
                   }
                 ]'
