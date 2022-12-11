@@ -2,6 +2,7 @@ package com.ronja.crm.ronjaserver.controller;
 
 import com.ronja.crm.ronjaserver.dto.RepresentativeDto;
 import com.ronja.crm.ronjaserver.dto.RepresentativeMapper;
+import com.ronja.crm.ronjaserver.dto.ScheduledDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.exception.EntityNotFoundException;
@@ -43,8 +44,11 @@ public class RepresentativeController {
     }
 
     @GetMapping("/scheduled")
-    public List<Representative> fetchScheduled(@RequestParam("days") int offset) {
-        return representativeService.findScheduledForNextNDays(offset);
+    public List<ScheduledDto> fetchScheduled(@RequestParam("days") int offset) {
+        return representativeService.findScheduledForNextNDays(offset)
+                .stream()
+                .map(mapper::toScheduledDto)
+                .toList();
     }
 
     @PostMapping("/add")

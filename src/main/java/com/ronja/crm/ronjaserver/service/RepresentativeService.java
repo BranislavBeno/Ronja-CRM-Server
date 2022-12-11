@@ -23,6 +23,7 @@ public record RepresentativeService(
   public List<Representative> findByCustomerId(int id) {
     return repository.findByCustomerId(id);
   }
+
   @Override
   public boolean existsById(int id) {
     return repository.existsById(id);
