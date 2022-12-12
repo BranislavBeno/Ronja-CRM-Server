@@ -1,5 +1,9 @@
 image: docker:20.10.21
 
+stages:
+  - test
+  - scan
+
 services:
   - docker:dind
 
@@ -7,6 +11,7 @@ variables:
   DOCKER_HOST: "tcp://docker:2375"
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
+  CONTAINER_RELEASE_IMAGE: beo1975/ronja-server:1.3.3
 
 scan-code:
   stage: .pre
@@ -15,6 +20,20 @@ scan-code:
     entrypoint: [""]
   script:
     - gitleaks detect --verbose --redact --no-git --source="$CI_PROJECT_DIR"
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
+  tags:
+    - docker
+
+scan-image:
+  stage: scan
+  image:
+    name: "aquasec/trivy:0.35.0"
+    entrypoint: [""]
+  script:
+    - trivy i --no-progress --ignore-unfixed --clear-cache --exit-code 1 $CONTAINER_RELEASE_IMAGE
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"
   tags:
     - docker
 
@@ -26,6 +45,8 @@ scan-vulnerabilities:
   script:
     - trivy fs --no-progress --ignore-unfixed --exit-code 0 $CI_PROJECT_DIR
   allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
   tags:
     - docker
 
@@ -37,5 +58,7 @@ test-code:
     - ./gradlew jacocoTestReport
     - cat build/reports/jacoco/test/html/index.html
   coverage: "/Total.*?([0-9]{1,3})%/"
+  rules:
+    - if: $CI_PIPELINE_SOURCE != "schedule"
   tags:
     - gitlab-org-docker
