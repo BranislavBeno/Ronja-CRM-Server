@@ -32,12 +32,39 @@ Following endpoints are available for usage:
 - **GET /customers/list** - returns list of all customers or empty list when no customer was found.
 - **POST /customers/add** - adds new customer.
 - **PUT /customers/update** - updates existing customer. Update is refused when a customer with given ID doesn't exist.
-- **DELETE /customers/delete/{id}** - deletes customer with given ID. Deletion is refused when customer with given ID doesn't exist.
+- **DELETE /customers/delete/{id}** - deletes customer with given ID. Deletion is refused when customer with given ID doesn't exist.  
 
+Request body example:
+```json
+{
+    "companyName": "FirstCorp",
+    "category": "LEVEL_1",
+    "focus": "BUILDER",
+    "status": "ACTIVE"
+}
+```
 
 - **GET /representatives/list** - returns list of all representatives or empty list when no representative was found.
 - **GET /representatives/search?customerId={id}** - returns list of all representatives with matching customer relation or empty list in case of searched id doesn't match to any customer.
-- **GET /representatives/scheduled?days={count of days}** - returns list of all representatives with .
+- **GET /representatives/scheduled?days={dayCount}** - returns list of all representatives with scheduled visit within today and today + `dayCount`.
 - **POST /representatives/add** - adds new representative.
 - **PUT /representatives/update** - updates existing representative. Update is refused when a representative with given ID doesn't exist.
 - **DELETE /representatives/delete/{id}** - deletes representative with given ID. Deletion is refused when representative with given ID doesn't exist.
+
+Request body example:
+```json
+    {
+        "firstName": "Employee",
+        "lastName": "First",
+        "position": "CFO",
+        "region": "",
+        "notice": "",
+        "status": "ACTIVE",
+        "lastVisit": "2021-11-08",
+        "scheduledVisit": "2022-12-21",
+        "phoneNumbers": [],
+        "emails": [],
+        "customer": null,
+        "contactType": "PERSONAL"
+    }
+```
