@@ -45,9 +45,9 @@ Request body example for customer:
 }
 ```
 Allowed values for:
-- category: `LEVEL_1`, `LEVEL_2`, `LEVEL_3`
-- focus: `BUILDER`, `MANUFACTURE`, `SPECIALIZED_MANUFACTURE`, `TRADE`
-- status: `ACTIVE`, `INACTIVE`
+- `category`: LEVEL_1, LEVEL_2, LEVEL_3
+- `focus`: BUILDER, MANUFACTURE, SPECIALIZED_MANUFACTURE, TRADE
+- `status`: ACTIVE, INACTIVE
 
 #### Representatives
 - **GET /representatives/list** - returns list of all representatives or empty list when no representative was found.
@@ -98,10 +98,10 @@ Request body example for representative:
 }
 ```
 Allowed values for:
-- status: `ACTIVE`, `INACTIVE`
-- contactType: `PERSONAL`, `MAIL`, `PHONE`, `ON_LINE`
-- lastVisit: date must be past or present
-- scheduledVisit: date must be future or present
+- `status`: ACTIVE, INACTIVE
+- `contactType`: PERSONAL, MAIL, PHONE, ON_LINE
+- `lastVisit`: date must be past or present
+- `scheduledVisit`: date must be future or present
 
 #### Metal prices
 - **GET /metals/list** - returns list of metal prices for copper, aluminum and lead on respective date from connected database or empty list when no metal prices were found.
