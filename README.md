@@ -29,21 +29,27 @@ For sending requests and receiving responses use `Postman`, `curl` or any web br
 ### API description
 Following endpoints are available for usage:
 
+#### Customers
 - **GET /customers/list** - returns list of all customers or empty list when no customer was found.
 - **POST /customers/add** - adds new customer.
 - **PUT /customers/update** - updates existing customer. Update is refused when a customer with given ID doesn't exist.
 - **DELETE /customers/delete/{id}** - deletes customer with given ID. Deletion is refused when customer with given ID doesn't exist.  
 
-Request body example:
+Request body example for customer:
 ```json
 {
-    "companyName": "FirstCorp",
-    "category": "LEVEL_1",
-    "focus": "BUILDER",
-    "status": "ACTIVE"
+  "companyName": "FirstCorp",
+  "category": "LEVEL_1",
+  "focus": "BUILDER",
+  "status": "ACTIVE"
 }
 ```
+Allowed values for:
+- category: `LEVEL_1`, `LEVEL_2`, `LEVEL_3`
+- focus: `BUILDER`, `MANUFACTURE`, `SPECIALIZED_MANUFACTURE`, `TRADE`
+- status: `ACTIVE`, `INACTIVE`
 
+#### Representatives
 - **GET /representatives/list** - returns list of all representatives or empty list when no representative was found.
 - **GET /representatives/search?customerId={id}** - returns list of all representatives with matching customer relation or empty list in case of searched id doesn't match to any customer.
 - **GET /representatives/scheduled?days={dayCount}** - returns list of all representatives with scheduled visit within today and today + `dayCount`.
@@ -51,20 +57,52 @@ Request body example:
 - **PUT /representatives/update** - updates existing representative. Update is refused when a representative with given ID doesn't exist.
 - **DELETE /representatives/delete/{id}** - deletes representative with given ID. Deletion is refused when representative with given ID doesn't exist.
 
-Request body example:
+Request body example for representative:
 ```json
+{
+  "firstName": "Employee",
+  "lastName": "First",
+  "position": "CFO",
+  "region": "EMEA",
+  "notice": "",
+  "status": "ACTIVE",
+  "lastVisit": "2021-11-08",
+  "scheduledVisit": "2022-12-21",
+  "phoneNumbers": [
     {
-        "firstName": "Employee",
-        "lastName": "First",
-        "position": "CFO",
-        "region": "",
-        "notice": "",
-        "status": "ACTIVE",
-        "lastVisit": "2021-11-08",
-        "scheduledVisit": "2022-12-21",
-        "phoneNumbers": [],
-        "emails": [],
-        "customer": null,
-        "contactType": "PERSONAL"
+      "contact": "+456789123",
+      "primary": true,
+      "type": "work"
     }
+  ],
+  "emails": [
+    {
+      "contact": "john@example.com",
+      "primary": true,
+      "type": "work"
+    },
+    {
+      "contact": "bob@example.com",
+      "primary": false,
+      "type": "home"
+    }
+  ],
+  "customer": {
+    "id": 1,
+    "companyName": "FirstCorp",
+    "category": "LEVEL_1",
+    "focus": "BUILDER",
+    "status": "ACTIVE"
+  },
+  "contactType": "PERSONAL"
+}
 ```
+Allowed values for:
+- status: `ACTIVE`, `INACTIVE`
+- contactType: `PERSONAL`, `MAIL`, `PHONE`, `ON_LINE`
+- lastVisit: date must be past or present
+- scheduledVisit: date must be future or present
+
+#### Metal prices
+- **GET /metals/list** - returns list of metal prices for copper, aluminum and lead on respective date from connected database or empty list when no metal prices were found.
+- **GET /metals/exchange** - returns metal prices for copper, aluminum and lead on respective date fetched from London Metal Exchange. This endpoint is used for scheduled job, which runs from Monday till Friday at 23:00
