@@ -21,7 +21,7 @@ abstract class BaseRepositoryTest {
     }
 
     private static MySQLContainer<?> populateDatabase() {
-        try (MySQLContainer<?> db = new MySQLContainer<>(DockerImageName.parse("mysql:8.0.31"))) {
+        try (MySQLContainer<?> db = new MySQLContainer<>(DockerImageName.parse("mysql:8.0.32"))) {
             return db.withDatabaseName("test")
                     .withUsername("Jon")
                     .withPassword("Doe")
