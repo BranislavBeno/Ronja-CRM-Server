@@ -16,6 +16,9 @@ jobs:
       gradle: ${{ steps.filter.outputs.gradle }}
       dockerfile: ${{ steps.filter.outputs.dockerfile }}
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
       - uses: dorny/paths-filter@v2.11.1
         id: filter
         with:
