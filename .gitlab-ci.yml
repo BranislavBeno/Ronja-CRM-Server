@@ -1,11 +1,11 @@
-image: docker:23.0.1
+image: docker:latest
 
 stages:
   - test
   - scan
 
 services:
-  - docker:23.0.1-dind
+  - docker:dind
 
 variables:
   DOCKER_HOST: "tcp://docker:2375"
