@@ -11,7 +11,7 @@ variables:
   DOCKER_HOST: "tcp://docker:2375"
   DOCKER_TLS_CERTDIR: ""
   DOCKER_DRIVER: overlay2
-  CONTAINER_RELEASE_IMAGE: beo1975/ronja-server:1.3.3
+  CONTAINER_RELEASE_IMAGE: beo1975/ronja-server:latest
 
 scan-code:
   stage: .pre
