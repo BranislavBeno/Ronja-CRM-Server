@@ -92,6 +92,7 @@ jacocoTestReport {
 sonarqube {
     properties {
         property "sonar.projectKey", "BranislavBeno_RonjaServer"
+        property "sonar.projectName", "ronja-server"
     }
 }
 
