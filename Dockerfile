@@ -1,11 +1,9 @@
-FROM gradle:8.0.2-jdk19-jammy AS build
+FROM azul/zulu-openjdk-alpine:20 AS build
 RUN mkdir /project
 COPY . /project
 WORKDIR /project
 # create fat jar
-RUN gradle build -x test
-# move the jar file
-RUN cd build/libs/ && cp ronja-server.jar /project/
+RUN chmod +x gradlew && ./gradlew build -x test && cp build/libs/ronja-server.jar ./
 # extrect layered jar file
 RUN java -Djarmode=layertools -jar ronja-server.jar extract
 
