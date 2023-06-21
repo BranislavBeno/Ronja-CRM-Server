@@ -7,7 +7,7 @@ RUN chmod +x gradlew && ./gradlew build -x test && cp build/libs/ronja-server.ja
 # extrect layered jar file
 RUN java -Djarmode=layertools -jar ronja-server.jar extract
 
-FROM azul/zulu-openjdk-alpine:20-jre-headless-latest
+FROM azul/zulu-openjdk-alpine:20.0.1-20.30.11-jre
 # install dumb-init
 RUN apk add --no-cache dumb-init=1.2.5-r1
 RUN mkdir /app
