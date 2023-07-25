@@ -1,31 +1,21 @@
 package com.ronja.crm.ronjaserver.repository;
 
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
+@Testcontainers(disabledWithoutDocker = true)
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 abstract class BaseRepositoryTest {
 
-    static final MySQLContainer<?> CONTAINER_DB = populateDatabase();
+    @ServiceConnection
+    private static final MySQLContainer<?> MY_SQL_CONTAINER = new MySQLContainer<>(DockerImageName.parse("mysql:8.0.34"));
 
     static {
-        CONTAINER_DB.start();
-    }
-
-    @DynamicPropertySource
-    static void properties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", CONTAINER_DB::getJdbcUrl);
-        registry.add("spring.datasource.password", CONTAINER_DB::getPassword);
-        registry.add("spring.datasource.username", CONTAINER_DB::getUsername);
-    }
-
-    private static MySQLContainer<?> populateDatabase() {
-        try (MySQLContainer<?> db = new MySQLContainer<>(DockerImageName.parse("mysql:8.0.33"))) {
-            return db.withDatabaseName("test")
-                    .withUsername("Jon")
-                    .withPassword("Doe")
-                    .withReuse(true);
-        }
+        MY_SQL_CONTAINER.start();
     }
 }
