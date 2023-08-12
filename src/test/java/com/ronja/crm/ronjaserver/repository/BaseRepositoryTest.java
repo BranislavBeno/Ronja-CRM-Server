@@ -13,7 +13,7 @@ import org.testcontainers.utility.DockerImageName;
 abstract class BaseRepositoryTest {
 
     @ServiceConnection
-    private static final MySQLContainer<?> MY_SQL_CONTAINER = new MySQLContainer<>(DockerImageName.parse("mysql:8.0.34"));
+    private static final MySQLContainer<?> MY_SQL_CONTAINER = new MySQLContainer<>(DockerImageName.parse("mysql:8.1.0"));
 
     static {
         MY_SQL_CONTAINER.start();
