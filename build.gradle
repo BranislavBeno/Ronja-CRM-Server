@@ -29,7 +29,6 @@ repositories {
     mavenCentral()
 }
 
-var bouncyCastleVersion = "1.70"
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-webflux"
@@ -48,8 +47,6 @@ dependencies {
     testImplementation "org.testcontainers:mysql"
     testImplementation "org.testcontainers:mockserver"
     testImplementation "org.mock-server:mockserver-client-java:5.15.0"
-    testImplementation "org.bouncycastle:bcprov-jdk15on:${bouncyCastleVersion}"
-    testImplementation "org.bouncycastle:bcpkix-jdk15on:${bouncyCastleVersion}"
     testImplementation "io.rest-assured:spring-mock-mvc:5.3.2"
     testImplementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.11"
     testImplementation "com.squareup.okhttp3:mockwebserver:5.0.0-alpha.11"
