@@ -3,7 +3,7 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=BranislavBeno_RonjaServer&metric=security_rating)](https://sonarcloud.io/dashboard?id=BranislavBeno_RonjaServer)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=BranislavBeno_RonjaServer&metric=coverage)](https://sonarcloud.io/dashboard?id=BranislavBeno_RonjaServer)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=BranislavBeno_RonjaServer&metric=ncloc)](https://sonarcloud.io/dashboard?id=BranislavBeno_RonjaServer)  
-[![](https://img.shields.io/badge/Java-20-blue)](/build.gradle)
+[![](https://img.shields.io/badge/Java-21-blue)](/build.gradle)
 [![](https://img.shields.io/badge/Spring%20Boot-3.2.0-blue)](/build.gradle)
 [![](https://img.shields.io/badge/Testcontainers-1.19.3-blue)](/build.gradle)
 [![](https://img.shields.io/badge/Gradle-8.5-blue)](/gradle/wrapper/gradle-wrapper.properties)
@@ -17,7 +17,7 @@ system and by default, listens on port 8087.
 Preferred way of installation is to pull and run prepared docker image `docker pull beo1975/ronja-server:1.3.3`.  
 Precondition is to have `docker` installed on the hosting OS.
 
-Alternatively is possible to build and run the application as a fat jar on any hosting OS with `Java 20` installed.
+Alternatively is possible to build and run the application as a fat jar on any hosting OS with `Java 21` installed.
 
 > Application expects running instance of MySQL database engine.
 > It's recommended to install and run MySQL as a docker image by usage of prepared `docker-compose.yml` file.
