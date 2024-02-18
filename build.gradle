@@ -36,7 +36,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "com.mysql:mysql-connector-j"
-    implementation "io.micrometer:micrometer-registry-prometheus:1.12.2"
+    implementation "io.micrometer:micrometer-registry-prometheus:1.12.3"
     implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
     implementation "org.apache.commons:commons-text:1.11.0"
