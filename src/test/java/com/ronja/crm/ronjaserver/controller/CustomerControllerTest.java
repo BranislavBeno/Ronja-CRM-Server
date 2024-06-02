@@ -3,6 +3,7 @@ package com.ronja.crm.ronjaserver.controller;
 import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import jakarta.validation.ConstraintViolationException;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,8 +14,6 @@ import org.springframework.http.MediaType;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -33,28 +32,28 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
     @Test
     @DisplayName("Test whether fetching all customers is successful")
     void testFindAll() throws Exception {
-        when(service.findAll()).thenReturn(List.of(new Customer(), new Customer()));
+        Mockito.when(service.findAll()).thenReturn(List.of(new Customer(), new Customer()));
 
         this.mockMvc
                 .perform(get("/customers/list")
                         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()", is(2)))
+                .andExpect(jsonPath("$.size()", Matchers.is(2)))
                 .andDo(print())
                 .andReturn();
 
-        verify(service).findAll();
+        Mockito.verify(service).findAll();
     }
 
     @ParameterizedTest
     @ValueSource(strings = {ADD_BODY, "{}"})
     @DisplayName("Test whether adding new customer is successful")
     void testAdd(String body) throws Exception {
-        when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
+        Mockito.when(mapper.toEntity(Mockito.any(CustomerDto.class))).thenReturn(new Customer());
         Customer customer = Mockito.mock(Customer.class);
-        when(service.save(any(Customer.class))).thenReturn(customer);
-        when(customer.getId()).thenReturn(1);
+        Mockito.when(service.save(Mockito.any(Customer.class))).thenReturn(customer);
+        Mockito.when(customer.getId()).thenReturn(1);
 
         this.mockMvc
                 .perform(post("/customers/add")
@@ -62,16 +61,16 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
                         .content(body))
                 .andExpect(status().isCreated());
 
-        verify(customer).getId();
-        verify(service).save(any(Customer.class));
-        verify(mapper).toEntity(any(CustomerDto.class));
+        Mockito.verify(customer).getId();
+        Mockito.verify(service).save(Mockito.any(Customer.class));
+        Mockito.verify(mapper).toEntity(Mockito.any(CustomerDto.class));
     }
 
     @Test
     @DisplayName("Test whether adding new customer fails due to constraint violation")
     void testFailingAddDueConstraintViolation() throws Exception {
-        when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
-        when(service.save(any(Customer.class))).thenThrow(ConstraintViolationException.class);
+        Mockito.when(mapper.toEntity(Mockito.any(CustomerDto.class))).thenReturn(new Customer());
+        Mockito.when(service.save(Mockito.any(Customer.class))).thenThrow(ConstraintViolationException.class);
 
         this.mockMvc
                 .perform(post("/customers/add")
@@ -79,17 +78,17 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
                         .content(BAD_BODY))
                 .andExpect(status().isBadRequest());
 
-        verify(mapper, never()).toEntity(any(CustomerDto.class));
-        verify(service, never()).save(any(Customer.class));
+        Mockito.verify(mapper, Mockito.never()).toEntity(Mockito.any(CustomerDto.class));
+        Mockito.verify(service, Mockito.never()).save(Mockito.any(Customer.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {UPDATE_BODY, "{}"})
     @DisplayName("Test whether updating an existing customer is successful")
     void testUpdate(String body) throws Exception {
-        when(service.existsById(anyInt())).thenReturn(true);
-        when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
-        when(service.save(any(Customer.class))).thenReturn(any(Customer.class));
+        Mockito.when(service.existsById(Mockito.anyInt())).thenReturn(true);
+        Mockito.when(mapper.toEntity(Mockito.any(CustomerDto.class))).thenReturn(new Customer());
+        Mockito.when(service.save(Mockito.any(Customer.class))).thenReturn(Mockito.any(Customer.class));
 
         this.mockMvc
                 .perform(put("/customers/update")
@@ -97,17 +96,17 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
                         .content(body))
                 .andExpect(status().isOk());
 
-        verify(service).existsById(anyInt());
-        verify(mapper).toEntity(any(CustomerDto.class));
-        verify(service).save(any(Customer.class));
+        Mockito.verify(service).existsById(Mockito.anyInt());
+        Mockito.verify(mapper).toEntity(Mockito.any(CustomerDto.class));
+        Mockito.verify(service).save(Mockito.any(Customer.class));
     }
 
     @Test
     @DisplayName("Test whether updating customer fails due to not existing customer")
     void testFailingUpdate() throws Exception {
-        when(service.existsById(anyInt())).thenReturn(false);
-        when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
-        when(service.save(any(Customer.class))).thenReturn(any(Customer.class));
+        Mockito.when(service.existsById(Mockito.anyInt())).thenReturn(false);
+        Mockito.when(mapper.toEntity(Mockito.any(CustomerDto.class))).thenReturn(new Customer());
+        Mockito.when(service.save(Mockito.any(Customer.class))).thenReturn(Mockito.any(Customer.class));
 
         this.mockMvc
                 .perform(put("/customers/update")
@@ -115,36 +114,36 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
                         .content(UPDATE_BODY))
                 .andExpect(status().isNotFound());
 
-        verify(service).existsById(anyInt());
-        verify(mapper, never()).toEntity(any(CustomerDto.class));
-        verify(service, never()).save(any(Customer.class));
+        Mockito.verify(service).existsById(Mockito.anyInt());
+        Mockito.verify(mapper, Mockito.never()).toEntity(Mockito.any(CustomerDto.class));
+        Mockito.verify(service, Mockito.never()).save(Mockito.any(Customer.class));
     }
 
     @Test
     @DisplayName("Test whether deleting customer is successful")
     void testDelete() throws Exception {
-        when(service.existsById(anyInt())).thenReturn(true);
-        service.deleteById(anyInt());
+        Mockito.when(service.existsById(Mockito.anyInt())).thenReturn(true);
+        service.deleteById(Mockito.anyInt());
 
         this.mockMvc
                 .perform(delete("/customers/delete/1"))
                 .andExpect(status().isNoContent());
 
-        verify(service).existsById(anyInt());
-        verify(service, times(2)).deleteById(anyInt());
+        Mockito.verify(service).existsById(Mockito.anyInt());
+        Mockito.verify(service, Mockito.times(2)).deleteById(Mockito.anyInt());
     }
 
     @Test
     @DisplayName("Test whether deleting customer fails due to not existing customer")
     void testFailingDelete() throws Exception {
-        when(service.existsById(anyInt())).thenReturn(false);
-        service.deleteById(anyInt());
+        Mockito.when(service.existsById(Mockito.anyInt())).thenReturn(false);
+        service.deleteById(Mockito.anyInt());
 
         this.mockMvc
                 .perform(delete("/customers/delete/1"))
                 .andExpect(status().isNotFound());
 
-        verify(service).existsById(anyInt());
-        verify(service).deleteById(anyInt());
+        Mockito.verify(service).existsById(Mockito.anyInt());
+        Mockito.verify(service).deleteById(Mockito.anyInt());
     }
 }

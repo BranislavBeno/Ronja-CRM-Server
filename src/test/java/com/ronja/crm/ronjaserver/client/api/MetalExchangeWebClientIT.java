@@ -1,6 +1,7 @@
 package com.ronja.crm.ronjaserver.client.api;
 
 import com.ronja.crm.ronjaserver.client.domain.MetalExchange;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
@@ -19,11 +20,9 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @Testcontainers(disabledWithoutDocker = true)
 @DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "No ARM64 support")
-class MetalExchangeWebClientIT {
+class MetalExchangeWebClientIT implements WithAssertions {
 
     private static final MockServerContainer MOCK_SERVER = new MockServerContainer(DockerImageName.parse("mockserver/mockserver"));
     private static final String URL;

@@ -4,8 +4,12 @@ import com.ronja.crm.ronjaserver.client.domain.MetalExchange;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -13,11 +17,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-class MetalExchangeWebClientTest {
+class MetalExchangeWebClientTest implements WithAssertions {
 
     private static String VALID_RESPONSE;
 
@@ -29,7 +29,8 @@ class MetalExchangeWebClientTest {
                         .getResourceAsStream("payload/response.json"))
                 .readAllBytes());
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger logger = LoggerFactory.getLogger(MetalExchangeWebClientTest.class);
+            logger.error(e.getMessage());
         }
     }
 
@@ -55,7 +56,7 @@ class MetalExchangeWebClientTest {
         assertValidData(metalExchange);
 
         RecordedRequest recordedRequest = this.mockWebServer.takeRequest();
-        assertEquals("/", recordedRequest.getPath());
+        assertThat(recordedRequest.getPath()).isEqualTo("/");
     }
 
     @Test
@@ -81,7 +82,7 @@ class MetalExchangeWebClientTest {
 
     @Test
     void testFailingResponse() {
-        assertThrows(RuntimeException.class, this::fetchMockedData);
+        Assertions.assertThrows(RuntimeException.class, this::fetchMockedData);
     }
 
     @Test

@@ -1,15 +1,14 @@
 package com.ronja.crm.ronjaserver.repository;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-class CustomerRepositoryTest extends BaseRepositoryTest {
+class CustomerRepositoryTest extends BaseRepositoryTest implements WithAssertions {
 
     @Autowired
     private CustomerRepository repository;
