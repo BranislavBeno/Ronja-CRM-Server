@@ -19,12 +19,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(RepresentativeController.class)
 class RepresentativeControllerTest {
@@ -124,21 +123,21 @@ class RepresentativeControllerTest {
     @Test
     void testShouldNotReturnXML() throws Exception {
         this.mockMvc
-                .perform(get("/representatives/list")
+                .perform(MockMvcRequestBuilders.get("/representatives/list")
                         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML))
-                .andExpect(status().isNotAcceptable());
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
     }
 
     @Test
     void testFindAll() throws Exception {
         Mockito.when(representativeService.findAll()).thenReturn(List.of(new Representative(), new Representative()));
         this.mockMvc
-                .perform(get("/representatives/list")
+                .perform(MockMvcRequestBuilders.get("/representatives/list")
                         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
-                .andExpect(status().is(200))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()", Matchers.is(2)))
-                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", Matchers.is(2)))
+                .andDo(MockMvcResultHandlers.print())
                 .andReturn();
         Mockito.verify(representativeService).findAll();
     }
@@ -147,12 +146,12 @@ class RepresentativeControllerTest {
     void testFindByCustomerId() throws Exception {
         Mockito.when(representativeService.findByCustomerId(Mockito.anyInt())).thenReturn(List.of(new Representative()));
         this.mockMvc
-                .perform(get("/representatives/search?customerId=1")
+                .perform(MockMvcRequestBuilders.get("/representatives/search?customerId=1")
                         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
-                .andExpect(status().is(200))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()", Matchers.is(1)))
-                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", Matchers.is(1)))
+                .andDo(MockMvcResultHandlers.print())
                 .andReturn();
         Mockito.verify(representativeService).findByCustomerId(Mockito.anyInt());
     }
@@ -161,12 +160,12 @@ class RepresentativeControllerTest {
     void testFindScheduledForNextNDays() throws Exception {
         Mockito.when(representativeService.findScheduledForNextNDays(Mockito.anyInt())).thenReturn(List.of(new Representative()));
         this.mockMvc
-                .perform(get("/representatives/scheduled?days=7")
+                .perform(MockMvcRequestBuilders.get("/representatives/scheduled?days=7")
                         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
-                .andExpect(status().is(200))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()", Matchers.is(1)))
-                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", Matchers.is(1)))
+                .andDo(MockMvcResultHandlers.print())
                 .andReturn();
         Mockito.verify(representativeService).findScheduledForNextNDays(Mockito.anyInt());
     }
@@ -181,10 +180,10 @@ class RepresentativeControllerTest {
         Mockito.when(representative.getId()).thenReturn(1);
 
         this.mockMvc
-                .perform(post("/representatives/add")
+                .perform(MockMvcRequestBuilders.post("/representatives/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isCreated());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
         Mockito.verify(customerService).findById(Mockito.anyInt());
         Mockito.verify(mapper).toEntity(Mockito.any(RepresentativeDto.class), Mockito.any(Customer.class));
@@ -210,10 +209,10 @@ class RepresentativeControllerTest {
         Mockito.when(representativeService.save(Mockito.any(Representative.class))).thenThrow(ConstraintViolationException.class);
 
         this.mockMvc
-                .perform(post("/representatives/add")
+                .perform(MockMvcRequestBuilders.post("/representatives/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
-                .andExpect(status().isBadRequest());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
         Mockito.verify(customerService, Mockito.never()).findById(Mockito.anyInt());
         Mockito.verify(mapper, Mockito.never()).toEntity(Mockito.any(RepresentativeDto.class), Mockito.any(Customer.class));
@@ -229,10 +228,10 @@ class RepresentativeControllerTest {
         Mockito.when(representativeService.save(Mockito.any(Representative.class))).thenReturn(Mockito.any(Representative.class));
 
         this.mockMvc
-                .perform(put("/representatives/update")
+                .perform(MockMvcRequestBuilders.put("/representatives/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
         Mockito.verify(representativeService).existsById(Mockito.anyInt());
         Mockito.verify(customerService).findById(Mockito.anyInt());
@@ -248,10 +247,10 @@ class RepresentativeControllerTest {
         Mockito.when(representativeService.save(Mockito.any(Representative.class))).thenReturn(Mockito.any(Representative.class));
 
         this.mockMvc
-                .perform(put("/representatives/update")
+                .perform(MockMvcRequestBuilders.put("/representatives/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(UPDATE_BODY_FULL))
-                .andExpect(status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         Mockito.verify(representativeService).existsById(Mockito.anyInt());
         Mockito.verify(customerService, Mockito.never()).findById(Mockito.anyInt());
@@ -266,8 +265,8 @@ class RepresentativeControllerTest {
         representativeService.deleteById(Mockito.anyInt());
 
         this.mockMvc
-                .perform(delete("/representatives/delete/1"))
-                .andExpect(status().isNoContent());
+                .perform(MockMvcRequestBuilders.delete("/representatives/delete/1"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         Mockito.verify(representativeService).existsById(Mockito.anyInt());
         Mockito.verify(representativeService, Mockito.times(2)).deleteById(Mockito.anyInt());
@@ -280,8 +279,8 @@ class RepresentativeControllerTest {
         representativeService.deleteById(Mockito.anyInt());
 
         this.mockMvc
-                .perform(delete("/representatives/delete/1"))
-                .andExpect(status().isNotFound());
+                .perform(MockMvcRequestBuilders.delete("/representatives/delete/1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         Mockito.verify(representativeService).existsById(Mockito.anyInt());
         Mockito.verify(representativeService).deleteById(Mockito.anyInt());

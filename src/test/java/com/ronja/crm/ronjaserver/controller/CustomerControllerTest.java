@@ -11,12 +11,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 final class CustomerControllerTest extends CustomerControllerBaseTest {
 
@@ -24,9 +23,9 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
     @DisplayName("Test that response is not in xml format")
     void testShouldNotReturnXML() throws Exception {
         this.mockMvc
-                .perform(get("/customers/list")
+                .perform(MockMvcRequestBuilders.get("/customers/list")
                         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML))
-                .andExpect(status().isNotAcceptable());
+                .andExpect(MockMvcResultMatchers.status().isNotAcceptable());
     }
 
     @Test
@@ -35,12 +34,12 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
         Mockito.when(service.findAll()).thenReturn(List.of(new Customer(), new Customer()));
 
         this.mockMvc
-                .perform(get("/customers/list")
+                .perform(MockMvcRequestBuilders.get("/customers/list")
                         .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON))
-                .andExpect(status().is(200))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.size()", Matchers.is(2)))
-                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().is(200))
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", Matchers.is(2)))
+                .andDo(MockMvcResultHandlers.print())
                 .andReturn();
 
         Mockito.verify(service).findAll();
@@ -56,10 +55,10 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
         Mockito.when(customer.getId()).thenReturn(1);
 
         this.mockMvc
-                .perform(post("/customers/add")
+                .perform(MockMvcRequestBuilders.post("/customers/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
-                .andExpect(status().isCreated());
+                .andExpect(MockMvcResultMatchers.status().isCreated());
 
         Mockito.verify(customer).getId();
         Mockito.verify(service).save(Mockito.any(Customer.class));
@@ -73,10 +72,10 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
         Mockito.when(service.save(Mockito.any(Customer.class))).thenThrow(ConstraintViolationException.class);
 
         this.mockMvc
-                .perform(post("/customers/add")
+                .perform(MockMvcRequestBuilders.post("/customers/add")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(BAD_BODY))
-                .andExpect(status().isBadRequest());
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
 
         Mockito.verify(mapper, Mockito.never()).toEntity(Mockito.any(CustomerDto.class));
         Mockito.verify(service, Mockito.never()).save(Mockito.any(Customer.class));
@@ -91,10 +90,10 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
         Mockito.when(service.save(Mockito.any(Customer.class))).thenReturn(Mockito.any(Customer.class));
 
         this.mockMvc
-                .perform(put("/customers/update")
+                .perform(MockMvcRequestBuilders.put("/customers/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
-                .andExpect(status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
         Mockito.verify(service).existsById(Mockito.anyInt());
         Mockito.verify(mapper).toEntity(Mockito.any(CustomerDto.class));
@@ -109,10 +108,10 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
         Mockito.when(service.save(Mockito.any(Customer.class))).thenReturn(Mockito.any(Customer.class));
 
         this.mockMvc
-                .perform(put("/customers/update")
+                .perform(MockMvcRequestBuilders.put("/customers/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(UPDATE_BODY))
-                .andExpect(status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         Mockito.verify(service).existsById(Mockito.anyInt());
         Mockito.verify(mapper, Mockito.never()).toEntity(Mockito.any(CustomerDto.class));
@@ -126,8 +125,8 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
         service.deleteById(Mockito.anyInt());
 
         this.mockMvc
-                .perform(delete("/customers/delete/1"))
-                .andExpect(status().isNoContent());
+                .perform(MockMvcRequestBuilders.delete("/customers/delete/1"))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         Mockito.verify(service).existsById(Mockito.anyInt());
         Mockito.verify(service, Mockito.times(2)).deleteById(Mockito.anyInt());
@@ -140,8 +139,8 @@ final class CustomerControllerTest extends CustomerControllerBaseTest {
         service.deleteById(Mockito.anyInt());
 
         this.mockMvc
-                .perform(delete("/customers/delete/1"))
-                .andExpect(status().isNotFound());
+                .perform(MockMvcRequestBuilders.delete("/customers/delete/1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
 
         Mockito.verify(service).existsById(Mockito.anyInt());
         Mockito.verify(service).deleteById(Mockito.anyInt());
