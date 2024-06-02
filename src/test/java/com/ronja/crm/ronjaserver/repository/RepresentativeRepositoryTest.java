@@ -2,6 +2,7 @@ package com.ronja.crm.ronjaserver.repository;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
@@ -11,9 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-class RepresentativeRepositoryTest extends BaseRepositoryTest {
+class RepresentativeRepositoryTest extends BaseRepositoryTest implements WithAssertions {
 
     @Autowired
     RepresentativeRepository repository;
@@ -30,7 +29,7 @@ class RepresentativeRepositoryTest extends BaseRepositoryTest {
     void testSearchBy() {
         List<Representative> result = repository.findByCustomerId(1);
         assertThat(result).hasSize(1);
-        assertRepresentative(result.get(0));
+        assertRepresentative(result.getFirst());
     }
 
     @Test

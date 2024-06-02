@@ -1,10 +1,12 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.2.5'
+    id 'org.springframework.boot' version '3.3.0'
     id 'io.spring.dependency-management' version '1.1.5'
     id 'jacoco'
     id 'org.sonarqube' version '5.0.0.4638'
     id 'com.gorylenko.gradle-git-properties' version '2.4.2'
+    id 'org.cyclonedx.bom' version '1.8.2'
+    id 'org.openrewrite.rewrite' version '6.15.1'
 }
 
 group = 'com.ronja.crm'
@@ -36,10 +38,11 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "com.mysql:mysql-connector-j"
-    implementation "io.micrometer:micrometer-registry-prometheus:1.12.5"
+    implementation "io.micrometer:micrometer-registry-prometheus:1.13.0"
     implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
     implementation "org.apache.commons:commons-text:1.12.0"
+
     testCompileOnly "org.springframework.boot:spring-boot-devtools"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation "org.springframework.boot:spring-boot-testcontainers"
@@ -50,12 +53,27 @@ dependencies {
     testImplementation "io.rest-assured:spring-mock-mvc:5.4.0"
     testImplementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.14"
     testImplementation "com.squareup.okhttp3:mockwebserver:5.0.0-alpha.14"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.10.2"
+    testImplementation "org.mockito:mockito-junit-jupiter:4.11.0"
+    testImplementation "org.hamcrest:hamcrest:2.2"
+
+    rewrite "org.openrewrite.recipe:rewrite-migrate-java:2.16.0"
+    rewrite "org.openrewrite.recipe:rewrite-spring:5.11.0"
 }
 
 dependencyManagement {
     imports {
-        mavenBom "org.testcontainers:testcontainers-bom:1.19.7"
+        mavenBom "org.testcontainers:testcontainers-bom:1.19.8"
     }
+}
+
+rewrite {
+    activeRecipe("com.ronja.crm.ronjaserver.NoStaticImportExample")
+    activeRecipe("org.openrewrite.java.RemoveUnusedImports")
+    activeRecipe("org.openrewrite.java.OrderImports")
+    activeRecipe("org.openrewrite.java.migrate.UpgradeToJava21")
+    activeRecipe("org.openrewrite.java.spring.boot3.SpringBoot3BestPractices")
+    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3")
 }
 
 test {

@@ -2,21 +2,20 @@ package com.ronja.crm.ronjaserver.service;
 
 import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.repository.RepresentativeRepository;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
-class RepresentativeServiceTest {
+class RepresentativeServiceTest implements WithAssertions {
 
   @Mock
   private RepresentativeRepository repository;
@@ -26,79 +25,79 @@ class RepresentativeServiceTest {
 
   @Test
   void testFindAllReturnNull() {
-    when(repository.findAllByOrderByLastNameAsc()).thenReturn(null);
+    Mockito.when(repository.findAllByOrderByLastNameAsc()).thenReturn(null);
     List<Representative> representatives = cut.findAll();
-    verify(repository).findAllByOrderByLastNameAsc();
+    Mockito.verify(repository).findAllByOrderByLastNameAsc();
     assertThat(representatives).isNull();
   }
 
   @Test
   void testFindAllReturnList() {
-    when(repository.findAllByOrderByLastNameAsc()).thenReturn(List.of(new Representative()));
+    Mockito.when(repository.findAllByOrderByLastNameAsc()).thenReturn(List.of(new Representative()));
     List<Representative> representatives = cut.findAll();
-    verify(repository).findAllByOrderByLastNameAsc();
+    Mockito.verify(repository).findAllByOrderByLastNameAsc();
     assertThat(representatives).hasSize(1);
   }
 
   @Test
   void testFindByIdRegular() {
-    when(repository.findById(anyInt())).thenReturn(Optional.of(new Representative()));
+    Mockito.when(repository.findById(Mockito.anyInt())).thenReturn(Optional.of(new Representative()));
     Representative representative = cut.findById(1);
-    verify(repository).findById(anyInt());
+    Mockito.verify(repository).findById(Mockito.anyInt());
     assertThat(representative).isNotNull();
   }
 
   @Test
   void testFindByIdNull() {
-    when(repository.findById(anyInt())).thenReturn(Optional.empty());
+    Mockito.when(repository.findById(Mockito.anyInt())).thenReturn(Optional.empty());
     Representative representative = cut.findById(1);
-    verify(repository).findById(anyInt());
+    Mockito.verify(repository).findById(Mockito.anyInt());
     assertThat(representative).isNull();
   }
 
   @Test
   void testFindByCustomerIdRegular() {
-    when(repository.findByCustomerId(anyInt())).thenReturn(List.of(new Representative()));
+    Mockito.when(repository.findByCustomerId(Mockito.anyInt())).thenReturn(List.of(new Representative()));
     List<Representative> representatives = cut.findByCustomerId(1);
-    verify(repository).findByCustomerId(anyInt());
+    Mockito.verify(repository).findByCustomerId(Mockito.anyInt());
     assertThat(representatives).hasSize(1);
   }
 
   @Test
   void testFindScheduledForNextNDays() {
-    when(repository.findScheduledForNextNDays(anyInt())).thenReturn(List.of(new Representative()));
+    Mockito.when(repository.findScheduledForNextNDays(Mockito.anyInt())).thenReturn(List.of(new Representative()));
     List<Representative> representatives = cut.findScheduledForNextNDays(1);
-    verify(repository).findScheduledForNextNDays(anyInt());
+    Mockito.verify(repository).findScheduledForNextNDays(Mockito.anyInt());
     assertThat(representatives).hasSize(1);
   }
 
   @Test
   void testExistsById() {
-    when(repository.existsById(anyInt())).thenReturn(true);
+    Mockito.when(repository.existsById(Mockito.anyInt())).thenReturn(true);
     boolean isPresent = cut.existsById(1);
-    verify(repository).existsById(anyInt());
+    Mockito.verify(repository).existsById(Mockito.anyInt());
     assertThat(isPresent).isTrue();
   }
 
   @Test
   void testSaveThrowException() {
-    when(repository.save(any(Representative.class))).thenThrow(new IllegalArgumentException());
+    Mockito.when(repository.save(Mockito.any(Representative.class))).thenThrow(new IllegalArgumentException());
     Representative representative = new Representative();
-    assertThrows(IllegalArgumentException.class, () -> cut.save(representative));
+    Assertions.assertThrows(IllegalArgumentException.class, () -> cut.save(representative));
   }
 
   @Test
   void testSaveRegular() {
-    when(repository.save(any(Representative.class))).thenReturn(new Representative());
+    Mockito.when(repository.save(Mockito.any(Representative.class))).thenReturn(new Representative());
     Representative representative = cut.save(new Representative());
-    verify(repository).save(any(Representative.class));
+    Mockito.verify(repository).save(Mockito.any(Representative.class));
     assertThat(representative).isNotNull();
   }
 
   @Test
   void testDeleteByIdRegular() {
-    doNothing().when(repository).deleteById(anyInt());
+    Mockito.doNothing().when(repository).deleteById(Mockito.anyInt());
     cut.deleteById(1);
-    verify(repository).deleteById(anyInt());
+    Mockito.verify(repository).deleteById(Mockito.anyInt());
   }
 }

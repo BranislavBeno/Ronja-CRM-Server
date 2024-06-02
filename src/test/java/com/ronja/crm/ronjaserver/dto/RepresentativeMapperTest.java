@@ -2,15 +2,14 @@ package com.ronja.crm.ronjaserver.dto;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
+import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.Collections;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-class RepresentativeMapperTest {
+class RepresentativeMapperTest implements WithAssertions {
 
   private RepresentativeMapper mapper;
 

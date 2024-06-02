@@ -2,14 +2,13 @@ package com.ronja.crm.ronjaserver.repository;
 
 import com.ronja.crm.ronjaserver.entity.MetalData;
 import jakarta.validation.ValidationException;
+import org.assertj.core.api.WithAssertions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-class MetalDataRepositoryTest extends BaseRepositoryTest {
+class MetalDataRepositoryTest extends BaseRepositoryTest implements WithAssertions {
 
     @Autowired
     private MetalDataRepository repository;
@@ -37,6 +36,6 @@ class MetalDataRepositoryTest extends BaseRepositoryTest {
     @Test
     void testFailingSave() {
         MetalData data = new MetalData();
-        assertThrows(ValidationException.class, () -> repository.save(data));
+        Assertions.assertThrows(ValidationException.class, () -> repository.save(data));
     }
 }
