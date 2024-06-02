@@ -4,7 +4,6 @@ import com.ronja.crm.ronjaserver.dto.MetalDataDto;
 import com.ronja.crm.ronjaserver.dto.MetalDataMapper;
 import com.ronja.crm.ronjaserver.entity.MetalData;
 import com.ronja.crm.ronjaserver.service.MetalDataService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +21,8 @@ public class MetalDataController {
     private final MetalDataService service;
     private final MetalDataMapper mapper;
 
-    public MetalDataController(@Autowired MetalDataService dataService,
-                               @Autowired MetalDataMapper mapper) {
+    public MetalDataController(MetalDataService dataService,
+                               MetalDataMapper mapper) {
         this.service = dataService;
         this.mapper = mapper;
     }
