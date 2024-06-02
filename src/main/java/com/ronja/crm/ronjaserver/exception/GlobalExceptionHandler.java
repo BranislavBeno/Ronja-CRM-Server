@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<String> inputValidationException(ConstraintViolationException e) throws JsonProcessingException {
-        String message = String.format("Invalid request: %s", e.getMessage());
+        String message = "Invalid request: %s".formatted(e.getMessage());
 
         if (e.getConstraintViolations() != null) {
             List<Violation> violations = e.getConstraintViolations().stream()
