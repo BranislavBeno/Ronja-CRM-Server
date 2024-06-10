@@ -1,7 +1,13 @@
 ---
 type: specs.openrewrite.org/v1beta/recipe
-name: com.ronja.crm.ronjaserver.NoStaticImportExample
+name: com.ronja.crm.ronjaserver.NoConstantStaticImport
 displayName: Remove static import example
+preconditions:
+  - org.openrewrite.text.Find:
+      find: 'package com.ronja.crm.ronjaserver.validator;'
+      filePattern: '**/*.java'
 recipeList:
-  - org.openrewrite.java.NoStaticImport:
-      methodPattern: org.springframework.test.web.servlet.result.MockMvcResultMatchers *(..)
+  - com.yourorg.NoConstantStaticImport:
+      fullyQualifiedConstantName: java.lang.annotation.ElementType.FIELD
+  - com.yourorg.NoConstantStaticImport:
+      fullyQualifiedConstantName: java.lang.annotation.RetentionPolicy.RUNTIME
