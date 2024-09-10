@@ -17,7 +17,7 @@ class ContainersConfig {
     @ServiceConnection
     @RestartScope
     public MySQLContainer<?> mySqlContainer() {
-        return new MySQLContainer<>("mysql:9.0.0");
+        return new MySQLContainer<>("mysql:9.0.1");
     }
 
     @Bean
