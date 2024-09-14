@@ -1,12 +1,12 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.3.1'
+    id 'org.springframework.boot' version '3.3.3'
     id 'io.spring.dependency-management' version '1.1.6'
     id 'jacoco'
     id 'org.sonarqube' version '5.1.0.4882'
     id 'com.gorylenko.gradle-git-properties' version '2.4.2'
-    id 'org.cyclonedx.bom' version '1.8.2'
-    id 'org.openrewrite.rewrite' version '6.16.4'
+    id 'org.cyclonedx.bom' version '1.10.0'
+    id 'org.openrewrite.rewrite' version '6.23.1'
 }
 
 group = 'com.ronja.crm'
@@ -39,7 +39,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("com.mysql:mysql-connector-j")
-    implementation("io.micrometer:micrometer-registry-prometheus:1.13.2")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.13.4")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
     implementation("org.apache.commons:commons-text:1.12.0")
@@ -47,7 +47,7 @@ dependencies {
     testCompileOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation(platform("org.testcontainers:testcontainers-bom:1.20.0"))
+    testImplementation(platform("org.testcontainers:testcontainers-bom:1.20.1"))
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
     testImplementation("org.testcontainers:mockserver")
@@ -55,11 +55,8 @@ dependencies {
     testImplementation("io.rest-assured:spring-mock-mvc:5.5.0")
     testImplementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
     testImplementation("com.squareup.okhttp3:mockwebserver:5.0.0-alpha.14")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.3")
-    testImplementation("org.mockito:mockito-junit-jupiter:5.12.0")
-    testImplementation("org.hamcrest:hamcrest:3.0")
 
-    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:2.15.0"))
+    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:2.18.0"))
     rewrite("org.openrewrite.recipe:rewrite-migrate-java")
     rewrite("org.openrewrite.recipe:rewrite-spring")
 }
