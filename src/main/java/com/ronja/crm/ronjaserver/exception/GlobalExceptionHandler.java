@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
 
         if (e.getConstraintViolations() != null) {
             List<Violation> violations = e.getConstraintViolations().stream()
-                    .map(v -> new Violation(v.getPropertyPath().toString(), v.getMessage())).collect(Collectors.toList());
+                    .map(v -> new Violation(v.getPropertyPath().toString(), v.getMessage())).collect(Collectors.toUnmodifiableList());
             ValidationErrorResponse error = new ValidationErrorResponse(violations);
             message = mapper.writeValueAsString(error);
         }

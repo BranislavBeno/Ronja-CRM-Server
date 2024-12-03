@@ -34,7 +34,7 @@ public class CustomerController {
     return service.findAll()
         .stream()
         .map(mapper::toDto)
-        .collect(Collectors.toList());
+        .collect(Collectors.toUnmodifiableList());
   }
 
   @PostMapping("/add")

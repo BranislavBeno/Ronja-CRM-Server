@@ -33,7 +33,7 @@ public class MetalDataController {
     public List<MetalDataDto> list() {
         return StreamSupport.stream(service.findAll().spliterator(), false)
             .map(mapper::toDto)
-            .collect(Collectors.toList());
+            .collect(Collectors.toUnmodifiableList());
     }
 
     @GetMapping("/exchange")
