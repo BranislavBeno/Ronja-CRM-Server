@@ -19,7 +19,7 @@ scan-code:
     - docker
 
 test-code:
-  image: eclipse-temurin:18-jdk
+  image: eclipse-temurin:11-jdk
   stage: test
   script:
     - chmod +x gradlew
