@@ -27,7 +27,7 @@ class CustomerMapperTest {
   void testMappingToDto() {
     Customer customer = new Customer();
     CustomerDto dto = mapper.toDto(customer);
-    assertThat(dto.id()).isZero();
-    assertThat(dto.companyName()).isNull();
+    assertThat(dto.getId()).isZero();
+    assertThat(dto.getCompanyName()).isNull();
   }
 }

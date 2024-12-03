@@ -19,11 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MetalExchangeWebClientTest {
 
-    private static String VALID_RESPONSE;
+    private static String validResponse;
 
     static {
         try {
-            VALID_RESPONSE = new String(Objects.requireNonNull(
+            validResponse = new String(Objects.requireNonNull(
                     MetalExchangeWebClientTest.class
                         .getClassLoader()
                         .getResourceAsStream("payload/response.json"))
@@ -47,7 +47,7 @@ class MetalExchangeWebClientTest {
     void testSuccessfulResponse() throws InterruptedException {
         MockResponse mockResponse = new MockResponse()
                 .addHeader("Content-Type", "application/json")
-                .setBody(VALID_RESPONSE);
+                .setBody(validResponse);
         this.mockWebServer.enqueue(mockResponse);
 
         MetalExchange metalExchange = webClient.fetchExchangeData();
@@ -60,14 +60,13 @@ class MetalExchangeWebClientTest {
 
     @Test
     void testIncompleteSuccessfulResponse() {
-        String response = """
-                {
-                  "success": true,
-                  "rates": {
-                    "LME-ALU": 10.573385811699,
-                    "LME-XCU": 3.256136987247
-                  }
-                }""";
+        String response = "{\n" +
+                          "  \"success\": true,\n" +
+                          "  \"rates\": {\n" +
+                          "    \"LME-ALU\": 10.573385811699,\n" +
+                          "    \"LME-XCU\": 3.256136987247\n" +
+                          "  }\n" +
+                          "}";
 
         this.mockWebServer.enqueue(new MockResponse()
                 .addHeader("Content-Type", "application/json")
@@ -92,37 +91,37 @@ class MetalExchangeWebClientTest {
         this.mockWebServer.enqueue(new MockResponse()
                 .addHeader("Content-Type", "application/json")
                 .setResponseCode(200)
-                .setBody(VALID_RESPONSE)
+                .setBody(validResponse)
                 .setBodyDelay(2, TimeUnit.SECONDS));
         this.mockWebServer.enqueue(new MockResponse()
                 .addHeader("Content-Type", "application/json")
                 .setResponseCode(200)
-                .setBody(VALID_RESPONSE));
+                .setBody(validResponse));
 
         MetalExchange metalExchange = webClient.fetchExchangeData();
 
         assertThat(metalExchange).isNotNull();
-        assertThat(metalExchange.success()).isTrue();
+        assertThat(metalExchange.isSuccess()).isTrue();
     }
 
     private void assertValidData(MetalExchange metalExchange) {
         assertThat(metalExchange).isNotNull();
-        assertThat(metalExchange.success()).isTrue();
-        assertThat(metalExchange.rates().aluminum()).isEqualTo(new BigDecimal("10.573385811699"));
-        assertThat(metalExchange.rates().copper()).isEqualTo(new BigDecimal("3.256136987247"));
-        assertThat(metalExchange.rates().lead()).isEqualTo(new BigDecimal("14.319008911883"));
-        assertThat(metalExchange.currency()).isEqualTo("USD");
-        assertThat(metalExchange.date()).isBeforeOrEqualTo(LocalDate.now());
+        assertThat(metalExchange.isSuccess()).isTrue();
+        assertThat(metalExchange.getRates().getAluminum()).isEqualTo(new BigDecimal("10.573385811699"));
+        assertThat(metalExchange.getRates().getCopper()).isEqualTo(new BigDecimal("3.256136987247"));
+        assertThat(metalExchange.getRates().getLead()).isEqualTo(new BigDecimal("14.319008911883"));
+        assertThat(metalExchange.getCurrency()).isEqualTo("USD");
+        assertThat(metalExchange.getDate()).isBeforeOrEqualTo(LocalDate.now());
     }
 
     private void assertIncompleteValidData(MetalExchange metalExchange) {
         assertThat(metalExchange).isNotNull();
-        assertThat(metalExchange.success()).isTrue();
-        assertThat(metalExchange.rates().aluminum()).isEqualTo(new BigDecimal("10.573385811699"));
-        assertThat(metalExchange.rates().copper()).isEqualTo(new BigDecimal("3.256136987247"));
-        assertThat(metalExchange.rates().lead()).isNull();
-        assertThat(metalExchange.currency()).isNull();
-        assertThat(metalExchange.date()).isNull();
+        assertThat(metalExchange.isSuccess()).isTrue();
+        assertThat(metalExchange.getRates().getAluminum()).isEqualTo(new BigDecimal("10.573385811699"));
+        assertThat(metalExchange.getRates().getCopper()).isEqualTo(new BigDecimal("3.256136987247"));
+        assertThat(metalExchange.getRates().getLead()).isNull();
+        assertThat(metalExchange.getCurrency()).isNull();
+        assertThat(metalExchange.getDate()).isNull();
     }
 
     private void fetchMockedData() {

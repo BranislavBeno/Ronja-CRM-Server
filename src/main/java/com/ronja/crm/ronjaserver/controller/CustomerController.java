@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/customers")
@@ -33,7 +34,7 @@ public class CustomerController {
     return service.findAll()
         .stream()
         .map(mapper::toDto)
-        .toList();
+        .collect(Collectors.toList());
   }
 
   @PostMapping("/add")
@@ -49,11 +50,11 @@ public class CustomerController {
 
   @PutMapping("/update")
   public ResponseEntity<CustomerDto> update(@Valid @RequestBody CustomerDto dto) {
-    if (service.existsById(dto.id())) {
+    if (service.existsById(dto.getId())) {
       Customer customer = service.save(mapper.toEntity(dto));
       return ResponseEntity.ok(mapper.toDto(customer));
     } else {
-      throw new EntityNotFoundException("Zákazník", dto.companyName());
+      throw new EntityNotFoundException("Zákazník", dto.getCompanyName());
     }
   }
 

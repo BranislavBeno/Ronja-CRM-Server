@@ -32,8 +32,8 @@ class MetalExchangeWebClientIT {
 
     static {
         MOCK_SERVER.start();
-        URL = "http://%s:%s/api/latest?base=USD&symbols=LME-ALU,LME-XCU,LME-LEAD&access_key="
-                .formatted(MOCK_SERVER.getHost(), MOCK_SERVER.getServerPort());
+        URL = String.format("http://%s:%s/api/latest?base=USD&symbols=LME-ALU,LME-XCU,LME-LEAD&access_key=",
+                MOCK_SERVER.getHost(), MOCK_SERVER.getServerPort());
     }
 
     @BeforeAll
@@ -51,12 +51,12 @@ class MetalExchangeWebClientIT {
             MetalExchange metalExchange = webClient.fetchExchangeData();
 
             assertThat(metalExchange).isNotNull();
-            assertThat(metalExchange.success()).isTrue();
-            assertThat(metalExchange.rates().aluminum()).isEqualTo(new BigDecimal("10.573385811699"));
-            assertThat(metalExchange.rates().copper()).isEqualTo(new BigDecimal("3.256136987247"));
-            assertThat(metalExchange.rates().lead()).isEqualTo(new BigDecimal("14.319008911883"));
-            assertThat(metalExchange.currency()).isEqualTo("USD");
-            assertThat(metalExchange.date()).isBeforeOrEqualTo(LocalDate.now());
+            assertThat(metalExchange.isSuccess()).isTrue();
+            assertThat(metalExchange.getRates().getAluminum()).isEqualTo(new BigDecimal("10.573385811699"));
+            assertThat(metalExchange.getRates().getCopper()).isEqualTo(new BigDecimal("3.256136987247"));
+            assertThat(metalExchange.getRates().getLead()).isEqualTo(new BigDecimal("14.319008911883"));
+            assertThat(metalExchange.getCurrency()).isEqualTo("USD");
+            assertThat(metalExchange.getDate()).isBeforeOrEqualTo(LocalDate.now());
         }
     }
 

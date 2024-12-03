@@ -32,19 +32,19 @@ public class RepresentativeMapper {
 
   public Representative toEntity(RepresentativeDto dto, Customer customer) {
     var representative = new Representative();
-    representative.setId(dto.id());
-    representative.setFirstName(dto.firstName());
-    representative.setLastName(dto.lastName());
-    representative.setStatus(dto.status());
-    representative.setRegion(dto.region());
-    representative.setNotice(dto.notice());
-    representative.setPosition(dto.position());
-    representative.setLastVisit(dto.lastVisit());
-    representative.setScheduledVisit(dto.scheduledVisit());
-    representative.setPhoneNumbers(dto.phoneNumbers());
-    representative.setEmails(dto.emails());
+    representative.setId(dto.getId());
+    representative.setFirstName(dto.getFirstName());
+    representative.setLastName(dto.getLastName());
+    representative.setStatus(dto.getStatus());
+    representative.setRegion(dto.getRegion());
+    representative.setNotice(dto.getNotice());
+    representative.setPosition(dto.getPosition());
+    representative.setLastVisit(dto.getLastVisit());
+    representative.setScheduledVisit(dto.getScheduledVisit());
+    representative.setPhoneNumbers(dto.getPhoneNumbers());
+    representative.setEmails(dto.getEmails());
     representative.setCustomer(customer);
-    representative.setContactType(dto.contactType());
+    representative.setContactType(dto.getContactType());
 
     return representative;
   }

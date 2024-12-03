@@ -9,31 +9,27 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(CustomerController.class)
-abstract sealed class CustomerControllerBaseTest permits CustomerControllerTest, CustomerControllerRestAssuredTest {
+abstract class CustomerControllerBaseTest {
 
-    static final String ADD_BODY = """
-            {
-                "companyName": "IdaCorp",
-                "category": "LEVEL_3",
-                "focus": "TRADE",
-                "status": "ACTIVE"
-            }""";
+    static final String ADD_BODY = "{\n" +
+                                   "    \"companyName\": \"IdaCorp\",\n" +
+                                   "    \"category\": \"LEVEL_3\",\n" +
+                                   "    \"focus\": \"TRADE\",\n" +
+                                   "    \"status\": \"ACTIVE\"\n" +
+                                   "}";
 
-    static final String BAD_BODY = """
-              "companyName": "TestCorp",
-              "category": "LEVEL",
-              "focus": "MAN",
-              "status": "ACT"
-            """;
+    static final String BAD_BODY = "  \"companyName\": \"TestCorp\",\n" +
+                                   "  \"category\": \"LEVEL\",\n" +
+                                   "  \"focus\": \"MAN\",\n" +
+                                   "  \"status\": \"ACT\"\n";
 
-    static final String UPDATE_BODY = """
-            {
-                "id": 1,
-                "companyName": "IdaCorp",
-                "category": "LEVEL_3",
-                "focus": "TRADE",
-                "status": "ACTIVE"
-            }""";
+    static final String UPDATE_BODY = "{\n" +
+                                      "    \"id\": 1,\n" +
+                                      "    \"companyName\": \"IdaCorp\",\n" +
+                                      "    \"category\": \"LEVEL_3\",\n" +
+                                      "    \"focus\": \"TRADE\",\n" +
+                                      "    \"status\": \"ACTIVE\"\n" +
+                                      "}";
 
     @MockBean
     EntityService<Customer> service;

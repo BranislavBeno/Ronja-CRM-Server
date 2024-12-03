@@ -60,11 +60,11 @@ public class RepresentativeController {
 
   @PutMapping("/update")
   public ResponseEntity<RepresentativeDto> update(@Valid @RequestBody RepresentativeDto dto) {
-    if (representativeService.existsById(dto.id())) {
+    if (representativeService.existsById(dto.getId())) {
       Representative representative = provideRepresentative(dto);
       return ResponseEntity.ok(mapper.toDto(representative));
     } else {
-      throw new EntityNotFoundException("Reprezentant", String.join(" ", dto.firstName(), dto.lastName()));
+      throw new EntityNotFoundException("Reprezentant", String.join(" ", dto.getFirstName(), dto.getLastName()));
     }
   }
 
@@ -79,7 +79,7 @@ public class RepresentativeController {
   }
 
   private Representative provideRepresentative(RepresentativeDto dto) {
-    Customer customer = customerService.findById(dto.customerId());
+    Customer customer = customerService.findById(dto.getCustomerId());
     return representativeService.save(mapper.toEntity(dto, customer));
   }
 }

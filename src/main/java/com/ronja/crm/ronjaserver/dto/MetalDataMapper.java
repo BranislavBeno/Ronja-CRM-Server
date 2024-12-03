@@ -21,11 +21,11 @@ public class MetalDataMapper {
 
   public MetalData toEntity(MetalExchange exchange) {
     var metalData = new MetalData();
-    metalData.setFetched(exchange.date());
-    metalData.setCurrency(exchange.currency());
-    metalData.setAluminum(exchange.rates().aluminum());
-    metalData.setCopper(exchange.rates().copper());
-    metalData.setLead(exchange.rates().lead());
+    metalData.setFetched(exchange.getDate());
+    metalData.setCurrency(exchange.getCurrency());
+    metalData.setAluminum(exchange.getRates().getAluminum());
+    metalData.setCopper(exchange.getRates().getCopper());
+    metalData.setLead(exchange.getRates().getLead());
 
     return metalData;
   }

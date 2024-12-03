@@ -34,6 +34,6 @@ class RepresentativeMapperTest {
   void testMappingToDto() {
     Representative representative = new Representative();
     RepresentativeDto dto = mapper.toDto(representative);
-    assertThat(dto.customerId()).isZero();
+    assertThat(dto.getCustomerId()).isZero();
   }
 }

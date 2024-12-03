@@ -6,31 +6,37 @@ import com.ronja.crm.ronjaserver.repository.CustomerRepository;
 import java.util.List;
 import java.util.Objects;
 
-public record CustomerService(CustomerRepository repository) implements EntityService<Customer> {
+public final class CustomerService implements EntityService<Customer> {
 
-  @Override
-  public List<Customer> findAll() {
-    return repository.findAllByOrderByCompanyNameAsc();
-  }
+    private final CustomerRepository repository;
 
-  @Override
-  public Customer findById(int id) {
-    return repository.findById(id).orElse(null);
-  }
+    public CustomerService(CustomerRepository repository) {
+        this.repository = repository;
+    }
 
-  @Override
-  public boolean existsById(int id) {
-    return repository.existsById(id);
-  }
+    @Override
+    public List<Customer> findAll() {
+        return repository.findAllByOrderByCompanyNameAsc();
+    }
 
-  @Override
-  public Customer save(Customer customer) {
-    Objects.requireNonNull(customer);
-    return repository.save(customer);
-  }
+    @Override
+    public Customer findById(int id) {
+        return repository.findById(id).orElse(null);
+    }
 
-  @Override
-  public void deleteById(int id) {
-    repository.deleteById(id);
-  }
+    @Override
+    public boolean existsById(int id) {
+        return repository.existsById(id);
+    }
+
+    @Override
+    public Customer save(Customer customer) {
+        Objects.requireNonNull(customer);
+        return repository.save(customer);
+    }
+
+    @Override
+    public void deleteById(int id) {
+        repository.deleteById(id);
+    }
 }

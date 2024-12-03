@@ -16,11 +16,11 @@ public class CustomerMapper {
 
   public Customer toEntity(CustomerDto dto) {
     var customer = new Customer();
-    customer.setId(dto.id());
-    customer.setCategory(dto.category());
-    customer.setFocus(dto.focus());
-    customer.setStatus(dto.status());
-    customer.setCompanyName(dto.companyName());
+    customer.setId(dto.getId());
+    customer.setCategory(dto.getCategory());
+    customer.setFocus(dto.getFocus());
+    customer.setStatus(dto.getStatus());
+    customer.setCompanyName(dto.getCompanyName());
 
     return customer;
   }
