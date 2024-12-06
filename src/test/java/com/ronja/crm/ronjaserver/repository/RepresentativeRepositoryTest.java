@@ -36,7 +36,7 @@ class RepresentativeRepositoryTest extends BaseRepositoryTest {
   void testSearchBy() {
     List<Representative> result = repository.findByCustomerId(1);
     assertThat(result).hasSize(1);
-    assertRepresentative(result.get(0));
+    assertRepresentative(result.getFirst());
   }
 
   @Test

@@ -7,12 +7,11 @@ import com.ronja.crm.ronjaserver.entity.Representative;
 import com.ronja.crm.ronjaserver.exception.EntityNotFoundException;
 import com.ronja.crm.ronjaserver.service.EntityService;
 import com.ronja.crm.ronjaserver.service.ExtendedEntityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -24,9 +23,9 @@ public class RepresentativeController {
   private final EntityService<Customer> customerService;
   private final RepresentativeMapper mapper;
 
-  public RepresentativeController(@Autowired ExtendedEntityService<Representative> representativeService,
-                                  @Autowired EntityService<Customer> customerService,
-                                  @Autowired RepresentativeMapper mapper) {
+  public RepresentativeController(ExtendedEntityService<Representative> representativeService,
+                                  EntityService<Customer> customerService,
+                                  RepresentativeMapper mapper) {
     this.representativeService = representativeService;
     this.customerService = customerService;
     this.mapper = mapper;

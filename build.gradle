@@ -1,7 +1,7 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.6'
-    id 'io.spring.dependency-management' version '1.1.0'
+    id 'org.springframework.boot' version '3.3.6'
+    id 'io.spring.dependency-management' version '1.1.6'
     id 'jacoco'
     id 'org.sonarqube' version '3.5.0.2730'
     id 'com.gorylenko.gradle-git-properties' version '2.4.1'
@@ -18,7 +18,7 @@ version = "R${versionMajor}.${versionMinor}.${versionPatch}" as Object
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -38,8 +38,8 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
-    implementation "mysql:mysql-connector-java"
-    implementation "io.micrometer:micrometer-registry-prometheus:1.10.2"
+    implementation "com.mysql:mysql-connector-j"
+    implementation "io.micrometer:micrometer-registry-prometheus:1.13.8"
     implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
     implementation "org.yaml:snakeyaml:1.33"
@@ -56,12 +56,15 @@ dependencies {
     testImplementation "com.squareup.okhttp3:mockwebserver:5.0.0-alpha.10"
     rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:2.23.1"))
     rewrite("org.openrewrite.recipe:rewrite-migrate-java")
+    rewrite("org.openrewrite.recipe:rewrite-spring")
 }
 
 rewrite {
     // https://docs.openrewrite.org/recipes/java/migrate
     activeRecipe("org.openrewrite.java.migrate.UpgradeToJava17")
     activeRecipe("org.openrewrite.java.migrate.util.ReplaceStreamCollectWithToList")
+    activeRecipe("org.openrewrite.java.spring.boot3.SpringBoot3BestPractices")
+    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3")
 }
 
 dependencyManagement {
