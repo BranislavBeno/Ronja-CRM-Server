@@ -13,7 +13,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @RestController
@@ -33,7 +32,7 @@ public class MetalDataController {
     public List<MetalDataDto> list() {
         return StreamSupport.stream(service.findAll().spliterator(), false)
             .map(mapper::toDto)
-            .collect(Collectors.toUnmodifiableList());
+            .toList();
     }
 
     @GetMapping("/exchange")

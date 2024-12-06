@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -28,7 +27,7 @@ public class GlobalExceptionHandler {
 
         if (e.getConstraintViolations() != null) {
             List<Violation> violations = e.getConstraintViolations().stream()
-                    .map(v -> new Violation(v.getPropertyPath().toString(), v.getMessage())).collect(Collectors.toUnmodifiableList());
+                    .map(v -> new Violation(v.getPropertyPath().toString(), v.getMessage())).toList();
             ValidationErrorResponse error = new ValidationErrorResponse(violations);
             message = mapper.writeValueAsString(error);
         }
