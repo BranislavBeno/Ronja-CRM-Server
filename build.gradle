@@ -66,7 +66,8 @@ rewrite {
 //    activeRecipe("org.openrewrite.java.spring.boot3.SpringBoot3BestPractices")
 //    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3")
 //    activeRecipe("org.openrewrite.java.RemoveUnusedImports")
-    activeRecipe("com.yourorg.NoStaticImportExample")
+//    activeRecipe("com.yourorg.NoStaticImportExample")
+    activeRecipe("org.openrewrite.java.RemoveUnusedImports")
 }
 
 dependencyManagement {
@@ -80,6 +81,7 @@ test {
     finalizedBy jacocoTestReport
     afterSuite { desc, result ->
         if (!desc.parent) {
+            println "\nTest result: ${result.resultType}"
             println "\nTest result: ${result.resultType}"
             println "Test summary: ${result.testCount} tests, " +
                     "${result.successfulTestCount} succeeded, " +

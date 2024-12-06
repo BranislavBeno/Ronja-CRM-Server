@@ -4,7 +4,6 @@ import com.ronja.crm.ronjaserver.entity.Contact;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 public final class RepresentativeDto {
 

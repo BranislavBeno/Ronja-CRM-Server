@@ -3,7 +3,6 @@ package com.ronja.crm.ronjaserver.client.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 public final class MetalExchange {
 
