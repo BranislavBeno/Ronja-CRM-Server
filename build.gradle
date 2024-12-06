@@ -61,10 +61,12 @@ dependencies {
 
 rewrite {
     // https://docs.openrewrite.org/recipes/java/migrate
-    activeRecipe("org.openrewrite.java.migrate.UpgradeToJava17")
-    activeRecipe("org.openrewrite.java.migrate.util.ReplaceStreamCollectWithToList")
-    activeRecipe("org.openrewrite.java.spring.boot3.SpringBoot3BestPractices")
-    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3")
+//    activeRecipe("org.openrewrite.java.migrate.UpgradeToJava17")
+//    activeRecipe("org.openrewrite.java.migrate.util.ReplaceStreamCollectWithToList")
+//    activeRecipe("org.openrewrite.java.spring.boot3.SpringBoot3BestPractices")
+//    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3")
+//    activeRecipe("org.openrewrite.java.RemoveUnusedImports")
+    activeRecipe("com.yourorg.NoStaticImportExample")
 }
 
 dependencyManagement {

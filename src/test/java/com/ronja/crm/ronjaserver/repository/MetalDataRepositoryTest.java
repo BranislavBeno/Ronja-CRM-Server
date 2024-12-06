@@ -1,6 +1,7 @@
 package com.ronja.crm.ronjaserver.repository;
 
 import com.ronja.crm.ronjaserver.entity.MetalData;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -10,7 +11,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import jakarta.validation.ValidationException;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Testcontainers(disabledWithoutDocker = true)
@@ -25,7 +25,7 @@ class MetalDataRepositoryTest extends BaseRepositoryTest {
   @Sql(scripts = "/scripts/INIT_METAL_DATA.sql")
   void testFindAll() {
     Iterable<MetalData> result = repository.findAll();
-    assertThat(result).hasSize(1);
+    Assertions.assertThat(result).hasSize(1);
   }
 
   @Test
@@ -37,8 +37,8 @@ class MetalDataRepositoryTest extends BaseRepositoryTest {
     MetalData responseData = repository.save(data);
     Iterable<MetalData> result = repository.findAll();
 
-    assertThat(responseData.getId()).isGreaterThan(1);
-    assertThat(result).hasSize(2);
+    Assertions.assertThat(responseData.getId()).isGreaterThan(1);
+    Assertions.assertThat(result).hasSize(2);
   }
 
   @Test

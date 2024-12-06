@@ -2,13 +2,12 @@ package com.ronja.crm.ronjaserver.dto;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.Collections;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class RepresentativeMapperTest {
 
@@ -26,14 +25,14 @@ class RepresentativeMapperTest {
         Collections.emptyList(), 1, "MAIL");
     Representative representative = mapper.toEntity(dto, new Customer());
 
-    assertThat(representative.getCustomer().getCompanyName()).isNull();
-    assertThat(representative.getStatus()).isEqualTo("ACTIVE");
+    Assertions.assertThat(representative.getCustomer().getCompanyName()).isNull();
+    Assertions.assertThat(representative.getStatus()).isEqualTo("ACTIVE");
   }
 
   @Test
   void testMappingToDto() {
     Representative representative = new Representative();
     RepresentativeDto dto = mapper.toDto(representative);
-    assertThat(dto.getCustomerId()).isZero();
+    Assertions.assertThat(dto.getCustomerId()).isZero();
   }
 }
