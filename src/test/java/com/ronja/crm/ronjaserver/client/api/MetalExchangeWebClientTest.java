@@ -60,13 +60,15 @@ class MetalExchangeWebClientTest {
 
     @Test
     void testIncompleteSuccessfulResponse() {
-        String response = "{\n" +
-                          "  \"success\": true,\n" +
-                          "  \"rates\": {\n" +
-                          "    \"LME-ALU\": 10.573385811699,\n" +
-                          "    \"LME-XCU\": 3.256136987247\n" +
-                          "  }\n" +
-                          "}";
+        String response = """
+                          {
+                            "success": true,
+                            "rates": {
+                              "LME-ALU": 10.573385811699,
+                              "LME-XCU": 3.256136987247
+                            }
+                          }\
+                          """;
 
         this.mockWebServer.enqueue(new MockResponse()
                 .addHeader("Content-Type", "application/json")

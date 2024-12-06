@@ -32,8 +32,8 @@ class MetalExchangeWebClientIT {
 
     static {
         MOCK_SERVER.start();
-        URL = String.format("http://%s:%s/api/latest?base=USD&symbols=LME-ALU,LME-XCU,LME-LEAD&access_key=",
-                MOCK_SERVER.getHost(), MOCK_SERVER.getServerPort());
+        URL = "http://%s:%s/api/latest?base=USD&symbols=LME-ALU,LME-XCU,LME-LEAD&access_key=".formatted(
+            MOCK_SERVER.getHost(), MOCK_SERVER.getServerPort());
     }
 
     @BeforeAll

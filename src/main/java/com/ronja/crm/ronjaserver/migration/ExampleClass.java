@@ -25,11 +25,9 @@ public class ExampleClass {
 
     private static void identify(Animal animal) {
         String identity;
-        if (animal instanceof Dog) {
-            Dog dog = (Dog) animal;
+        if (animal instanceof Dog dog) {
             identity = dog.getBreed();
-        } else if (animal instanceof Cat) {
-            Cat cat = (Cat) animal;
+        } else if (animal instanceof Cat cat) {
             identity = cat.getRace();
         } else {
             identity = "unknown";

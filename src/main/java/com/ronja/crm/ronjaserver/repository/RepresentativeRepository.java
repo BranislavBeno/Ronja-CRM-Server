@@ -14,10 +14,12 @@ public interface RepresentativeRepository extends CrudRepository<Representative,
   List<Representative> findAllByOrderByLastNameAsc();
 
   @Query(
-      value = "SELECT * FROM representative\n" +
-              "WHERE scheduled_visit\n" +
-              "BETWEEN CURRENT_DATE()\n" +
-              "AND ADDDATE(CURRENT_DATE(), :offset);",
+      value = """
+              SELECT * FROM representative
+              WHERE scheduled_visit
+              BETWEEN CURRENT_DATE()
+              AND ADDDATE(CURRENT_DATE(), :offset);
+              """,
       nativeQuery = true)
   List<Representative> findScheduledForNextNDays(@Param("offset") int offset);
 }
