@@ -1,0 +1,11 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.yourorg.NoStaticImportExample
+displayName: Remove static import
+recipeList:
+  - org.openrewrite.java.NoStaticImport:
+      methodPattern: org.assertj.core.api.Assertions *(..)
+  - org.openrewrite.java.NoStaticImport:
+      methodPattern: org.mockito.Mockito *(..)
+  - org.openrewrite.java.NoStaticImport:
+      methodPattern: org.hamcrest.Matchers *(..)
