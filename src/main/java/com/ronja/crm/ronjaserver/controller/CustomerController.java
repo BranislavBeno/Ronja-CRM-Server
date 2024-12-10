@@ -13,7 +13,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/customers")
@@ -34,7 +33,7 @@ public class CustomerController {
     return service.findAll()
         .stream()
         .map(mapper::toDto)
-        .collect(Collectors.toUnmodifiableList());
+        .toList();
   }
 
   @PostMapping("/add")
