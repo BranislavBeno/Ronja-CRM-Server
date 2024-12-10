@@ -2,6 +2,7 @@ package com.ronja.crm.ronjaserver.repository;
 
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.entity.Representative;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -13,8 +14,6 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers(disabledWithoutDocker = true)
 @DataJpaTest
@@ -28,14 +27,14 @@ class RepresentativeRepositoryTest extends BaseRepositoryTest {
   @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
   void testFindAll() {
     List<Representative> result = (List<Representative>) repository.findAll();
-    assertThat(result).hasSize(2);
+    Assertions.assertThat(result).hasSize(2);
   }
 
   @Test
   @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
   void testSearchBy() {
     List<Representative> result = repository.findByCustomerId(1);
-    assertThat(result).hasSize(1);
+    Assertions.assertThat(result).hasSize(1);
     assertRepresentative(result.getFirst());
   }
 
@@ -43,7 +42,7 @@ class RepresentativeRepositoryTest extends BaseRepositoryTest {
   @Sql(scripts = {"/scripts/INIT_CUSTOMERS.sql", "/scripts/INIT_REPRESENTATIVES.sql"})
   void testDeleteById() {
     repository.deleteById(1);
-    assertThat(repository.findAll()).hasSize(1);
+    Assertions.assertThat(repository.findAll()).hasSize(1);
   }
 
   @Test
@@ -52,7 +51,7 @@ class RepresentativeRepositoryTest extends BaseRepositoryTest {
     Representative representative = createRepresentative(LocalDate.now());
     repository.save(representative);
 
-    assertThat(repository.findAll()).hasSize(3);
+    Assertions.assertThat(repository.findAll()).hasSize(3);
   }
 
   @Test
@@ -63,24 +62,24 @@ class RepresentativeRepositoryTest extends BaseRepositoryTest {
     });
 
     List<Representative> result = repository.findScheduledForNextNDays(7);
-    assertThat(result).hasSize(2);
+    Assertions.assertThat(result).hasSize(2);
   }
 
   private void assertRepresentative(Representative representative) {
-    assertThat(representative.getId()).isEqualTo(1);
-    assertThat(representative.getFirstName()).isEqualTo("John");
-    assertThat(representative.getLastName()).isEqualTo("Doe");
-    assertThat(representative.getStatus()).isEqualTo("ACTIVE");
-    assertThat(representative.getNotice()).isEqualTo("nothing special");
-    assertThat(representative.getPosition()).isEqualTo("CEO");
-    assertThat(representative.getRegion()).isEqualTo("V4");
-    assertThat(representative.getContactType()).isEqualTo("MAIL");
-    assertThat(representative.getLastVisit()).isEqualTo(LocalDate.of(2020, 10, 7));
-    assertThat(representative.getScheduledVisit()).isEqualTo(LocalDate.of(2021, 4, 25));
-    assertThat(representative.getPhoneNumbers()).hasSize(2);
-    assertThat(representative.getEmails()).hasSize(1);
-    assertThat(representative.getCustomer()).isNotNull();
-    assertThat(representative.getCustomer().getId()).isEqualTo(1);
+    Assertions.assertThat(representative.getId()).isEqualTo(1);
+    Assertions.assertThat(representative.getFirstName()).isEqualTo("John");
+    Assertions.assertThat(representative.getLastName()).isEqualTo("Doe");
+    Assertions.assertThat(representative.getStatus()).isEqualTo("ACTIVE");
+    Assertions.assertThat(representative.getNotice()).isEqualTo("nothing special");
+    Assertions.assertThat(representative.getPosition()).isEqualTo("CEO");
+    Assertions.assertThat(representative.getRegion()).isEqualTo("V4");
+    Assertions.assertThat(representative.getContactType()).isEqualTo("MAIL");
+    Assertions.assertThat(representative.getLastVisit()).isEqualTo(LocalDate.of(2020, 10, 7));
+    Assertions.assertThat(representative.getScheduledVisit()).isEqualTo(LocalDate.of(2021, 4, 25));
+    Assertions.assertThat(representative.getPhoneNumbers()).hasSize(2);
+    Assertions.assertThat(representative.getEmails()).hasSize(1);
+    Assertions.assertThat(representative.getCustomer()).isNotNull();
+    Assertions.assertThat(representative.getCustomer().getId()).isEqualTo(1);
   }
 
   private Representative createRepresentative(LocalDate scheduledDate) {
