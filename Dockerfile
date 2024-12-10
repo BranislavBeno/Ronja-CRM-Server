@@ -27,4 +27,4 @@ RUN chown -R javauser:javauser /app
 # switch user
 USER javauser
 # run application, where dumb-init occupies PID 1 and takes care of all the PID special responsibilities
-ENTRYPOINT ["dumb-init", "java", "org.springframework.boot.loader.JarLauncher"]
+ENTRYPOINT ["dumb-init", "java", "org.springframework.boot.loader.launch.JarLauncher"]

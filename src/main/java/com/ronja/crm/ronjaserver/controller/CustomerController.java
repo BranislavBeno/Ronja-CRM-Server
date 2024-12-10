@@ -5,12 +5,11 @@ import com.ronja.crm.ronjaserver.dto.CustomerMapper;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import com.ronja.crm.ronjaserver.exception.EntityNotFoundException;
 import com.ronja.crm.ronjaserver.service.EntityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -22,8 +21,8 @@ public class CustomerController {
 
   private final EntityService<Customer> service;
 
-  public CustomerController(@Autowired EntityService<Customer> service,
-                            @Autowired CustomerMapper mapper) {
+  public CustomerController(EntityService<Customer> service,
+                            CustomerMapper mapper) {
     this.service = service;
     this.mapper = mapper;
   }

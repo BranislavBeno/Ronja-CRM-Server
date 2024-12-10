@@ -3,9 +3,9 @@ package com.ronja.crm.ronjaserver.entity;
 import com.ronja.crm.ronjaserver.validator.ContactType;
 import com.ronja.crm.ronjaserver.validator.Status;
 
-import javax.persistence.*;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.PastOrPresent;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 import java.util.List;
 
