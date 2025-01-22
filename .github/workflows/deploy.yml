@@ -89,7 +89,7 @@ jobs:
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
 
       - name: DigitalOcean App Platform deployment
-        uses: digitalocean/app_action@v2.0.6
+        uses: digitalocean/app_action@v2.0.8
         with:
           app_name: beo-1975-ronja-server
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
