@@ -1,12 +1,12 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.3'
+    id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
-    id 'org.sonarqube' version '6.0.1.5171'
-    id 'com.gorylenko.gradle-git-properties' version '2.4.2'
+    id 'org.sonarqube' version '6.1.0.5360'
+    id 'com.gorylenko.gradle-git-properties' version '2.5.0'
     id 'org.cyclonedx.bom' version '2.2.0'
-    id 'org.openrewrite.rewrite' version '7.1.7'
+    id 'org.openrewrite.rewrite' version '7.3.0'
 }
 
 group = 'com.ronja.crm'
@@ -39,7 +39,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("com.mysql:mysql-connector-j")
-    implementation("io.micrometer:micrometer-registry-prometheus:1.14.4")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.14.5")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
     implementation("org.apache.commons:commons-text:1.13.0")
@@ -47,7 +47,7 @@ dependencies {
     testCompileOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation(platform("org.testcontainers:testcontainers-bom:1.20.5"))
+    testImplementation(platform("org.testcontainers:testcontainers-bom:1.20.6"))
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
     testImplementation("org.testcontainers:mockserver")
@@ -56,7 +56,7 @@ dependencies {
     testImplementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
     testImplementation("com.squareup.okhttp3:mockwebserver:5.0.0-alpha.14")
 
-    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:3.3.0"))
+    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:3.5.0"))
     rewrite("org.openrewrite.recipe:rewrite-migrate-java")
     rewrite("org.openrewrite.recipe:rewrite-spring")
 }
@@ -66,7 +66,7 @@ rewrite {
     activeRecipe("org.openrewrite.java.RemoveUnusedImports")
     activeRecipe("org.openrewrite.java.OrderImports")
     activeRecipe("org.openrewrite.java.migrate.UpgradeToJava21")
-    activeRecipe("org.openrewrite.java.spring.boot3.SpringBoot3BestPractices")
+    activeRecipe("org.openrewrite.java.spring.boot3.SpringBoot33BestPractices")
     activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3")
 }
 
@@ -89,7 +89,7 @@ springBoot {
 }
 
 jacoco {
-    toolVersion = '0.8.12'
+    toolVersion = '0.8.13'
 }
 
 jacocoTestReport {
