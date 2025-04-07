@@ -15,9 +15,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -108,13 +108,13 @@ class RepresentativeControllerTest {
                 "scheduledVisit": "2021-05-05"
             }""";
 
-    @MockBean
+    @MockitoBean
     ExtendedEntityService<Representative> representativeService;
 
-    @MockBean
+    @MockitoBean
     EntityService<Customer> customerService;
 
-    @MockBean
+    @MockitoBean
     RepresentativeMapper mapper;
 
     @Autowired
