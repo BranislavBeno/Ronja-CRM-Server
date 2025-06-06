@@ -1,12 +1,12 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.4'
+    id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
-    id 'org.sonarqube' version '6.1.0.5360'
+    id 'org.sonarqube' version '6.2.0.5505'
     id 'com.gorylenko.gradle-git-properties' version '2.5.0'
-    id 'org.cyclonedx.bom' version '2.2.0'
-    id 'org.openrewrite.rewrite' version '7.3.0'
+    id 'org.cyclonedx.bom' version '2.3.1'
+    id 'org.openrewrite.rewrite' version '7.7.0'
 }
 
 group = 'com.ronja.crm'
@@ -39,24 +39,25 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("com.mysql:mysql-connector-j")
-    implementation("io.micrometer:micrometer-registry-prometheus:1.14.5")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.15.0")
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-mysql")
-    implementation("org.apache.commons:commons-text:1.13.0")
+    implementation("org.apache.commons:commons-text:1.13.1")
 
     testCompileOnly("org.springframework.boot:spring-boot-devtools")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation(platform("org.testcontainers:testcontainers-bom:1.20.6"))
+    testImplementation(platform("org.testcontainers:testcontainers-bom:1.21.1"))
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:mysql")
     testImplementation("org.testcontainers:mockserver")
     testImplementation("org.mock-server:mockserver-client-java:5.15.0")
-    testImplementation("io.rest-assured:spring-mock-mvc:5.5.1")
-    testImplementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
-    testImplementation("com.squareup.okhttp3:mockwebserver:5.0.0-alpha.14")
+    testImplementation("io.rest-assured:spring-mock-mvc:5.5.5")
+    testImplementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.16")
+    testImplementation("com.squareup.okhttp3:mockwebserver:5.0.0-alpha.16")
 
-    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:3.5.0"))
+    rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:3.9.0"))
     rewrite("org.openrewrite.recipe:rewrite-migrate-java")
     rewrite("org.openrewrite.recipe:rewrite-spring")
 }
@@ -66,8 +67,7 @@ rewrite {
     activeRecipe("org.openrewrite.java.RemoveUnusedImports")
     activeRecipe("org.openrewrite.java.OrderImports")
     activeRecipe("org.openrewrite.java.migrate.UpgradeToJava21")
-    activeRecipe("org.openrewrite.java.spring.boot3.SpringBoot33BestPractices")
-    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_3")
+    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_4")
 }
 
 test {
@@ -82,6 +82,10 @@ test {
                     "${result.skippedTestCount} skipped"
         }
     }
+}
+
+gitProperties {
+    dotGitDirectory = project.rootProject.layout.projectDirectory.dir(".git")
 }
 
 springBoot {
