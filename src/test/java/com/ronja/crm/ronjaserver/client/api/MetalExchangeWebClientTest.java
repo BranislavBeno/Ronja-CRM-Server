@@ -19,15 +19,15 @@ import java.util.concurrent.TimeUnit;
 
 class MetalExchangeWebClientTest implements WithAssertions {
 
-    private static String VALID_RESPONSE;
+    private static String validResponse;
 
     static {
         try {
-            VALID_RESPONSE = new String(Objects.requireNonNull(
-                    MetalExchangeWebClientTest.class
-                        .getClassLoader()
-                        .getResourceAsStream("payload/response.json"))
-                .readAllBytes());
+            validResponse = new String(Objects.requireNonNull(
+                            MetalExchangeWebClientTest.class
+                                    .getClassLoader()
+                                    .getResourceAsStream("payload/response.json"))
+                    .readAllBytes());
         } catch (IOException e) {
             Logger logger = LoggerFactory.getLogger(MetalExchangeWebClientTest.class);
             logger.error(e.getMessage());
@@ -48,7 +48,7 @@ class MetalExchangeWebClientTest implements WithAssertions {
     void testSuccessfulResponse() throws InterruptedException {
         MockResponse mockResponse = new MockResponse()
                 .addHeader("Content-Type", "application/json")
-                .setBody(VALID_RESPONSE);
+                .setBody(validResponse);
         this.mockWebServer.enqueue(mockResponse);
 
         MetalExchange metalExchange = webClient.fetchExchangeData();
@@ -93,12 +93,12 @@ class MetalExchangeWebClientTest implements WithAssertions {
         this.mockWebServer.enqueue(new MockResponse()
                 .addHeader("Content-Type", "application/json")
                 .setResponseCode(200)
-                .setBody(VALID_RESPONSE)
+                .setBody(validResponse)
                 .setBodyDelay(2, TimeUnit.SECONDS));
         this.mockWebServer.enqueue(new MockResponse()
                 .addHeader("Content-Type", "application/json")
                 .setResponseCode(200)
-                .setBody(VALID_RESPONSE));
+                .setBody(validResponse));
 
         MetalExchange metalExchange = webClient.fetchExchangeData();
 
@@ -128,8 +128,8 @@ class MetalExchangeWebClientTest implements WithAssertions {
 
     private void fetchMockedData() {
         this.mockWebServer.enqueue(new MockResponse()
-            .setResponseCode(500)
-            .setBody("System failure!"));
+                .setResponseCode(500)
+                .setBody("System failure!"));
         webClient.fetchExchangeData();
     }
 }

@@ -18,7 +18,7 @@ version = "R${versionMajor}.${versionMinor}.${versionPatch}" as Object
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -66,8 +66,8 @@ rewrite {
     activeRecipe("com.ronja.crm.ronjaserver.NoConstantStaticImport")
     activeRecipe("org.openrewrite.java.RemoveUnusedImports")
     activeRecipe("org.openrewrite.java.OrderImports")
-    activeRecipe("org.openrewrite.java.migrate.UpgradeToJava21")
-    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_4")
+    activeRecipe("org.openrewrite.java.migrate.UpgradeToJava25")
+    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_5")
 }
 
 test {
