@@ -6,7 +6,7 @@
 [![](https://img.shields.io/badge/Java-25-blue)](/build.gradle)
 [![](https://img.shields.io/badge/Spring%20Boot-3.5.7-blue)](/build.gradle)
 [![](https://img.shields.io/badge/Testcontainers-2.0.1-blue)](/build.gradle)
-[![](https://img.shields.io/badge/Gradle-9.1.0-blue)](/gradle/wrapper/gradle-wrapper.properties)
+[![](https://img.shields.io/badge/Gradle-9.2.0-blue)](/gradle/wrapper/gradle-wrapper.properties)
 [![](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)  
 
 ## Ronja CRM server
