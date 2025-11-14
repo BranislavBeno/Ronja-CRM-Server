@@ -40,81 +40,89 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(RepresentativeController.class)
 class RepresentativeControllerTest {
 
-  private static final String ADD_BODY_FULL = "{\n" +
-                                              "    \"firstName\": \"Roger\",\n" +
-                                              "    \"lastName\": \"Patrick\",\n" +
-                                              "    \"position\": \"CTO\",\n" +
-                                              "    \"region\": \"ASEAN\",\n" +
-                                              "    \"notice\": \"anything special\",\n" +
-                                              "    \"status\": \"ACTIVE\",\n" +
-                                              "    \"lastVisit\": \"2021-01-17\",\n" +
-                                              "    \"scheduledVisit\": \"2021-05-05\",\n" +
-                                              "    \"phoneNumbers\": [\n" +
-                                              "        {\n" +
-                                              "            \"contact\": \"+420920920920\",\n" +
-                                              "            \"type\": \"HOME\",\n" +
-                                              "            \"primary\": false\n" +
-                                              "        }\n" +
-                                              "    ],\n" +
-                                              "    \"emails\": [\n" +
-                                              "        {\n" +
-                                              "            \"contact\": \"patrick@example.com\",\n" +
-                                              "            \"type\": \"WORK\",\n" +
-                                              "            \"primary\": true\n" +
-                                              "        }\n" +
-                                              "    ],\n" +
-                                              "    \"customerId\": 1\n" +
-                                              "}";
+  private static final String ADD_BODY_FULL = """
+                                              {
+                                                  "firstName": "Roger",
+                                                  "lastName": "Patrick",
+                                                  "position": "CTO",
+                                                  "region": "ASEAN",
+                                                  "notice": "anything special",
+                                                  "status": "ACTIVE",
+                                                  "lastVisit": "2021-01-17",
+                                                  "scheduledVisit": "2021-05-05",
+                                                  "phoneNumbers": [
+                                                      {
+                                                          "contact": "+420920920920",
+                                                          "type": "HOME",
+                                                          "primary": false
+                                                      }
+                                                  ],
+                                                  "emails": [
+                                                      {
+                                                          "contact": "patrick@example.com",
+                                                          "type": "WORK",
+                                                          "primary": true
+                                                      }
+                                                  ],
+                                                  "customerId": 1
+                                              }\
+                                              """;
 
-  private static final String UPDATE_BODY_FULL = "{\n" +
-                                                 "    \"id\": 3,\n" +
-                                                 "    \"firstName\": \"Roger\",\n" +
-                                                 "    \"lastName\": \"Patrick\",\n" +
-                                                 "    \"position\": \"CTO\",\n" +
-                                                 "    \"region\": \"ASEAN\",\n" +
-                                                 "    \"notice\": \"anything special\",\n" +
-                                                 "    \"status\": \"ACTIVE\",\n" +
-                                                 "    \"lastVisit\": \"2021-01-17\",\n" +
-                                                 "    \"scheduledVisit\": \"2021-05-05\",\n" +
-                                                 "    \"phoneNumbers\": [\n" +
-                                                 "        {\n" +
-                                                 "            \"contact\": \"+420920920920\",\n" +
-                                                 "            \"type\": \"HOME\",\n" +
-                                                 "            \"primary\": false\n" +
-                                                 "        }\n" +
-                                                 "    ],\n" +
-                                                 "    \"emails\": [\n" +
-                                                 "        {\n" +
-                                                 "            \"contact\": \"patrick@example.com\",\n" +
-                                                 "            \"type\": \"WORK\",\n" +
-                                                 "            \"primary\": true\n" +
-                                                 "        }\n" +
-                                                 "    ],\n" +
-                                                 "    \"customerId\": 1\n" +
-                                                 "}";
+  private static final String UPDATE_BODY_FULL = """
+                                                 {
+                                                     "id": 3,
+                                                     "firstName": "Roger",
+                                                     "lastName": "Patrick",
+                                                     "position": "CTO",
+                                                     "region": "ASEAN",
+                                                     "notice": "anything special",
+                                                     "status": "ACTIVE",
+                                                     "lastVisit": "2021-01-17",
+                                                     "scheduledVisit": "2021-05-05",
+                                                     "phoneNumbers": [
+                                                         {
+                                                             "contact": "+420920920920",
+                                                             "type": "HOME",
+                                                             "primary": false
+                                                         }
+                                                     ],
+                                                     "emails": [
+                                                         {
+                                                             "contact": "patrick@example.com",
+                                                             "type": "WORK",
+                                                             "primary": true
+                                                         }
+                                                     ],
+                                                     "customerId": 1
+                                                 }\
+                                                 """;
 
-  private static final String ADD_BODY_SHORT = "{\n" +
-                                               "    \"firstName\": \"Roger\",\n" +
-                                               "    \"lastName\": \"Patrick\",\n" +
-                                               "    \"position\": \"CTO\",\n" +
-                                               "    \"region\": \"ASEAN\",\n" +
-                                               "    \"notice\": \"anything special\",\n" +
-                                               "    \"status\": \"ACTIVE\",\n" +
-                                               "    \"lastVisit\": \"2021-01-17\",\n" +
-                                               "    \"scheduledVisit\": \"2021-05-05\"\n" +
-                                               "}";
+  private static final String ADD_BODY_SHORT = """
+                                               {
+                                                   "firstName": "Roger",
+                                                   "lastName": "Patrick",
+                                                   "position": "CTO",
+                                                   "region": "ASEAN",
+                                                   "notice": "anything special",
+                                                   "status": "ACTIVE",
+                                                   "lastVisit": "2021-01-17",
+                                                   "scheduledVisit": "2021-05-05"
+                                               }\
+                                               """;
 
-  private static final String UPDATE_BODY_SHORT = "{\n" +
-                                                  "    \"id\": 3,\n" +
-                                                  "    \"firstName\": \"Roger\",\n" +
-                                                  "    \"lastName\": \"Patrick\",\n" +
-                                                  "    \"position\": \"CTO\",\n" +
-                                                  "    \"region\": \"ASEAN\",\n" +
-                                                  "    \"notice\": \"anything special\",\n" +
-                                                  "    \"status\": \"ACTIVE\",\n" +
-                                                  "    \"lastVisit\": \"2021-01-17\",\n" +
-                                                  "    \"scheduledVisit\": \"2021-05-05\"\n" +
-                                                  "}";
+  private static final String UPDATE_BODY_SHORT = """
+                                                  {
+                                                      "id": 3,
+                                                      "firstName": "Roger",
+                                                      "lastName": "Patrick",
+                                                      "position": "CTO",
+                                                      "region": "ASEAN",
+                                                      "notice": "anything special",
+                                                      "status": "ACTIVE",
+                                                      "lastVisit": "2021-01-17",
+                                                      "scheduledVisit": "2021-05-05"
+                                                  }\
+                                                  """;
 
   @MockBean
   ExtendedEntityService<Representative> representativeService;
@@ -202,14 +210,16 @@ class RepresentativeControllerTest {
   @Test
   @DisplayName("Test whether adding new representative fails due to constraint violation")
   void testFailingAddDueConstraintViolation() throws Exception {
-    String body = "  \"firstName\": \"Roger\",\n" +
-                  "  \"lastName\": \"Patrick\",\n" +
-                  "  \"position\": \"CTO\",\n" +
-                  "  \"region\": \"ASEAN\",\n" +
-                  "  \"notice\": \"anything special\",\n" +
-                  "  \"status\": \"ACTIVE\",\n" +
-                  "  \"lastVisit\": \"2021-01-17\",\n" +
-                  "  \"scheduledVisit\": \"2021-05-05\"\n";
+    String body = """
+                    "firstName": "Roger",
+                    "lastName": "Patrick",
+                    "position": "CTO",
+                    "region": "ASEAN",
+                    "notice": "anything special",
+                    "status": "ACTIVE",
+                    "lastVisit": "2021-01-17",
+                    "scheduledVisit": "2021-05-05"
+                  """;
     when(customerService.findById(anyInt())).thenReturn(new Customer());
     when(mapper.toEntity(any(RepresentativeDto.class), any(Customer.class))).thenReturn(new Representative());
     when(representativeService.save(any(Representative.class))).thenThrow(ConstraintViolationException.class);
