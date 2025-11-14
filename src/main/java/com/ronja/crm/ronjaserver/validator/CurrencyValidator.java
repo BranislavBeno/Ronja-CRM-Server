@@ -1,7 +1,7 @@
 package com.ronja.crm.ronjaserver.validator;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.List;
 
 public class CurrencyValidator implements ConstraintValidator<Currency, String> {
