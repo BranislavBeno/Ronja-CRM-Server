@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 public class ExampleClass {
 
-    public static void main(String[] args) {
+    void main() {
         Stream<Animal> animals = Stream.of(new Dog(), new Cat());
         animals.forEach(ExampleClass::identify);
     }
@@ -33,6 +33,6 @@ public class ExampleClass {
             identity = "unknown";
         }
 
-        System.out.println(identity);
+      IO.println(identity);
     }
 }

@@ -31,11 +31,11 @@ class CustomerRepositoryTest extends BaseRepositoryTest {
   void testSearchBy() {
     List<Customer> result = repository.findByCompanyNameContainsAllIgnoreCase("John");
     Assertions.assertThat(result).hasSize(1);
-    Assertions.assertThat(result.get(0).getId()).isEqualTo(1);
-    Assertions.assertThat(result.get(0).getCategory()).isEqualTo("LEVEL_1");
-    Assertions.assertThat(result.get(0).getFocus()).isEqualTo("TRADE");
-    Assertions.assertThat(result.get(0).getStatus()).isEqualTo("ACTIVE");
-    Assertions.assertThat(result.get(0).getCompanyName()).isEqualTo("JohnCorp");
+    Assertions.assertThat(result.getFirst().getId()).isEqualTo(1);
+    Assertions.assertThat(result.getFirst().getCategory()).isEqualTo("LEVEL_1");
+    Assertions.assertThat(result.getFirst().getFocus()).isEqualTo("TRADE");
+    Assertions.assertThat(result.getFirst().getStatus()).isEqualTo("ACTIVE");
+    Assertions.assertThat(result.getFirst().getCompanyName()).isEqualTo("JohnCorp");
   }
 
   @Test
