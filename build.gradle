@@ -61,7 +61,9 @@ dependencies {
 rewrite {
 //    activeRecipe("org.openrewrite.java.migrate.UpgradeToJava17")
 //    activeRecipe("org.openrewrite.java.migrate.util.ReplaceStreamCollectWithToList")
-    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_5")
+//    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_5")
+    activeRecipe("org.openrewrite.java.ShortenFullyQualifiedTypeReferences")
+    activeRecipe("com.ronja.crm.ronjaserver.ParametrizedRecipe")
 }
 
 test {

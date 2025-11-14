@@ -1,5 +1,6 @@
 package com.ronja.crm.ronjaserver.entity;
 
+import com.ronja.crm.ronjaserver.validator.Currency;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +22,7 @@ public class MetalData {
     @Column(name = "fetched")
     private LocalDate fetched;
 
-    @com.ronja.crm.ronjaserver.validator.Currency
+    @Currency
     @Column(name = "currency")
     private String currency;
 
