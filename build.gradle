@@ -1,14 +1,13 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '2.7.6'
-    id 'io.spring.dependency-management' version '1.1.0'
-    id 'jacoco'
-    id 'org.sonarqube' version '3.5.0.2730'
-    id 'com.gorylenko.gradle-git-properties' version '2.5.3'
-    id 'com.github.ben-manes.versions' version '0.44.0'
+    id "java"
+    id "org.springframework.boot" version "2.7.6"
+    id "io.spring.dependency-management" version "1.1.0"
+    id "jacoco"
+    id "org.sonarqube" version "3.5.0.2730"
+    id "com.gorylenko.gradle-git-properties" version "2.5.3"
 }
 
-group = 'com.ronja.crm'
+group = "com.ronja.crm"
 
 def versionMajor = 1
 def versionMinor = 3
@@ -22,8 +21,8 @@ java {
 }
 
 ext {
-    set('sonarProjectName', 'RonjaServer') as Object
-    set('sonarProjectKey', 'com.ronja.crm.ronjaserver') as Object
+    set("sonarProjectName", "RonjaServer") as Object
+    set("sonarProjectKey", "com.ronja.crm.ronjaserver") as Object
 }
 
 repositories {
@@ -31,6 +30,7 @@ repositories {
 }
 
 var bouncyCastleVersion = "1.70"
+var okhttp3Version = "5.0.0-alpha.10"
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-webflux"
@@ -42,8 +42,9 @@ dependencies {
     implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
     implementation "org.yaml:snakeyaml:1.33"
-    implementation 'org.apache.commons:commons-text:1.10.0'
+    implementation "org.apache.commons:commons-text:1.10.0"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation(platform("org.testcontainers:testcontainers-bom:1.17.6"))
     testImplementation "org.testcontainers:junit-jupiter"
     testImplementation "org.testcontainers:mysql"
     testImplementation "org.testcontainers:mockserver"
@@ -51,14 +52,8 @@ dependencies {
     testImplementation "org.bouncycastle:bcprov-jdk15on:${bouncyCastleVersion}"
     testImplementation "org.bouncycastle:bcpkix-jdk15on:${bouncyCastleVersion}"
     testImplementation "io.rest-assured:spring-mock-mvc:5.3.0"
-    testImplementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.10"
-    testImplementation "com.squareup.okhttp3:mockwebserver:5.0.0-alpha.10"
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.testcontainers:testcontainers-bom:1.17.6"
-    }
+    testImplementation "com.squareup.okhttp3:okhttp:${okhttp3Version}"
+    testImplementation "com.squareup.okhttp3:mockwebserver:${okhttp3Version}"
 }
 
 test {
@@ -84,7 +79,7 @@ springBoot {
 }
 
 jacoco {
-    toolVersion = '0.8.8'
+    toolVersion = "0.8.8"
 }
 
 jacocoTestReport {
