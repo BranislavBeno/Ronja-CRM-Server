@@ -3,7 +3,7 @@ plugins {
     id "org.springframework.boot" version "2.7.6"
     id "io.spring.dependency-management" version "1.1.0"
     id "jacoco"
-    id "org.sonarqube" version "3.5.0.2730"
+    id "org.sonarqube" version "7.0.1.6134"
     id "com.gorylenko.gradle-git-properties" version "2.5.3"
 }
 
@@ -29,8 +29,6 @@ repositories {
     mavenCentral()
 }
 
-var bouncyCastleVersion = "1.70"
-var okhttp3Version = "5.0.0-alpha.10"
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web"
     implementation "org.springframework.boot:spring-boot-starter-webflux"
@@ -38,22 +36,21 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "mysql:mysql-connector-java"
-    implementation "io.micrometer:micrometer-registry-prometheus:1.10.2"
+    implementation "io.micrometer:micrometer-registry-prometheus:1.16.0"
     implementation "org.flywaydb:flyway-core"
     implementation "org.flywaydb:flyway-mysql"
-    implementation "org.yaml:snakeyaml:1.33"
-    implementation "org.apache.commons:commons-text:1.10.0"
+    implementation "org.apache.commons:commons-text:1.14.0"
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testImplementation(platform("org.testcontainers:testcontainers-bom:1.17.6"))
     testImplementation "org.testcontainers:junit-jupiter"
     testImplementation "org.testcontainers:mysql"
     testImplementation "org.testcontainers:mockserver"
     testImplementation "org.mock-server:mockserver-client-java:5.15.0"
-    testImplementation "org.bouncycastle:bcprov-jdk15on:${bouncyCastleVersion}"
-    testImplementation "org.bouncycastle:bcpkix-jdk15on:${bouncyCastleVersion}"
-    testImplementation "io.rest-assured:spring-mock-mvc:5.3.0"
-    testImplementation "com.squareup.okhttp3:okhttp:${okhttp3Version}"
-    testImplementation "com.squareup.okhttp3:mockwebserver:${okhttp3Version}"
+    testImplementation "io.rest-assured:spring-mock-mvc:5.5.6"
+    testImplementation "com.squareup.okhttp3:okhttp:5.3.0"
+    testImplementation "com.squareup.okhttp3:mockwebserver:5.3.0"
 }
 
 test {
@@ -79,13 +76,13 @@ springBoot {
 }
 
 jacoco {
-    toolVersion = "0.8.8"
+    toolVersion = '0.8.14'
 }
 
 jacocoTestReport {
     dependsOn test
     reports {
-        xml.required = true
+        xml.required.set(true)
     }
 }
 
