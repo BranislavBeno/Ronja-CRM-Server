@@ -4,7 +4,12 @@ import com.ronja.crm.ronjaserver.validator.Category;
 import com.ronja.crm.ronjaserver.validator.Focus;
 import com.ronja.crm.ronjaserver.validator.Status;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "customer")
