@@ -58,7 +58,8 @@ dependencies {
 }
 
 rewrite {
-    activeRecipe("org.openrewrite.java.migrate.UpgradeToJava17")
+//    activeRecipe("org.openrewrite.java.migrate.UpgradeToJava17")
+    activeRecipe("org.openrewrite.java.migrate.util.ReplaceStreamCollectWithToList")
 }
 
 test {
