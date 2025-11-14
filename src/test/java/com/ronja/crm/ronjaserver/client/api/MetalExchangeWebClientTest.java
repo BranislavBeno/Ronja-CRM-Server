@@ -4,6 +4,7 @@ import com.ronja.crm.ronjaserver.client.domain.MetalExchange;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,10 +13,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MetalExchangeWebClientTest {
 
@@ -55,7 +52,7 @@ class MetalExchangeWebClientTest {
         assertValidData(metalExchange);
 
         RecordedRequest recordedRequest = this.mockWebServer.takeRequest();
-        assertEquals("/", recordedRequest.getPath());
+        Assertions.assertEquals("/", recordedRequest.getPath());
     }
 
     @Test
@@ -82,7 +79,7 @@ class MetalExchangeWebClientTest {
 
     @Test
     void testFailingResponse() {
-        assertThrows(RuntimeException.class, this::fetchMockedData);
+        Assertions.assertThrows(RuntimeException.class, this::fetchMockedData);
     }
 
     @Test
@@ -102,28 +99,28 @@ class MetalExchangeWebClientTest {
 
         MetalExchange metalExchange = webClient.fetchExchangeData();
 
-        assertThat(metalExchange).isNotNull();
-        assertThat(metalExchange.isSuccess()).isTrue();
+        org.assertj.core.api.Assertions.assertThat(metalExchange).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(metalExchange.isSuccess()).isTrue();
     }
 
     private void assertValidData(MetalExchange metalExchange) {
-        assertThat(metalExchange).isNotNull();
-        assertThat(metalExchange.isSuccess()).isTrue();
-        assertThat(metalExchange.getRates().getAluminum()).isEqualTo(new BigDecimal("10.573385811699"));
-        assertThat(metalExchange.getRates().getCopper()).isEqualTo(new BigDecimal("3.256136987247"));
-        assertThat(metalExchange.getRates().getLead()).isEqualTo(new BigDecimal("14.319008911883"));
-        assertThat(metalExchange.getCurrency()).isEqualTo("USD");
-        assertThat(metalExchange.getDate()).isBeforeOrEqualTo(LocalDate.now());
+        org.assertj.core.api.Assertions.assertThat(metalExchange).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(metalExchange.isSuccess()).isTrue();
+        org.assertj.core.api.Assertions.assertThat(metalExchange.getRates().getAluminum()).isEqualTo(new BigDecimal("10.573385811699"));
+        org.assertj.core.api.Assertions.assertThat(metalExchange.getRates().getCopper()).isEqualTo(new BigDecimal("3.256136987247"));
+        org.assertj.core.api.Assertions.assertThat(metalExchange.getRates().getLead()).isEqualTo(new BigDecimal("14.319008911883"));
+        org.assertj.core.api.Assertions.assertThat(metalExchange.getCurrency()).isEqualTo("USD");
+        org.assertj.core.api.Assertions.assertThat(metalExchange.getDate()).isBeforeOrEqualTo(LocalDate.now());
     }
 
     private void assertIncompleteValidData(MetalExchange metalExchange) {
-        assertThat(metalExchange).isNotNull();
-        assertThat(metalExchange.isSuccess()).isTrue();
-        assertThat(metalExchange.getRates().getAluminum()).isEqualTo(new BigDecimal("10.573385811699"));
-        assertThat(metalExchange.getRates().getCopper()).isEqualTo(new BigDecimal("3.256136987247"));
-        assertThat(metalExchange.getRates().getLead()).isNull();
-        assertThat(metalExchange.getCurrency()).isNull();
-        assertThat(metalExchange.getDate()).isNull();
+        org.assertj.core.api.Assertions.assertThat(metalExchange).isNotNull();
+        org.assertj.core.api.Assertions.assertThat(metalExchange.isSuccess()).isTrue();
+        org.assertj.core.api.Assertions.assertThat(metalExchange.getRates().getAluminum()).isEqualTo(new BigDecimal("10.573385811699"));
+        org.assertj.core.api.Assertions.assertThat(metalExchange.getRates().getCopper()).isEqualTo(new BigDecimal("3.256136987247"));
+        org.assertj.core.api.Assertions.assertThat(metalExchange.getRates().getLead()).isNull();
+        org.assertj.core.api.Assertions.assertThat(metalExchange.getCurrency()).isNull();
+        org.assertj.core.api.Assertions.assertThat(metalExchange.getDate()).isNull();
     }
 
     private void fetchMockedData() {

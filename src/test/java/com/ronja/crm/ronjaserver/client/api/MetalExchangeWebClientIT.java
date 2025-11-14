@@ -1,6 +1,7 @@
 package com.ronja.crm.ronjaserver.client.api;
 
 import com.ronja.crm.ronjaserver.client.domain.MetalExchange;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
@@ -18,8 +19,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers(disabledWithoutDocker = true)
 @DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "No ARM64 support")
@@ -47,16 +46,16 @@ class MetalExchangeWebClientIT {
         try (MockServerClient mockServerClient = new MockServerClient(MOCK_SERVER.getHost(), MOCK_SERVER.getServerPort())) {
             mockResponse(mockServerClient, json);
 
-            assertThat(webClient).isNotNull();
+            Assertions.assertThat(webClient).isNotNull();
             MetalExchange metalExchange = webClient.fetchExchangeData();
 
-            assertThat(metalExchange).isNotNull();
-            assertThat(metalExchange.isSuccess()).isTrue();
-            assertThat(metalExchange.getRates().getAluminum()).isEqualTo(new BigDecimal("10.573385811699"));
-            assertThat(metalExchange.getRates().getCopper()).isEqualTo(new BigDecimal("3.256136987247"));
-            assertThat(metalExchange.getRates().getLead()).isEqualTo(new BigDecimal("14.319008911883"));
-            assertThat(metalExchange.getCurrency()).isEqualTo("USD");
-            assertThat(metalExchange.getDate()).isBeforeOrEqualTo(LocalDate.now());
+            Assertions.assertThat(metalExchange).isNotNull();
+            Assertions.assertThat(metalExchange.isSuccess()).isTrue();
+            Assertions.assertThat(metalExchange.getRates().getAluminum()).isEqualTo(new BigDecimal("10.573385811699"));
+            Assertions.assertThat(metalExchange.getRates().getCopper()).isEqualTo(new BigDecimal("3.256136987247"));
+            Assertions.assertThat(metalExchange.getRates().getLead()).isEqualTo(new BigDecimal("14.319008911883"));
+            Assertions.assertThat(metalExchange.getCurrency()).isEqualTo("USD");
+            Assertions.assertThat(metalExchange.getDate()).isBeforeOrEqualTo(LocalDate.now());
         }
     }
 

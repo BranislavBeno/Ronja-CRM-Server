@@ -4,6 +4,7 @@ import com.ronja.crm.ronjaserver.dto.CustomerDto;
 import com.ronja.crm.ronjaserver.entity.Customer;
 import io.restassured.http.ContentType;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,14 +16,6 @@ import org.springframework.http.HttpStatus;
 import jakarta.validation.ConstraintViolationException;
 import java.util.List;
 
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 final class CustomerControllerRestAssuredTest extends CustomerControllerBaseTest {
 
     @BeforeEach
@@ -33,32 +26,32 @@ final class CustomerControllerRestAssuredTest extends CustomerControllerBaseTest
     @Test
     @DisplayName("Test whether fetching all customers is successful")
     void testFindAll() {
-        when(mapper.toDto(any(Customer.class))).thenReturn(provideDto());
-        when(service.findAll()).thenReturn(List.of(new Customer(), new Customer()));
+        Mockito.when(mapper.toDto(Mockito.any(Customer.class))).thenReturn(provideDto());
+        Mockito.when(service.findAll()).thenReturn(List.of(new Customer(), new Customer()));
 
         RestAssuredMockMvc
                 .when()
                 .get("/customers/list")
                 .then()
                 .status(HttpStatus.OK)
-                .body("$.size()", is(2))
-                .body("[0].id", is(1))
-                .body("[0].companyName", is("corp"))
-                .body("[0].category", is("LEVEL_1"))
-                .body("[0].focus", is("TRADE"))
-                .body("[0].status", is("ACTIVE"));
+                .body("$.size()", Matchers.is(2))
+                .body("[0].id", Matchers.is(1))
+                .body("[0].companyName", Matchers.is("corp"))
+                .body("[0].category", Matchers.is("LEVEL_1"))
+                .body("[0].focus", Matchers.is("TRADE"))
+                .body("[0].status", Matchers.is("ACTIVE"));
 
-        verify(service).findAll();
+        Mockito.verify(service).findAll();
     }
 
     @ParameterizedTest
     @ValueSource(strings = {ADD_BODY, "{}"})
     @DisplayName("Test whether adding new customer is successful")
     void testAdd(String body) {
-        when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
+        Mockito.when(mapper.toEntity(Mockito.any(CustomerDto.class))).thenReturn(new Customer());
         Customer customer = Mockito.mock(Customer.class);
-        when(service.save(any(Customer.class))).thenReturn(customer);
-        when(customer.getId()).thenReturn(1);
+        Mockito.when(service.save(Mockito.any(Customer.class))).thenReturn(customer);
+        Mockito.when(customer.getId()).thenReturn(1);
 
         RestAssuredMockMvc
                 .given()
@@ -69,16 +62,16 @@ final class CustomerControllerRestAssuredTest extends CustomerControllerBaseTest
                 .then()
                 .status(HttpStatus.CREATED);
 
-        verify(customer).getId();
-        verify(service).save(any(Customer.class));
-        verify(mapper).toEntity(any(CustomerDto.class));
+        Mockito.verify(customer).getId();
+        Mockito.verify(service).save(Mockito.any(Customer.class));
+        Mockito.verify(mapper).toEntity(Mockito.any(CustomerDto.class));
     }
 
     @Test
     @DisplayName("Test whether adding new customer fails due to constraint violation")
     void testFailingAddDueConstraintViolation() {
-        when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
-        when(service.save(any(Customer.class))).thenThrow(ConstraintViolationException.class);
+        Mockito.when(mapper.toEntity(Mockito.any(CustomerDto.class))).thenReturn(new Customer());
+        Mockito.when(service.save(Mockito.any(Customer.class))).thenThrow(ConstraintViolationException.class);
 
         RestAssuredMockMvc
                 .given()
@@ -89,17 +82,17 @@ final class CustomerControllerRestAssuredTest extends CustomerControllerBaseTest
                 .then()
                 .status(HttpStatus.BAD_REQUEST);
 
-        verify(mapper, never()).toEntity(any(CustomerDto.class));
-        verify(service, never()).save(any(Customer.class));
+        Mockito.verify(mapper, Mockito.never()).toEntity(Mockito.any(CustomerDto.class));
+        Mockito.verify(service, Mockito.never()).save(Mockito.any(Customer.class));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {UPDATE_BODY, "{}"})
     @DisplayName("Test whether updating an existing customer is successful")
     void testUpdate(String body) {
-        when(service.existsById(anyInt())).thenReturn(true);
-        when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
-        when(service.save(any(Customer.class))).thenReturn(any(Customer.class));
+        Mockito.when(service.existsById(Mockito.anyInt())).thenReturn(true);
+        Mockito.when(mapper.toEntity(Mockito.any(CustomerDto.class))).thenReturn(new Customer());
+        Mockito.when(service.save(Mockito.any(Customer.class))).thenReturn(Mockito.any(Customer.class));
 
         RestAssuredMockMvc
                 .given()
@@ -110,17 +103,17 @@ final class CustomerControllerRestAssuredTest extends CustomerControllerBaseTest
                 .then()
                 .status(HttpStatus.OK);
 
-        verify(service).existsById(anyInt());
-        verify(mapper).toEntity(any(CustomerDto.class));
-        verify(service).save(any(Customer.class));
+        Mockito.verify(service).existsById(Mockito.anyInt());
+        Mockito.verify(mapper).toEntity(Mockito.any(CustomerDto.class));
+        Mockito.verify(service).save(Mockito.any(Customer.class));
     }
 
     @Test
     @DisplayName("Test whether updating customer fails due to not existing customer")
     void testFailingUpdate() {
-        when(service.existsById(anyInt())).thenReturn(false);
-        when(mapper.toEntity(any(CustomerDto.class))).thenReturn(new Customer());
-        when(service.save(any(Customer.class))).thenReturn(any(Customer.class));
+        Mockito.when(service.existsById(Mockito.anyInt())).thenReturn(false);
+        Mockito.when(mapper.toEntity(Mockito.any(CustomerDto.class))).thenReturn(new Customer());
+        Mockito.when(service.save(Mockito.any(Customer.class))).thenReturn(Mockito.any(Customer.class));
 
         RestAssuredMockMvc
                 .given()
@@ -131,16 +124,16 @@ final class CustomerControllerRestAssuredTest extends CustomerControllerBaseTest
                 .then()
                 .status(HttpStatus.NOT_FOUND);
 
-        verify(service).existsById(anyInt());
-        verify(mapper, never()).toEntity(any(CustomerDto.class));
-        verify(service, never()).save(any(Customer.class));
+        Mockito.verify(service).existsById(Mockito.anyInt());
+        Mockito.verify(mapper, Mockito.never()).toEntity(Mockito.any(CustomerDto.class));
+        Mockito.verify(service, Mockito.never()).save(Mockito.any(Customer.class));
     }
 
     @Test
     @DisplayName("Test whether deleting customer is successful")
     void testDelete() {
-        when(service.existsById(anyInt())).thenReturn(true);
-        service.deleteById(anyInt());
+        Mockito.when(service.existsById(Mockito.anyInt())).thenReturn(true);
+        service.deleteById(Mockito.anyInt());
 
         RestAssuredMockMvc
                 .when()
@@ -148,15 +141,15 @@ final class CustomerControllerRestAssuredTest extends CustomerControllerBaseTest
                 .then()
                 .status(HttpStatus.NO_CONTENT);
 
-        verify(service).existsById(anyInt());
-        verify(service, times(2)).deleteById(anyInt());
+        Mockito.verify(service).existsById(Mockito.anyInt());
+        Mockito.verify(service, Mockito.times(2)).deleteById(Mockito.anyInt());
     }
 
     @Test
     @DisplayName("Test whether deleting customer fails due to not existing customer")
     void testFailingDelete() {
-        when(service.existsById(anyInt())).thenReturn(false);
-        service.deleteById(anyInt());
+        Mockito.when(service.existsById(Mockito.anyInt())).thenReturn(false);
+        service.deleteById(Mockito.anyInt());
 
         RestAssuredMockMvc
                 .when()
@@ -164,8 +157,8 @@ final class CustomerControllerRestAssuredTest extends CustomerControllerBaseTest
                 .then()
                 .status(HttpStatus.NOT_FOUND);
 
-        verify(service).existsById(anyInt());
-        verify(service).deleteById(anyInt());
+        Mockito.verify(service).existsById(Mockito.anyInt());
+        Mockito.verify(service).deleteById(Mockito.anyInt());
     }
 
     private CustomerDto provideDto() {

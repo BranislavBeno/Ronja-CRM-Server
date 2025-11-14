@@ -5,6 +5,7 @@ import com.ronja.crm.ronjaserver.dto.MetalDataMapper;
 import com.ronja.crm.ronjaserver.entity.MetalData;
 import com.ronja.crm.ronjaserver.service.MetalDataService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,10 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @WebMvcTest(MetalDataController.class)
 class MetalDataControllerTest {
@@ -42,31 +39,31 @@ class MetalDataControllerTest {
   @DisplayName("Test whether fetching all metal data is successful")
   void testFindAllIsSuccessful() {
     MetalData data = Mockito.mock(MetalData.class);
-    when(mapper.toDto(data)).thenReturn(provideDto());
-    when(service.findAll()).thenReturn(List.of(data));
+    Mockito.when(mapper.toDto(data)).thenReturn(provideDto());
+    Mockito.when(service.findAll()).thenReturn(List.of(data));
 
     RestAssuredMockMvc
         .when()
         .get("/metals/list")
         .then()
         .status(HttpStatus.OK)
-        .body("$.size()", is(1))
-        .body("[0].id", is(1))
-        .body("[0].fetched", is("2022-03-07"))
-        .body("[0].currency", is("EUR"))
-        .body("[0].aluminum", is(10.573386f))
-        .body("[0].copper", is(3.25613698f))
-        .body("[0].lead", is(14.319009f));
+        .body("$.size()", Matchers.is(1))
+        .body("[0].id", Matchers.is(1))
+        .body("[0].fetched", Matchers.is("2022-03-07"))
+        .body("[0].currency", Matchers.is("EUR"))
+        .body("[0].aluminum", Matchers.is(10.573386f))
+        .body("[0].copper", Matchers.is(3.25613698f))
+        .body("[0].lead", Matchers.is(14.319009f));
 
-    verify(service).findAll();
+    Mockito.verify(service).findAll();
   }
 
   @Test
   @DisplayName("Test whether exchanging metal data is successful")
   void testExchangeIsSuccessful() {
     MetalData metalData = Mockito.mock(MetalData.class);
-    when(service.exchange()).thenReturn(metalData);
-    when(metalData.getId()).thenReturn(1);
+    Mockito.when(service.exchange()).thenReturn(metalData);
+    Mockito.when(metalData.getId()).thenReturn(1);
 
     RestAssuredMockMvc
         .when()
@@ -74,8 +71,8 @@ class MetalDataControllerTest {
         .then()
         .status(HttpStatus.CREATED);
 
-    verify(metalData).getId();
-    verify(service).exchange();
+    Mockito.verify(metalData).getId();
+    Mockito.verify(service).exchange();
   }
 
   private MetalDataDto provideDto() {
