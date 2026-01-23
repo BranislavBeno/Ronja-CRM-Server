@@ -1,14 +1,13 @@
 package com.ronja.crm.ronjaserver.entity;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
 import java.util.List;
 
 @Converter
@@ -23,7 +22,7 @@ public class ListAttributeConverter implements AttributeConverter<List<Contact>,
         String dbData = null;
         try {
             dbData = objectMapper.writeValueAsString(attribute);
-        } catch (final JsonProcessingException e) {
+        } catch (final JacksonException e) {
             logger.error("JSON writing error", e);
         }
         return dbData;
@@ -31,13 +30,6 @@ public class ListAttributeConverter implements AttributeConverter<List<Contact>,
 
     @Override
     public List<Contact> convertToEntityAttribute(String dbData) {
-        List<Contact> attribute = null;
-        try {
-            attribute = objectMapper.readValue(dbData, new TypeReference<>() {
-            });
-        } catch (final IOException e) {
-            logger.error("JSON reading error", e);
-        }
-        return attribute;
+        return objectMapper.readValue(dbData, new TypeReference<>() {});
     }
 }
