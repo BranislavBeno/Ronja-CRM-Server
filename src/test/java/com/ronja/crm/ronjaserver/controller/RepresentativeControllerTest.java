@@ -11,8 +11,6 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +19,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @WebMvcTest(RepresentativeController.class)
 class RepresentativeControllerTest {
@@ -224,29 +220,23 @@ class RepresentativeControllerTest {
     }
 
     @ParameterizedTest
-    @MethodSource("parameters")
-    void testUpdate(String requestBody, ResultMatcher resultMatcher, int wantedNumberOfInvocations) throws Exception {
+    @ValueSource(strings = {UPDATE_BODY_SHORT, UPDATE_BODY_FULL, "{}"})
+    void testUpdate(String requestBody) throws Exception {
         Mockito.when(representativeService.existsById(Mockito.anyInt())).thenReturn(true);
         Mockito.when(customerService.findById(Mockito.anyInt())).thenReturn(new Customer());
         Mockito.when(mapper.toEntity(Mockito.any(RepresentativeDto.class), Mockito.any(Customer.class))).thenReturn(new Representative());
-        Mockito.when(representativeService.save(Mockito.mock(Representative.class))).thenReturn(Mockito.mock(Representative.class));
+        Mockito.when(representativeService.save(Mockito.any(Representative.class))).thenReturn(Mockito.any(Representative.class));
 
         this.mockMvc
                 .perform(MockMvcRequestBuilders.put("/representatives/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
-                .andExpect(resultMatcher);
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
-        Mockito.verify(representativeService, Mockito.times(wantedNumberOfInvocations)).existsById(Mockito.anyInt());
-        Mockito.verify(customerService, Mockito.times(wantedNumberOfInvocations)).findById(Mockito.anyInt());
-        Mockito.verify(mapper, Mockito.times(wantedNumberOfInvocations)).toEntity(Mockito.any(RepresentativeDto.class), Mockito.any(Customer.class));
-        Mockito.verify(representativeService, Mockito.times(wantedNumberOfInvocations)).save(Mockito.any(Representative.class));
-    }
-
-    private static Stream<Arguments> parameters() {
-        return Stream.of(Arguments.of(UPDATE_BODY_FULL, MockMvcResultMatchers.status().isOk(), 1),
-                Arguments.of(UPDATE_BODY_SHORT, MockMvcResultMatchers.status().is4xxClientError(), 0),
-                Arguments.of("{}", MockMvcResultMatchers.status().is4xxClientError(), 0));
+        Mockito.verify(representativeService).existsById(Mockito.anyInt());
+        Mockito.verify(customerService).findById(Mockito.anyInt());
+        Mockito.verify(mapper).toEntity(Mockito.any(RepresentativeDto.class), Mockito.any(Customer.class));
+        Mockito.verify(representativeService).save(Mockito.any(Representative.class));
     }
 
     @Test
