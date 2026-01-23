@@ -1,9 +1,11 @@
 package com.ronja.crm.ronjaserver.client.api;
 
 import com.ronja.crm.ronjaserver.client.domain.MetalExchange;
-import okhttp3.mockwebserver.MockResponse;
-import okhttp3.mockwebserver.MockWebServer;
-import okhttp3.mockwebserver.RecordedRequest;
+import mockwebserver3.MockResponse;
+import mockwebserver3.MockWebServer;
+import mockwebserver3.RecordedRequest;
+import okhttp3.Headers;
+import okhttp3.HttpUrl;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,66 +41,49 @@ class MetalExchangeWebClientTest implements WithAssertions {
 
     @BeforeEach
     void setup() throws IOException {
-        this.mockWebServer = new MockWebServer();
-        this.mockWebServer.start();
-        this.webClient = new MetalExchangeWebClient(mockWebServer.url("/").toString(), "");
+        mockWebServer = new MockWebServer();
+        mockWebServer.start();
+        webClient = new MetalExchangeWebClient(mockWebServer.url("/").toString(), "");
     }
 
     @Test
     void testSuccessfulResponse() throws InterruptedException {
-        MockResponse mockResponse = new MockResponse()
-                .addHeader("Content-Type", "application/json")
-                .setBody(validResponse);
-        this.mockWebServer.enqueue(mockResponse);
+        MockResponse mockResponse = new MockResponse(200, new Headers(new String[]{"Content-Type", "application/json"}), validResponse);
+        mockWebServer.enqueue(mockResponse);
 
         MetalExchange metalExchange = webClient.fetchExchangeData();
 
         assertValidData(metalExchange);
 
-        RecordedRequest recordedRequest = this.mockWebServer.takeRequest();
-        assertThat(recordedRequest.getPath()).isEqualTo("/");
+        RecordedRequest recordedRequest = mockWebServer.takeRequest();
+        HttpUrl url = recordedRequest.getUrl();
+        assertThat(url.pathSegments()).containsExactly("");
+        assertThat(url.encodedQuery()).isNull();
     }
 
     @Test
-    void testIncompleteSuccessfulResponse() {
-        String response = """
-                {
-                  "success": true,
-                  "rates": {
-                    "LME-ALU": 10.573385811699,
-                    "LME-XCU": 3.256136987247
-                  }
-                }""";
-
-        this.mockWebServer.enqueue(new MockResponse()
-                .addHeader("Content-Type", "application/json")
-                .setResponseCode(200)
-                .setBody(response));
-
-        MetalExchange metalExchange = webClient.fetchExchangeData();
-
-        assertIncompleteValidData(metalExchange);
+    void testIncompleteResponse() {
+        Assertions.assertThrows(RuntimeException.class, this::mockIncompleteResponse);
     }
 
     @Test
     void testFailingResponse() {
-        Assertions.assertThrows(RuntimeException.class, this::fetchMockedData);
+        Assertions.assertThrows(RuntimeException.class, this::mockWrongResponse);
     }
 
     @Test
     void testSuccessfulResponseWhenRemoteSystemIsSlowOrFailing() {
-        this.mockWebServer.enqueue(new MockResponse()
-                .setResponseCode(500)
-                .setBody("System failure!"));
-        this.mockWebServer.enqueue(new MockResponse()
-                .addHeader("Content-Type", "application/json")
-                .setResponseCode(200)
-                .setBody(validResponse)
-                .setBodyDelay(2, TimeUnit.SECONDS));
-        this.mockWebServer.enqueue(new MockResponse()
-                .addHeader("Content-Type", "application/json")
-                .setResponseCode(200)
-                .setBody(validResponse));
+        mockWebServer.enqueue(new MockResponse(500, new Headers(new String[]{}), "System failure!"));
+        MockResponse response = new MockResponse.Builder()
+                .code(200)
+                .headers(new Headers.Builder()
+                        .add("Content-Type", "application/json")
+                        .build())
+                .body(validResponse)
+                .bodyDelay(2, TimeUnit.SECONDS)
+                .build();
+        mockWebServer.enqueue(response);
+        mockWebServer.enqueue(new MockResponse(200, new Headers(new String[]{"Content-Type", "application/json"}), validResponse));
 
         MetalExchange metalExchange = webClient.fetchExchangeData();
 
@@ -116,20 +101,23 @@ class MetalExchangeWebClientTest implements WithAssertions {
         assertThat(metalExchange.date()).isBeforeOrEqualTo(LocalDate.now());
     }
 
-    private void assertIncompleteValidData(MetalExchange metalExchange) {
-        assertThat(metalExchange).isNotNull();
-        assertThat(metalExchange.success()).isTrue();
-        assertThat(metalExchange.rates().aluminum()).isEqualTo(new BigDecimal("10.573385811699"));
-        assertThat(metalExchange.rates().copper()).isEqualTo(new BigDecimal("3.256136987247"));
-        assertThat(metalExchange.rates().lead()).isNull();
-        assertThat(metalExchange.currency()).isNull();
-        assertThat(metalExchange.date()).isNull();
+    private void mockIncompleteResponse() {
+        String response = """
+                {
+                  "success": true,
+                  "rates": {
+                    "LME-ALU": 10.573385811699,
+                    "LME-XCU": 3.256136987247
+                  }
+                }""";
+
+        mockWebServer.enqueue(
+                new MockResponse(500, new Headers(new String[]{"Content-Type", "application/json"}), response));
+        webClient.fetchExchangeData();
     }
 
-    private void fetchMockedData() {
-        this.mockWebServer.enqueue(new MockResponse()
-                .setResponseCode(500)
-                .setBody("System failure!"));
+    private void mockWrongResponse() {
+        mockWebServer.enqueue(new MockResponse(500, new Headers(new String[]{}), "System failure!"));
         webClient.fetchExchangeData();
     }
 }

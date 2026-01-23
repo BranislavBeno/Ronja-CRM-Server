@@ -1,12 +1,12 @@
 package com.ronja.crm.ronjaserver.exception;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import tools.jackson.core.JacksonException;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> inputValidationException(ConstraintViolationException e) throws JsonProcessingException {
+    public ResponseEntity<String> inputValidationException(ConstraintViolationException e) throws JacksonException {
         String message = "Invalid request: %s".formatted(e.getMessage());
 
         if (e.getConstraintViolations() != null) {
@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> entityNotFoundException(EntityNotFoundException e) throws JsonProcessingException {
+    public ResponseEntity<String> entityNotFoundException(EntityNotFoundException e) throws JacksonException {
         List<Violation> violations = List.of(new Violation("Whole entity", e.getMessage()));
         ValidationErrorResponse error = new ValidationErrorResponse(violations);
         String message = mapper.writeValueAsString(error);

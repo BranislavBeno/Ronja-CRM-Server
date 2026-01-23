@@ -1,10 +1,10 @@
 package com.ronja.crm.ronjaserver.repository;
 
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.mysql.MySQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @Testcontainers(disabledWithoutDocker = true)
@@ -13,7 +13,7 @@ import org.testcontainers.utility.DockerImageName;
 abstract class BaseRepositoryTest {
 
     @ServiceConnection
-    private static final MySQLContainer<?> MY_SQL_CONTAINER = new MySQLContainer<>(DockerImageName.parse("mysql:lts"));
+    private static final MySQLContainer MY_SQL_CONTAINER = new MySQLContainer(DockerImageName.parse("mysql:lts"));
 
     static {
         MY_SQL_CONTAINER.start();

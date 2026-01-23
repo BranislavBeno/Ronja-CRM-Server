@@ -1,6 +1,7 @@
 package com.ronja.crm.ronjaserver.client.api;
 
 import com.ronja.crm.ronjaserver.client.domain.MetalExchange;
+import org.apache.commons.io.FileUtils;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -9,9 +10,8 @@ import org.mockserver.client.MockServerClient;
 import org.mockserver.model.HttpRequest;
 import org.mockserver.model.HttpResponse;
 import org.springframework.core.io.ClassPathResource;
-import org.testcontainers.containers.MockServerContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.shaded.org.apache.commons.io.FileUtils;
+import org.testcontainers.mockserver.MockServerContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import java.io.File;
