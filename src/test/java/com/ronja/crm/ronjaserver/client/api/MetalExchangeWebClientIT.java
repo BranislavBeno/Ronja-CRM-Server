@@ -24,7 +24,7 @@ import java.time.LocalDate;
 @DisabledIfSystemProperty(named = "os.arch", matches = "aarch64", disabledReason = "No ARM64 support")
 class MetalExchangeWebClientIT implements WithAssertions {
 
-    private static final MockServerContainer MOCK_SERVER = new MockServerContainer(DockerImageName.parse("mockserver/mockserver:5.15.0"));
+    private static final MockServerContainer MOCK_SERVER = new MockServerContainer(DockerImageName.parse("mockserver/mockserver:6.0.0"));
     private static final String URL;
     private static final String ACCESS_KEY = "private-token";
     private static MetalExchangeWebClient webClient;
