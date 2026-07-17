@@ -4,9 +4,9 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=BranislavBeno_RonjaServer&metric=coverage)](https://sonarcloud.io/dashboard?id=BranislavBeno_RonjaServer)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=BranislavBeno_RonjaServer&metric=ncloc)](https://sonarcloud.io/dashboard?id=BranislavBeno_RonjaServer)  
 [![](https://img.shields.io/badge/Java-25-blue)](/build.gradle)
-[![](https://img.shields.io/badge/Spring%20Boot-4.0.6-blue)](/build.gradle)
+[![](https://img.shields.io/badge/Spring%20Boot-4.1.0-blue)](/build.gradle)
 [![](https://img.shields.io/badge/Testcontainers-2.0.5-blue)](/build.gradle)
-[![](https://img.shields.io/badge/Gradle-9.5.0-blue)](/gradle/wrapper/gradle-wrapper.properties)
+[![](https://img.shields.io/badge/Gradle-9.6.1-blue)](/gradle/wrapper/gradle-wrapper.properties)
 [![](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)  
 
 ## Ronja CRM server
