@@ -54,7 +54,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers-junit-jupiter")
     testImplementation("org.testcontainers:testcontainers-mysql")
     testImplementation("org.testcontainers:testcontainers-mockserver")
-    testImplementation("org.mock-server:mockserver-client-java:5.15.0")
+    testImplementation("org.mock-server:mockserver-client-java:7.5.0")
     testImplementation("io.rest-assured:spring-mock-mvc:6.0.1")
     testImplementation("com.squareup.okhttp3:okhttp:5.4.0")
     testImplementation("com.squareup.okhttp3:mockwebserver3-junit5:5.4.0")
@@ -69,14 +69,22 @@ rewrite {
     activeRecipe("org.openrewrite.java.RemoveUnusedImports")
     activeRecipe("org.openrewrite.java.OrderImports")
     activeRecipe("org.openrewrite.java.migrate.UpgradeToJava25")
-    activeRecipe("org.openrewrite.java.spring.boot4.SpringBootProperties_4_0")
+    activeRecipe("org.openrewrite.java.spring.boot4.SpringBootProperties_4_1")
     activeRecipe("org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0")
 }
 
-test {
-    useJUnitPlatform()
-    finalizedBy jacocoTestReport
-    afterSuite { desc, result ->
+def testSummaryListener = new TestListener() {
+    @Override
+    void beforeSuite(TestDescriptor desc) {}
+
+    @Override
+    void beforeTest(TestDescriptor desc) {}
+
+    @Override
+    void afterTest(TestDescriptor desc, TestResult result) {}
+
+    @Override
+    void afterSuite(TestDescriptor desc, TestResult result) {
         if (!desc.parent) {
             println "\nTest result: ${result.resultType}"
             println "Test summary: ${result.testCount} tests, " +
@@ -85,6 +93,12 @@ test {
                     "${result.skippedTestCount} skipped"
         }
     }
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+    addTestListener(testSummaryListener)
 }
 
 gitProperties {

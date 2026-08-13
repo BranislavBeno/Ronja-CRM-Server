@@ -13,7 +13,7 @@
     {
       "groupName" : "all non-major dependencies",
       "groupSlug" : "all-minor-patch",
-      "matchPackagePatterns" : [
+      "matchPackageNames" : [
         "*"
       ],
       "matchUpdateTypes" : [
@@ -23,8 +23,9 @@
     }
   ],
   "ignorePaths": [],
-  "regexManagers": [
+  "customManagers": [
     {
+      "customType": "regex",
       "fileMatch": [
         "src/test/java/.+\\.java$"
       ],
