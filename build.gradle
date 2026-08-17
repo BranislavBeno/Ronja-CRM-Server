@@ -56,8 +56,8 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers-mockserver")
     testImplementation("org.mock-server:mockserver-client-java:7.5.0")
     testImplementation("io.rest-assured:spring-mock-mvc:6.0.1")
-    testImplementation("com.squareup.okhttp3:okhttp:5.4.0")
-    testImplementation("com.squareup.okhttp3:mockwebserver3-junit5:5.4.0")
+    testImplementation("com.squareup.okhttp3:okhttp:5.5.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver3-junit5:5.5.0")
 
     rewrite(platform("org.openrewrite.recipe:rewrite-recipe-bom:3.37.0"))
     rewrite("org.openrewrite.recipe:rewrite-migrate-java")
