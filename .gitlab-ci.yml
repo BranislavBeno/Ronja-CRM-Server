@@ -55,7 +55,7 @@ test-code:
   stage: test
   script:
     - chmod +x gradlew
-    - ./gradlew jacocoTestReport
+    - ./gradlew -Pcodegenome.project.token=$CODEGENOME_TOKEN jacocoTestReport
     - cat build/reports/jacoco/test/html/index.html
   coverage: "/Total.*?([0-9]{1,3})%/"
   rules:
